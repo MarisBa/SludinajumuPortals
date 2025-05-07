@@ -10,25 +10,27 @@ class FrontAdsController extends Controller
 {
     public function index()
     {
+        // Get the "car" category
+        $category = Category::categoryCar();
+        if (!$category) {
+            abort(404, 'Category "car" not found.');
+        }
 
-        //for category car
-        $category = Category::CategoryCar();
         $firstAds = Advertisement::firstFourAdsInCaurosel($category->id);
         $secondsAds = Advertisement::secondFourAdsInCaurosel($category->id);
-        //for category electronic
-        $categoryElectronic = Category::CategoryElectronic();
-        $firstAdsForElectronics = Advertisement::firstFourAdsInCauroselForElectronic(
-            $categoryElectronic->id
-        );
-        // get all categories
-        $categories = Category::get();
-        $secondsAdsForElectronics = Advertisement::secondFourAdsInCauroselForElectronic(
-            $categoryElectronic->id
-        );
+
+        // Get the "electronic" category
+        $categoryElectronic = Category::categoryElectronic();
+        if (!$categoryElectronic) {
+            abort(404, 'Category "electronic" not found.');
+        }
+
+        $firstAdsForElectronics = Advertisement::firstFourAdsInCauroselForElectronic($categoryElectronic->id);
+        $secondsAdsForElectronics = Advertisement::secondFourAdsInCauroselForElectronic($categoryElectronic->id);
+
+        // Get all categories and latest ads
+        $categories = Category::all();
         $advertisements = Advertisement::latest()->paginate(30);
-
-
-
 
         return view('index', compact(
             'firstAds',

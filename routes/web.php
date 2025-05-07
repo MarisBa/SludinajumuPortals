@@ -47,7 +47,10 @@ Route::group(['prefix' => 'auth','middleware'=>'admin'], function () {
     Route::get('/reported-ads','FraduController@index')->name('all.reported.ads');
 
 });
-Route::get('/', 'FrontAdsController@index');
+use App\Http\Controllers\FrontAdsController;
+
+Route::get('/', [FrontAdsController::class, 'index']);
+
 
 
 //ads
