@@ -12,6 +12,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -90,14 +91,14 @@
                             <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown_remove_drowdown_class_for_clickable_link"
                             arial-haspopup="true"
                             arial-expanded="false">
-                            Category(Electronics)
+                            Category
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item dropdown-toggle" href="">Subcategory(Laptop)</a>
+                                    <a class="dropdown-item dropdown-toggle" href="">Subcategory</a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="dropdown-item" href="">Childcategory()</a>
+                                        <a class="dropdown-item" href="">Childcategory</a>
                                     </li>
 
 
@@ -111,6 +112,7 @@
                 </div>
             </nav>
         
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <main class="py-4">
            @yield('content')
         </main>
