@@ -19,9 +19,12 @@ Route::get('/home', function () {
     return view('index');
 });
 
+// Authentication Routes
+Auth::routes();
 
-
-
+Route::get('/auth', function () {
+    return view('backend.admin.index'); // Make sure this matches the path
+});
 
 Route::get('/dashboard', 'DashboardController@index');
 

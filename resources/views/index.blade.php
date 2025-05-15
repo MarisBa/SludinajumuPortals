@@ -15,15 +15,12 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="/slider/slider1.png" class="d-block w-100" alt="First slide">
-                <div class="carousel-caption d-none d-md-block"></div>
             </div>
             <div class="carousel-item">
                 <img src="/slider/slider2.png" class="d-block w-100" alt="Second slide">
-                <div class="carousel-caption d-none d-md-block"></div>
             </div>
             <div class="carousel-item">
                 <img src="/slider/slider3.png" class="d-block w-100" alt="Third slide">
-                <div class="carousel-caption d-none d-md-block"></div>
             </div>
         </div>
         
@@ -46,76 +43,94 @@
         <a href="#" class="btn btn-link">View all</a>
     </div>
     
-    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
+            <!-- First Slide with cars 1-4 -->
             <div class="carousel-item active">
                 <div class="row g-3">
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car1.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car1.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 1">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0" style="color: blue;">Name of product/$500</p>
+                                <p class="mb-0" style="color: blue;">Car Model 1/$25,000</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car1.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car2.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 2">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Name of product/$500</p>
+                                <p class="mb-0">Car Model 2/$32,500</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car1.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car3.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 3">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Name of product/$500</p>
+                                <p class="mb-0">Car Model 3/$28,750</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car1.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car4.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 4">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Name of product/$500</p>
+                                <p class="mb-0">Car Model 4/$45,000</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             
+            <!-- Second Slide with cars 5-8 -->
             <div class="carousel-item">
                 <div class="row g-3">
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car2.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car5.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 5">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Name of product/$500</p>
+                                <p class="mb-0">Car Model 5/$38,900</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car2.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car6.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 6">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Name of product/$500</p>
+                                <p class="mb-0">Car Model 6/$52,300</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car2.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car7.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 7">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Name of product/$500</p>
+                                <p class="mb-0">Car Model 7/$41,200</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="card h-100">
-                            <img src="/product/car2.jpg" class="card-img-top img-thumbnail" alt="Car Product">
+                            <div class="card-img-container" style="height: 200px; overflow: hidden;">
+                                <img src="/product/car8.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 8">
+                            </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Name of product/$500</p>
+                                <p class="mb-0">Car Model 8/$67,500</p>
                             </div>
                         </div>
                     </div>
@@ -146,11 +161,12 @@
             pause: 'hover'
         });
         
-        // Initialize product carousel
+        // Initialize product carousel with different settings
         var productCarousel = new bootstrap.Carousel(document.getElementById('productCarousel'), {
-            interval: 2500,
+            interval: 5000, // Slower transition
             wrap: true,
-            pause: 'hover'
+            pause: 'hover',
+            touch: true // Enable touch swiping
         });
     });
 </script>
