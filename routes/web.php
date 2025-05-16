@@ -30,6 +30,6 @@ Route::get('/auth', function () {
 
 Route::get('/dashboard', 'DashboardController@index');
 
-
-
-
+Route::get('/auth/category', function () {
+    return view('backend.category.create');
+});

@@ -40,25 +40,25 @@
           <li class="nav-item nav-search d-none d-lg-block w-100">
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="search">
+                {{--<span class="input-group-text" id="search">
                   <i class="mdi mdi-magnify"></i>
-                </span>
+                </span>--}}
               </div>
-              <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
+              {{--<input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">--}}
             </div>
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown mr-1">
             <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
-              <i class="mdi mdi-message-text mx-0"></i>
-              <span class="count"></span>
+              {{--<i class="mdi mdi-message-text mx-0"></i>--}}
+             {{-- <span class="count"></span> --}}
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="messageDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
               <a class="dropdown-item">
                 <div class="item-thumbnail">
-                    <img src="/admin/template/images/faces/face4.jpg" alt="image" class="profile-pic">
+                   {{-- <img src="/admin/template/images/faces/face4.jpg" alt="image" class="profile-pic"> --}}
                 </div>
                 <div class="item-content flex-grow">
                   <h6 class="ellipsis font-weight-normal">David Grey
