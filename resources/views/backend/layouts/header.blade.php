@@ -20,10 +20,7 @@
 
 </head>
 <body>
-  <link href="{{ asset('css/iziToast.css') }}" rel="stylesheet">
 
-  <script src="{{ asset('js/iziToast.js') }}"></script>
-  @include('vendor.lara-izitoast.toast')
 
 
   <div class="container-scroller">
