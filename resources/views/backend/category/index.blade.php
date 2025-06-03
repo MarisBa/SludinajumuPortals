@@ -25,7 +25,7 @@
                                     <tbody>
                                         @forelse($categories as $category)
                                             <tr>
-                                                <td><img src="{{ Storage::url($category->image) }}"></td>
+                                                <td><img src="{{ asset($category->image) }}" alt="{{ $category->name }}" width="50"></td>
                                                 <td>{{ $category->name }}</td>
                                                 <td>
                                                     <a href="{{ route('category.edit', [$category->id]) }}"><button

@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryFormRequest; // Assuming you have a form request f
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+
 class CategoryController extends Controller
 {
     /**
