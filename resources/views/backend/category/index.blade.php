@@ -24,17 +24,26 @@
                                     <tbody>
                                         @forelse($categories as $category)
                                         <tr>
-                                            <td><img src="{{ asset($category->image) }}" alt="{{ $category->name }}"></td>
+                                            <td><img src="{{ asset($category->image) }}" alt="{{ $category->name }}" width="50"></td>
                                             <td>{{ $category->name }}</td>
-                                            <td> <button class="btn btn-info"><i class="mdi mdi-table-edit"></i></button></td>
-                                            <td><button class="btn btn-danger"><i class="mdi mdi-delete"></i></button></td>
+                                            <td>
+                                                <a href="{{ route('category.edit', $category->id) }}" class="btn btn-info">
+                                                    <i class="mdi mdi-table-edit"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('category.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger"><i class="mdi mdi-delete"></i></button>
+                                                </form>
+                                            </td>
                                         </tr>
                                         @empty
-                                        <td>No category to display</td>
+                                        <tr><td colspan="4">No categories found.</td></tr>
                                         @endforelse
-                                        
-                                      
-                                    </tbody>
+                                        </tbody>
+
                                 </table>
                             </div>
                         </div>

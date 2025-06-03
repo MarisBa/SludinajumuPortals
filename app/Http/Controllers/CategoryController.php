@@ -59,7 +59,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::find($id);
+        return view('backend.category.edit', compact('category'));
     }
 
     /**
@@ -67,7 +68,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+         $category = Category::find($id);
+        if ($request->hasFile('image')) {
+            Storage::delete($category->image);
+            $imagePath = $request->file('image')->store('category', 'public');
+            $category->update(['name' => $request->name, 'image' => $image]);
+        }
+         $category->update(['name' => $request->name]);
+         return redirect()->route('category.index')->with('message', 'Category updated successfully');
     }
 
     /**
