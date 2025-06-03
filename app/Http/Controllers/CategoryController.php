@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CategoryFormRequest; // Assuming you have a form request for validation
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 class CategoryController extends Controller
 {
     /**
@@ -33,16 +34,16 @@ class CategoryController extends Controller
     // Store the uploaded file in 'storage/app/public/category'
     // and return the path relative to 'public' disk (e.g., "category/abc.jpg")
     $imagePath = $request->file('image')->store('category', 'public');
-    // Returns: category/filename.png
 
     Category::create([
         'name' => $request->name,
-        'image' => 'storage/' . $imagePath, // saves: storage/category/filename.png
+        'image' => $imagePath, // Just "category/abc.jpg"
         'slug' => \Str::slug($request->name),
     ]);
 
 
-    return redirect()->back()->with('success', 'Category created successfully!');
+
+    return redirect()->route('category.index')->with('message', 'Category created successfully');
 }
 
 
@@ -82,7 +83,15 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
+{
+    $category = Category::findOrFail($id);
+
+    if (File::exists(public_path($category->image))) {
+        File::delete(public_path($category->image));
     }
+
+    $category->delete();
+
+    return back()->with('message', 'Category deleted successfully');
+}
 }
