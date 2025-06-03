@@ -68,8 +68,19 @@ class ChildcategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy($id)
+{
+    $childcategory = Childcategory::find($id);
+
+    // Optional: If you have an image or file field to delete
+    // if ($childcategory && Storage::exists($childcategory->image)) {
+    //     Storage::delete($childcategory->image);
+    // }
+
+    if ($childcategory) {
+        $childcategory->delete();
     }
+
+    return back()->with('message', 'Childcategory deleted successfully');
+}
 }
