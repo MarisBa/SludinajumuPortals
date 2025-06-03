@@ -5,6 +5,7 @@ use App\Http\Requests\SubCategoryFormRequest;
 use Illuminate\Http\Request;
 use App\Models\Subcategory;
 use Illuminate\Support\Str;
+use App\Http\Requests\SubcategoryUpdateRequest;
 class SubcategoryController extends Controller
 {
     /**
@@ -51,22 +52,32 @@ class SubcategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $subcategory = Subcategory::find($id);
+        return view('backend.subcategory.edit', compact('subcategory'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function update(SubcategoryUpdateRequest $request, string $id)
+{
+    $subcategory = Subcategory::findOrFail($id);
+    $subcategory->update([
+        'name' => $name = $request->name,
+        'slug' => \Illuminate\Support\Str::slug($name),
+        'category_id' => $request->category_id,
+    ]);
+
+    return redirect()->route('subcategory.index')->with('message', 'Subcategory updated successfully');
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        Subcategory::find($id)->delete();
+        return back()->with('message', 'Subcategory removed');
     }
 }
