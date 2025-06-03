@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\ChildcategoryController;
+
 
 
 
@@ -38,6 +40,7 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::group(['prefix' => 'auth'], function () {
     Route::resource('/category', CategoryController::class);
     Route::resource('/subcategory', SubcategoryController::class);
+    Route::resource('/childcategory', ChildcategoryController::class);
 
 });
 

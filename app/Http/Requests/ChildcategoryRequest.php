@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 
-class CategoryFormRequest extends FormRequest
+class ChildcategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,11 +20,13 @@ class CategoryFormRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
+        $id = $this->route('childcategory');
+       
         return [
-            'name' => 'required|min:2|max:40|unique:categories',
-            'image'=> 'required|mimes:png,jpg,jpeg'
+            'name'=>'required|unique:childcategories,name,'.$id,
+            'subcategory_id'=>'required'
         ];
     }
 }
