@@ -12,8 +12,10 @@ class SubcategoryController extends Controller
      */
     public function index()
     {
-        //
+        $subcategories = Subcategory::with('category')->orderBy('category_id')->get();
+        return view('backend.subcategory.index', compact('subcategories'));
     }
+
 
     /**
      * Show the form for creating a new resource.
