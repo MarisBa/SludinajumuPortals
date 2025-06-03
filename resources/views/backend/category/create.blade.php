@@ -2,14 +2,14 @@
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
-          <h3>Add Category</h3>
             <div class="row justify-content-center">
                 <div class="col-md-10">
-
+                    <h4>Add Category</h4>
                     <div class="card">
+
                         <div class="card-body">
 
-                            <form class="forms-sample" action="" method="post">@csrf
+                        <form class="forms-sample" action="{{route('category.store')}}" method="post" enctype="multipart/form-data">@csrf
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
@@ -46,7 +46,6 @@
                 </div>
 
             </div>
-</div>
-</div>
-
+        </div>
+    </div>
 @endsection
