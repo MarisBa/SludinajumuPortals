@@ -13,7 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        
+        $categories = Category::get();
+        return view('backend.category.index', compact('categories'));
     }
 
     /**
@@ -32,15 +33,14 @@ class CategoryController extends Controller
     // Store the uploaded file in 'storage/app/public/category'
     // and return the path relative to 'public' disk (e.g., "category/abc.jpg")
     $imagePath = $request->file('image')->store('category', 'public');
+    // Returns: category/filename.png
 
-    $name = $request->name;
-
-    // Save category to DB with image path set for public access
     Category::create([
-        'name' => $name,
-        'image' => 'storage/' . $imagePath, // <-- THIS is where it goes
-        'slug' => \Str::slug($name),
+        'name' => $request->name,
+        'image' => 'storage/' . $imagePath, // saves: storage/category/filename.png
+        'slug' => \Str::slug($request->name),
     ]);
+
 
     return redirect()->back()->with('success', 'Category created successfully!');
 }
