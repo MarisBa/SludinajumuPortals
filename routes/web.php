@@ -15,6 +15,7 @@ use App\Http\Controllers\AdVertisementController;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,3 +58,5 @@ View::composer(['*'], function($view){
     $menus = App\Models\Category::with('subcategories')->get();
     $view->with('menus', $menus);
 });
+
+Route::resource('ads', AdvertisementController::class);

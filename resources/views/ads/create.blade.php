@@ -1,90 +1,530 @@
 @extends('layouts.app')
-
 @section('content')
-<div class="container">
+
+<div class="container-fluid py-4">
     <div class="row">
-        <div class="col-md-3">
+        <!-- Sidebar Column -->
+        <div class="col-lg-3 mb-4">
             <div class="card profile-card">
-                <div class="card-body profile-body">
-                   <img src="/img/man.jpg" class="profile-img">
-                    <p class="profile-name">John Doe</p>
+                <div class="card-body text-center">
+                    <div class="avatar-container mb-3">
+                        <img class="avatar" src="/img/man.jpg" alt="User Avatar">
+                    </div>
+                    <h5 class="profile-name">John Doe</h5>
+                    <p class="text-muted small">Premium Member</p>
                 </div>
-                <div class="menu-divider"></div>
-                <div class="vertical-menu">
-                    <a href="#" class="menu-item active">Dashboard</a>
-                    <a href="#" class="menu-item">Profile</a>
-                    <a href="#" class="menu-item">Create ads</a>
-                    <a href="#" class="menu-item">Publish ads</a>
-                    <a href="#" class="menu-item">Pending ads</a>
-                    <a href="#" class="menu-item">Message</a>
+                
+                <div class="sidebar-menu">
+                    <a href="#" class="sidebar-item active">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <i class="fas fa-plus-circle"></i> Create Ad
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <i class="fas fa-check-circle"></i> Published Ads
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <i class="fas fa-clock"></i> Pending Ads
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <i class="fas fa-envelope"></i> Messages
+                        <span class="badge badge-pill badge-primary float-right">3</span>
+                    </a>
                 </div>
             </div>
+        </div>
+
+        <!-- Main Content Column -->
+        <div class="col-lg-9">
+            <form action="#" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Post Your Ad</h4>
+                        <p class="small mb-0">Fill in all required fields to create your listing</p>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Images Section -->
+                        <div class="form-section">
+                            <h5 class="section-title">Upload Images</h5>
+                            <p class="section-subtitle">First image will be featured (max 3MB each)</p>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="image-upload-card">
+                                        <label for="feature_image">
+                                            <div class="upload-placeholder">
+                                                <i class="fas fa-camera fa-3x"></i>
+                                                <span>Featured Image</span>
+                                            </div>
+                                            <input type="file" id="feature_image" name="feature_image" class="d-none" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="image-upload-card">
+                                        <label for="first_image">
+                                            <div class="upload-placeholder">
+                                                <i class="fas fa-camera fa-3x"></i>
+                                                <span>Additional Image</span>
+                                            </div>
+                                            <input type="file" id="first_image" name="first_image" class="d-none" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="image-upload-card">
+                                        <label for="second_image">
+                                            <div class="upload-placeholder">
+                                                <i class="fas fa-camera fa-3x"></i>
+                                                <span>Additional Image</span>
+                                            </div>
+                                            <input type="file" id="second_image" name="second_image" class="d-none" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category Section -->
+                        <div class="form-section">
+                            <h5 class="section-title">Category Information</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="category_id">Category</label>
+                                        <select class="form-control select2" name="category_id" id="category_id">
+                                            <option value="">Select Category</option>
+                                            <!-- Options would be populated here -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="subcategory_id">Subcategory</label>
+                                        <select class="form-control select2" name="subcategory_id" id="subcategory_id" disabled>
+                                            <option value="">Select Subcategory</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="childcategory_id">Child Category</label>
+                                        <select class="form-control select2" name="childcategory_id" id="childcategory_id" disabled>
+                                            <option value="">Select Child Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Basic Information Section -->
+                        <div class="form-section">
+                            <h5 class="section-title">Basic Information</h5>
+                            
+                            <div class="form-group">
+                                <label for="name">Ad Title</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Enter a descriptive title">
+                                <small class="form-text text-muted">Make it clear and descriptive to attract buyers</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea name="description" id="description" class="form-control" rows="5" placeholder="Provide detailed information about the item"></textarea>
+                                <small class="form-text text-muted">Include condition, features, reason for selling, etc.</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Pricing Section -->
+                        <div class="form-section">
+                            <h5 class="section-title">Pricing Details</h5>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="price">Price</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">$</span>
+                                            </div>
+                                            <input type="text" name="price" id="price" class="form-control" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="price_status">Price Status</label>
+                                        <select class="form-control" name="price_status" id="price_status">
+                                            <option value="negoitable">Negotiable</option>
+                                            <option value="fixed">Fixed Price</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Condition Section -->
+                        <div class="form-section">
+                            <h5 class="section-title">Item Condition</h5>
+                            
+                            <div class="form-group">
+                                <select class="form-control" name="product_condition" id="product_condition">
+                                    <option value="">Select Condition</option>
+                                    <option value="new">Brand New</option>
+                                    <option value="likenew">Like New</option>
+                                    <option value="good">Good</option>
+                                    <option value="fair">Fair</option>
+                                    <option value="heavilyused">Heavily Used</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Location Section -->
+                        <div class="form-section">
+                            <h5 class="section-title">Location Details</h5>
+                            
+                            <div class="form-group">
+                                <label for="listing_location">Listing Location</label>
+                                <input type="text" class="form-control" name="listing_location" id="listing_location" placeholder="Enter specific location">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="country_id">Country</label>
+                                        <select class="form-control select2" name="country_id" id="country_id">
+                                            <option value="">Select Country</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="state_id">State/Region</label>
+                                        <select class="form-control select2" name="state_id" id="state_id" disabled>
+                                            <option value="">Select State</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="city_id">City</label>
+                                        <select class="form-control select2" name="city_id" id="city_id" disabled>
+                                            <option value="">Select City</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Information -->
+                        <div class="form-section">
+                            <h5 class="section-title">Contact Information</h5>
+                            
+                            <div class="form-group">
+                                <label for="phone_number">Contact Number</label>
+                                <input type="number" class="form-control" name="phone_number" id="phone_number" placeholder="Enter phone number for buyers">
+                                <small class="form-text text-muted">This will be displayed on your ad</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="link">Demo Link (YouTube, etc.)</label>
+                                <input type="text" class="form-control" name="link" id="link" placeholder="https://youtube.com/example">
+                                <small class="form-text text-muted">Optional - include a video demonstration</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Section -->
+                        <div class="form-section text-right">
+                            <button class="btn btn-outline-secondary mr-2" type="reset">Reset</button>
+                            <button class="btn btn-primary px-4" type="submit">
+                                <i class="fas fa-paper-plane mr-2"></i> Publish Ad
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <style>
-    .profile-card {
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: none;
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #f72585;
+        --light-gray: #f8f9fa;
+        --dark-gray: #6c757d;
+        --border-radius: 8px;
+        --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        --transition: all 0.3s ease;
     }
-
-    .profile-body {
-        padding: 20px;
-        text-align: center;
-    }
-
-    .profile-img {
-        width: 130px;
-        height: 130px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 3px solid #4285f4;
-        margin: 0 auto 15px;
-        display: block;
-    }
-
-    .profile-name {
-        font-weight: 600;
-        font-size: 1.1rem;
-        margin-bottom: 0;
+    
+    body {
+        background-color: #f5f7fb;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         color: #333;
     }
-
-    .menu-divider {
-        height: 2px;
-        background: linear-gradient(to right, #4285f4, #34a853);
-        margin: 0;
+    
+    /* Profile Card Styles */
+    .profile-card {
         border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
     }
-
-    .vertical-menu {
+    
+    .avatar-container {
+        width: 130px;
+        height: 130px;
+        margin: 0 auto;
+        position: relative;
+    }
+    
+    .avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-name {
+        font-weight: 700;
+        margin-top: 15px;
+        color: #2b2d42;
+    }
+    
+    /* Sidebar Menu Styles */
+    .sidebar-menu {
+        padding: 10px 0;
+    }
+    
+    .sidebar-item {
         display: flex;
-        flex-direction: column;
-        padding: 0;
-    }
-
-    .menu-item {
+        align-items: center;
         padding: 12px 20px;
+        color: #495057;
         text-decoration: none;
-        color: #555;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        transition: var(--transition);
         border-left: 3px solid transparent;
     }
-
-    .menu-item:hover {
-        background-color: #f8f9fa;
-        color: #4285f4;
-        border-left: 3px solid #4285f4;
+    
+    .sidebar-item i {
+        width: 24px;
+        text-align: center;
+        margin-right: 10px;
+        color: var(--dark-gray);
     }
-
-    .menu-item.active {
-        background-color: #e8f0fe;
-        color: #4285f4;
-        border-left: 3px solid #4285f4;
+    
+    .sidebar-item:hover, .sidebar-item.active {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+        border-left: 3px solid var(--primary-color);
+    }
+    
+    .sidebar-item:hover i, .sidebar-item.active i {
+        color: var(--primary-color);
+    }
+    
+    /* Form Card Styles */
+    .card {
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-bottom: 30px;
+    }
+    
+    .card-header {
+        background-color: var(--primary-color);
+        border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+        padding: 20px 25px;
+    }
+    
+    /* Form Section Styles */
+    .form-section {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2b2d42;
+        margin-bottom: 5px;
+    }
+    
+    .section-subtitle {
+        font-size: 0.85rem;
+        color: var(--dark-gray);
+        margin-bottom: 15px;
+    }
+    
+    /* Image Upload Styles */
+    .image-upload-card {
+        border: 2px dashed #ddd;
+        border-radius: var(--border-radius);
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        background-color: #fafafa;
+    }
+    
+    .image-upload-card:hover {
+        border-color: var(--primary-color);
+        background-color: rgba(67, 97, 238, 0.05);
+    }
+    
+    .upload-placeholder {
+        text-align: center;
+        color: var(--dark-gray);
+    }
+    
+    .upload-placeholder i {
+        display: block;
+        margin-bottom: 10px;
+        color: #adb5bd;
+    }
+    
+    /* Form Control Styles */
+    .form-control {
+        border-radius: var(--border-radius);
+        padding: 10px 15px;
+        border: 1px solid #e0e0e0;
+        transition: var(--transition);
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+    }
+    
+    .select2-container .select2-selection--single {
+        height: 42px;
+        border-radius: var(--border-radius) !important;
+        border: 1px solid #e0e0e0 !important;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 42px;
+    }
+    
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 40px;
+    }
+    
+    /* Button Styles */
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        padding: 10px 25px;
+        font-weight: 500;
+        transition: var(--transition);
+    }
+    
+    .btn-primary:hover {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        transform: translateY(-2px);
+    }
+    
+    .btn-outline-secondary {
+        transition: var(--transition);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .sidebar-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .sidebar-item {
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            border-left: none;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .form-section .row > div {
+            margin-bottom: 15px;
+        }
+        
+        .form-section .row > div:last-child {
+            margin-bottom: 0;
+        }
     }
 </style>
+
+<!-- Include necessary JS libraries -->
+@section('scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize select2
+        $('.select2').select2({
+            width: '100%'
+        });
+        
+        // Enable dependent dropdowns
+        $('#category_id').change(function() {
+            $('#subcategory_id').prop('disabled', !$(this).val());
+            $('#subcategory_id').val('').trigger('change');
+        });
+        
+        $('#subcategory_id').change(function() {
+            $('#childcategory_id').prop('disabled', !$(this).val());
+            $('#childcategory_id').val('').trigger('change');
+        });
+        
+        $('#country_id').change(function() {
+            $('#state_id').prop('disabled', !$(this).val());
+            $('#state_id').val('').trigger('change');
+        });
+        
+        $('#state_id').change(function() {
+            $('#city_id').prop('disabled', !$(this).val());
+            $('#city_id').val('').trigger('change');
+        });
+        
+        // Preview image when selected
+        $('input[type="file"]').change(function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                const card = $(this).closest('.image-upload-card');
+                
+                reader.onload = function(event) {
+                    card.css('background-image', `url(${event.target.result})`);
+                    card.find('.upload-placeholder').hide();
+                    card.css('background-size', 'cover');
+                    card.css('background-position', 'center');
+                }
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+@endsection
+
 @endsection
