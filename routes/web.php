@@ -22,9 +22,7 @@ use App\Http\Controllers\MenuController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+
 
 Route::get('/home', function () {
     return view('index');

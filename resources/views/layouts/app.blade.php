@@ -73,44 +73,34 @@
             </div>
         </nav>
 
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm  navbar-hover">
-
-                <a class="navbar-brand" href="#">
-                   
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHover" aria-controls="navbarDD" aria-expanded="false" aria-label="Navigation">
+                <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm navbar-hover">
+            <div class="container-fluid px-0"> <!-- Changed to container-fluid and removed padding -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHover">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarHover">
-
-                    <!-- Left Side Of Navbar -->
-                    <ul class="conatainer-fluid navbar-nav">
-                        @for($i=0; $i<12;$i++)
-                            
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="" data-toggle="dropdown_remove_drowdown_class_for_clickable_link"
-                            arial-haspopup="true"
-                            arial-expanded="false">
-                            Category
+                    <ul class="navbar-nav w-100 d-flex justify-content-between"> <!-- Added w-100 and justify-content-between -->
+                        @foreach($menus as $menuItem)
+                        <li class="nav-item dropdown flex-grow-1 text-center"> <!-- Added flex-grow-1 and text-center -->
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                {{$menuItem->name}}
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu w-100"> <!-- Added w-100 -->
                                 <li>
-                                    <a class="dropdown-item dropdown-toggle" href="">Subcategory</a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="">Childcategory</a>
-                                    </li>
-
-
-                                </ul>
-
-                              </li>
+                                    <a class="dropdown-item dropdown-toggle" href="#">Subcategory</a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="#">Childcategory</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </li>
-                        @endfor
+                        @endforeach
                     </ul>
                 </div>
-            </nav>
+            </div>
+        </nav>
         
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <main class="py-4">
@@ -118,70 +108,92 @@
         </main>
     </div>
     <style>
-        body{
-            overflow-x: hidden;
-        }
-       .navbar-nav{
-           height: 55px!important;
-       }
-        .dropdown:hover>.dropdown-menu {
-            display: block;
-        }
-
-        @media only screen and(max-width:9991px) {
-            .navbar-hover .show>.dropdown-toggle::after {
-                transform: rotate(-90deg)
-            }
-        }
-
-        @media only screen and (min-width:492px) {
-            .navbar-hover .collapse ul li {
-                position: relative;
-            }
-
-            .navbar-hover .collapse ul li:hover>ul {
-                display: block
-            }
-
-            .navbar-hover .collapse ul ul {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                min-width: 100px;
-                display: none
-            }
-
-            .navbar-hover .collapse ul ul ul {
-                position: absolute;
-                top: 0;
-                left: 100%;
-                min-width: 200px;
-                display: none
-            }
-            .navbar-nav > li{
-                padding-left:3px!important;
-                margin-right:3px!important;
-            }
-            .vertical-menu a {
-            background-color: #fff;
-            color: #000;
-            display: block;
-            padding: 12px;
-            text-decoration: none;
-        }
-
-        .vertical-menu a:hover {
-            background-color: red;
-            color: #fff;
-        }
-        .vertical-menu a.active {
-            background-color: red;
-            color: #fff;
-        }
-
-
+    body {
+        overflow-x: hidden;
     }
-
-    </style>
+    
+    /* Main navbar styling */
+    .navbar-hover {
+        padding: 0;
+    }
+    
+    .navbar-hover .navbar-nav {
+        width: 100%;
+        height: 55px !important;
+        display: flex !important;
+    }
+    
+    .navbar-hover .nav-item {
+        flex: 1;
+        text-align: center;
+        position: relative;
+    }
+    
+    .navbar-hover .nav-link {
+        padding: 1rem;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .navbar-hover .nav-link:hover {
+        background-color: #f8f9fa;
+    }
+    
+    /* Dropdown styling */
+    .dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+    
+    .navbar-hover .dropdown-menu {
+        width: 100%;
+        border-radius: 0;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-top: 0;
+    }
+    
+    /* Multi-level dropdown styling */
+    @media only screen and (min-width: 992px) {
+        .navbar-hover .dropdown-menu .dropdown-toggle::after {
+            transform: rotate(-90deg);
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+        
+        .navbar-hover .dropdown-menu li {
+            position: relative;
+        }
+        
+        .navbar-hover .dropdown-menu ul {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            min-width: 200px;
+            display: none;
+        }
+        
+        .navbar-hover .dropdown-menu li:hover > ul {
+            display: block;
+        }
+    }
+    
+    /* Mobile responsiveness */
+    @media only screen and (max-width: 991px) {
+        .navbar-hover .navbar-nav {
+            flex-direction: column;
+            height: auto !important;
+        }
+        
+        .navbar-hover .dropdown-menu {
+            width: auto;
+        }
+        
+        .navbar-hover .dropdown-menu ul {
+            position: static;
+            padding-left: 1rem;
+        }
+    }
+</style>
 </body>
 </html>
