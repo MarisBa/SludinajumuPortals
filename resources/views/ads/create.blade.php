@@ -63,53 +63,43 @@
                     
                     <div class="card-body">
                         <!-- Images Section -->
-                            <div class="form-section">
-                                <h5 class="section-title">Upload Images</h5>
-                                <p class="section-subtitle">First image will be featured (max 3MB each)</p>
-                                
-                                <div class="row">
-                                    <!-- Featured Image (Vue component) -->
-                                    <div class="col-md-4 mb-3">
-                                        <div class="image-upload-card">
-                                            <image-preview input-name="feature_image"></image-preview>
-                                            <label for="feature_image">
-                                                <div class="upload-placeholder">
-                                                    <i class="fas fa-camera fa-3x"></i>
-                                                    <span>Featured Image</span>
-                                                </div>
-                                                <img id="feature_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
-                                                <input type="file" id="feature_image" name="feature_image" class="d-none" accept="image/*">
+                        <div class="form-section">
+                            <h5 class="section-title">Upload Images</h5>
+                            <p class="section-subtitle">First image will be featured (max 3MB each)</p>
+                            
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="image-upload-card" onclick="document.getElementById('image').click()">
+                                        <div class="upload-placeholder">
+                                            <i class="fas fa-camera fa-2x"></i>
+                                            <span>Main Image</span>
                                         </div>
+                                        <img id="image-preview" class="preview-image" style="display:none;">
+                                        <input type="file" name="image" id="image" style="display:none;" onchange="previewImage(this, 'image-preview')">
                                     </div>
-                                    
-                                    <!-- Additional Images (regular HTML) -->
-                                    <div class="col-md-4 mb-3">
-                                        <div class="image-upload-card">
-                                            <label for="first_image">
-                                                <div class="upload-placeholder">
-                                                    <i class="fas fa-camera fa-3x"></i>
-                                                    <span>Additional Image</span>
-                                                </div>
-                                                <img id="first_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
-                                                <input type="file" id="first_image" name="first_image" class="d-none" accept="image/*">
-                                            </label>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="image-upload-card" onclick="document.getElementById('image1').click()">
+                                        <div class="upload-placeholder">
+                                            <i class="fas fa-camera fa-2x"></i>
+                                            <span>Second Image</span>
                                         </div>
+                                        <img id="image1-preview" class="preview-image" style="display:none;">
+                                        <input type="file" name="image1" id="image1" style="display:none;" onchange="previewImage(this, 'image1-preview')">
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="image-upload-card">
-                                            <label for="second_image">
-                                                <div class="upload-placeholder">
-                                                    <i class="fas fa-camera fa-3x"></i>
-                                                    <span>Additional Image</span>
-                                                </div>
-                                                <img id="second_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
-                                                <input type="file" id="second_image" name="second_image" class="d-none" accept="image/*">
-                                                <image-prievew/>
-                                            </label>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="image-upload-card" onclick="document.getElementById('image2').click()">
+                                        <div class="upload-placeholder">
+                                            <i class="fas fa-camera fa-2x"></i>
+                                            <span>Third Image</span>
                                         </div>
+                                        <img id="image2-preview" class="preview-image" style="display:none;">
+                                        <input type="file" name="image2" id="image2" style="display:none;" onchange="previewImage(this, 'image2-preview')">
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         
                         <!-- Category Section -->
                         <div class="form-section">
@@ -164,7 +154,7 @@
                             
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <textarea name="description" id="description" class="form-control" rows="5" placeholder="Provide detailed information about the item"></textarea>
+                                <textarea name="description" id="mytextarea" class="form-control" rows="5" placeholder="Provide detailed information about the item"></textarea>
                                 <small class="form-text text-muted">Include condition, features, reason for selling, etc.</small>
                             </div>
                         </div>
@@ -524,7 +514,24 @@
     }
 </style>
 
+<script>
+function previewImage(input, previewId) {
+    const preview = document.getElementById(previewId);
+    const file = input.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        // Hide the placeholder
+        input.parentElement.querySelector('.upload-placeholder').style.display = 'none';
+    }
+    
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+}
+</script>
+
 <!-- Include necessary JS libraries -->
-
-
 @endsection
