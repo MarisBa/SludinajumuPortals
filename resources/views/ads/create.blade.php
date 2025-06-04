@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('content')
-
+<div></div>
+        <example-component/>
+    </div>
 <div class="container-fluid py-4">
+    
     <div class="row">
         <!-- Sidebar Column -->
         <div class="col-lg-3 mb-4">
@@ -43,12 +46,11 @@
             @if($errors->any())
                 <div class="alert alert-danger">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-
-                        </button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     @foreach ($errors->all() as $errorMessage)
-                            <li>{{ $errorMessage }}</li>
-                        @endforeach
+                        <li>{{ $errorMessage }}</li>
+                    @endforeach
                 </div>
             @endif
             <form action="{{route('ads.store')}}" method="post" enctype="multipart/form-data">
@@ -73,6 +75,7 @@
                                                 <i class="fas fa-camera fa-3x"></i>
                                                 <span>Featured Image</span>
                                             </div>
+                                            <img id="feature_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
                                             <input type="file" id="feature_image" name="feature_image" class="d-none" accept="image/*">
                                         </label>
                                     </div>
@@ -84,6 +87,7 @@
                                                 <i class="fas fa-camera fa-3x"></i>
                                                 <span>Additional Image</span>
                                             </div>
+                                            <img id="first_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
                                             <input type="file" id="first_image" name="first_image" class="d-none" accept="image/*">
                                         </label>
                                     </div>
@@ -95,6 +99,7 @@
                                                 <i class="fas fa-camera fa-3x"></i>
                                                 <span>Additional Image</span>
                                             </div>
+                                            <img id="second_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
                                             <input type="file" id="second_image" name="second_image" class="d-none" accept="image/*">
                                         </label>
                                     </div>
@@ -412,6 +417,8 @@
         cursor: pointer;
         transition: var(--transition);
         background-color: #fafafa;
+        position: relative;
+        overflow: hidden;
     }
     
     .image-upload-card:hover {
@@ -422,12 +429,22 @@
     .upload-placeholder {
         text-align: center;
         color: var(--dark-gray);
+        z-index: 1;
     }
     
     .upload-placeholder i {
         display: block;
         margin-bottom: 10px;
         color: #adb5bd;
+    }
+    
+    .preview-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     
     /* Form Control Styles */
@@ -535,30 +552,45 @@
             $('#city_id').prop('disabled', !hasValue).val(null).trigger('change');
         });
 
-        // Image preview functionality
-        $('input[type="file"]').on('change', function (e) {
-            const file = e.target.files[0];
-            const $card = $(this).closest('.image-upload-card');
+        // Image preview functionality for all image inputs
+        function handleImagePreview(inputId, previewId) {
+            $(inputId).on('change', function() {
+                const file = this.files[0];
+                const preview = $(previewId);
+                const placeholder = $(this).siblings('.upload-placeholder');
+                
+                if (file && file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        preview.attr('src', e.target.result);
+                        preview.show();
+                        placeholder.hide();
+                    }
+                    
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.attr('src', '#');
+                    preview.hide();
+                    placeholder.show();
+                }
+            });
+        }
 
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const img = $('<img>', {
-                        src: event.target.result,
-                        class: 'w-100 h-100 rounded',
-                        style: 'object-fit: cover;'
-                    });
-                    $card.html(img);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                $card.find('.upload-placeholder').show();
-            }
+        // Initialize preview for each image upload
+        handleImagePreview('#feature_image', '#feature_image_preview');
+        handleImagePreview('#first_image', '#first_image_preview');
+        handleImagePreview('#second_image', '#second_image_preview');
+
+        // Reset functionality
+        $('button[type="reset"]').on('click', function() {
+            $('.preview-image').each(function() {
+                $(this).attr('src', '#').hide();
+                $(this).siblings('.upload-placeholder').show();
+            });
         });
     });
 </script>
 @endsection
-
-
 
 @endsection
