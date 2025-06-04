@@ -63,49 +63,53 @@
                     
                     <div class="card-body">
                         <!-- Images Section -->
-                        <div class="form-section">
-                            <h5 class="section-title">Upload Images</h5>
-                            <p class="section-subtitle">First image will be featured (max 3MB each)</p>
-                            
-                            <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <div class="image-upload-card">
-                                        <label for="feature_image">
-                                            <div class="upload-placeholder">
-                                                <i class="fas fa-camera fa-3x"></i>
-                                                <span>Featured Image</span>
-                                            </div>
-                                            <img id="feature_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
-                                            <input type="file" id="feature_image" name="feature_image" class="d-none" accept="image/*">
-                                        </label>
+                            <div class="form-section">
+                                <h5 class="section-title">Upload Images</h5>
+                                <p class="section-subtitle">First image will be featured (max 3MB each)</p>
+                                
+                                <div class="row">
+                                    <!-- Featured Image (Vue component) -->
+                                    <div class="col-md-4 mb-3">
+                                        <div class="image-upload-card">
+                                            <image-preview input-name="feature_image"></image-preview>
+                                            <label for="feature_image">
+                                                <div class="upload-placeholder">
+                                                    <i class="fas fa-camera fa-3x"></i>
+                                                    <span>Featured Image</span>
+                                                </div>
+                                                <img id="feature_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
+                                                <input type="file" id="feature_image" name="feature_image" class="d-none" accept="image/*">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="image-upload-card">
-                                        <label for="first_image">
-                                            <div class="upload-placeholder">
-                                                <i class="fas fa-camera fa-3x"></i>
-                                                <span>Additional Image</span>
-                                            </div>
-                                            <img id="first_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
-                                            <input type="file" id="first_image" name="first_image" class="d-none" accept="image/*">
-                                        </label>
+                                    
+                                    <!-- Additional Images (regular HTML) -->
+                                    <div class="col-md-4 mb-3">
+                                        <div class="image-upload-card">
+                                            <label for="first_image">
+                                                <div class="upload-placeholder">
+                                                    <i class="fas fa-camera fa-3x"></i>
+                                                    <span>Additional Image</span>
+                                                </div>
+                                                <img id="first_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
+                                                <input type="file" id="first_image" name="first_image" class="d-none" accept="image/*">
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="image-upload-card">
-                                        <label for="second_image">
-                                            <div class="upload-placeholder">
-                                                <i class="fas fa-camera fa-3x"></i>
-                                                <span>Additional Image</span>
-                                            </div>
-                                            <img id="second_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
-                                            <input type="file" id="second_image" name="second_image" class="d-none" accept="image/*">
-                                        </label>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="image-upload-card">
+                                            <label for="second_image">
+                                                <div class="upload-placeholder">
+                                                    <i class="fas fa-camera fa-3x"></i>
+                                                    <span>Additional Image</span>
+                                                </div>
+                                                <img id="second_image_preview" class="preview-image" src="#" alt="Preview" style="display: none;">
+                                                <input type="file" id="second_image" name="second_image" class="d-none" accept="image/*">
+                                                <image-prievew/>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         
                         <!-- Category Section -->
                         <div class="form-section">
@@ -521,76 +525,6 @@
 </style>
 
 <!-- Include necessary JS libraries -->
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // Initialize all select2 dropdowns
-        $('.select2').select2({ width: '100%' });
 
-        // Category dependency
-        $('#category_id').on('change', function () {
-            let hasValue = $(this).val() !== '';
-            $('#subcategory_id').prop('disabled', !hasValue).val(null).trigger('change');
-            $('#childcategory_id').prop('disabled', true).val(null).trigger('change');
-        });
-
-        $('#subcategory_id').on('change', function () {
-            let hasValue = $(this).val() !== '';
-            $('#childcategory_id').prop('disabled', !hasValue).val(null).trigger('change');
-        });
-
-        // Country dependency
-        $('#country_id').on('change', function () {
-            let hasValue = $(this).val() !== '';
-            $('#state_id').prop('disabled', !hasValue).val(null).trigger('change');
-            $('#city_id').prop('disabled', true).val(null).trigger('change');
-        });
-
-        $('#state_id').on('change', function () {
-            let hasValue = $(this).val() !== '';
-            $('#city_id').prop('disabled', !hasValue).val(null).trigger('change');
-        });
-
-        // Image preview functionality for all image inputs
-        function handleImagePreview(inputId, previewId) {
-            $(inputId).on('change', function() {
-                const file = this.files[0];
-                const preview = $(previewId);
-                const placeholder = $(this).siblings('.upload-placeholder');
-                
-                if (file && file.type.match('image.*')) {
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(e) {
-                        preview.attr('src', e.target.result);
-                        preview.show();
-                        placeholder.hide();
-                    }
-                    
-                    reader.readAsDataURL(file);
-                } else {
-                    preview.attr('src', '#');
-                    preview.hide();
-                    placeholder.show();
-                }
-            });
-        }
-
-        // Initialize preview for each image upload
-        handleImagePreview('#feature_image', '#feature_image_preview');
-        handleImagePreview('#first_image', '#first_image_preview');
-        handleImagePreview('#second_image', '#second_image_preview');
-
-        // Reset functionality
-        $('button[type="reset"]').on('click', function() {
-            $('.preview-image').each(function() {
-                $(this).attr('src', '#').hide();
-                $(this).siblings('.upload-placeholder').show();
-            });
-        });
-    });
-</script>
-@endsection
 
 @endsection
