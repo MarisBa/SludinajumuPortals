@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Advertisement;
 use Illuminate\Support\Str;
+use App\Http\Requests\AdsFormRequest; // Assuming you have a form request for validation
 class AdvertisementController extends Controller
 {
     /**
@@ -29,7 +30,7 @@ class AdvertisementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AdsFormRequest $request)
     {
         $data = $request->all();
         $featureImage = $request->file('feature_image')->store('public/category');
