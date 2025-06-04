@@ -85,25 +85,50 @@
                 </div>
             </div>
             <style>
-                /* Example styles - adjust colors as needed */
-                td.subcategory-electronics {
-                    background-color: aliceblue;
+                td.subcategory-laptops {
+                background-color: #E3F2FD; /* Soft Light Blue */
                 }
-                td.subcategory-clothing {
-                    background-color: bisque;
+
+                td.subcategory-mobiles {
+                    background-color: #FFF3E0; /* Light Orange */
                 }
-                td.subcategory-home-appliances {
-                    background-color: thistle;
+
+                td.subcategory-household-items {
+                    background-color: #F3E5F5; /* Lavender */
                 }
-                td.subcategory-books {
-                    background-color: tomato;
+
+                td.subcategory-man {
+                    background-color: #FFCDD2; /* Soft Red */
                 }
-                td.subcategory-sports {
-                    background-color: gray;
+
+                td.subcategory-woman {
+                    background-color: #E1BEE7; /* Soft Purple */
                 }
-                td.subcategory-none {
-                    background-color: #f8f9fa;
+
+                td.subcategory-kids {
+                    background-color: #F8BBD0; /* Light Pink */
                 }
+
+                td.subcategory-cycle {
+                    background-color: #C8E6C9; /* Soft Green */
+                }
+
+                td.subcategory-bike {
+                    background-color: #B2EBF2; /* Pale Cyan */
+                }
+
+                td.subcategory-buy-pets {
+                    background-color: #FFF9C4; /* Light Yellow */
+                }
+
+                td.subcategory-houses-appartments {
+                    background-color: #F5F5F5; /* Soft Neutral Gray */
+                }
+
+                td.subcategory-shops-office {
+                    background-color: #FFE0B2; /* Light Amber */
+                }
+
                 /* Add more styles for your subcategories as needed */
             </style>
 @endsection
