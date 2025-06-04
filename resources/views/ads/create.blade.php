@@ -40,7 +40,7 @@
 
         <!-- Main Content Column -->
         <div class="col-lg-9">
-            <form action="#" method="post" enctype="multipart/form-data">
+            <form action="{{route('ads.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card">
                     <div class="card-header bg-primary text-white">
@@ -101,23 +101,31 @@
                                         <label for="category_id">Category</label>
                                         <select class="form-control select2" name="category_id" id="category_id">
                                             <option value="">Select Category</option>
-                                            <!-- Options would be populated here -->
+                                            @foreach (App\Models\Category::all() as $category)
+                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                         @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="subcategory_id">Subcategory</label>
-                                        <select class="form-control select2" name="subcategory_id" id="subcategory_id" disabled>
+                                        <select class="form-control select2" name="subcategory_id" id="subcategory_id">
                                             <option value="">Select Subcategory</option>
+                                            @foreach (App\Models\Subcategory::all() as $subcategory)
+                                         <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                         @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="childcategory_id">Child Category</label>
-                                        <select class="form-control select2" name="childcategory_id" id="childcategory_id" disabled>
-                                            <option value="">Select Child Category</option>
+                                        <select class="form-control select2" name="childcategory_id" id="childcategory_id" >
+                                            <option value="">Select childcategory</option>
+                                            @foreach (App\Models\Childcategory::all() as $childcategory)
+                                         <option value="{{ $childcategory->id }}">{{ $childcategory->name }}</option>
+                                         @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -479,52 +487,58 @@
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // Initialize select2
-        $('.select2').select2({
-            width: '100%'
+    $(document).ready(function () {
+        // Initialize all select2 dropdowns
+        $('.select2').select2({ width: '100%' });
+
+        // Category dependency
+        $('#category_id').on('change', function () {
+            let hasValue = $(this).val() !== '';
+            $('#subcategory_id').prop('disabled', !hasValue).val(null).trigger('change');
+            $('#childcategory_id').prop('disabled', true).val(null).trigger('change');
         });
-        
-        // Enable dependent dropdowns
-        $('#category_id').change(function() {
-            $('#subcategory_id').prop('disabled', !$(this).val());
-            $('#subcategory_id').val('').trigger('change');
+
+        $('#subcategory_id').on('change', function () {
+            let hasValue = $(this).val() !== '';
+            $('#childcategory_id').prop('disabled', !hasValue).val(null).trigger('change');
         });
-        
-        $('#subcategory_id').change(function() {
-            $('#childcategory_id').prop('disabled', !$(this).val());
-            $('#childcategory_id').val('').trigger('change');
+
+        // Country dependency
+        $('#country_id').on('change', function () {
+            let hasValue = $(this).val() !== '';
+            $('#state_id').prop('disabled', !hasValue).val(null).trigger('change');
+            $('#city_id').prop('disabled', true).val(null).trigger('change');
         });
-        
-        $('#country_id').change(function() {
-            $('#state_id').prop('disabled', !$(this).val());
-            $('#state_id').val('').trigger('change');
+
+        $('#state_id').on('change', function () {
+            let hasValue = $(this).val() !== '';
+            $('#city_id').prop('disabled', !hasValue).val(null).trigger('change');
         });
-        
-        $('#state_id').change(function() {
-            $('#city_id').prop('disabled', !$(this).val());
-            $('#city_id').val('').trigger('change');
-        });
-        
-        // Preview image when selected
-        $('input[type="file"]').change(function(e) {
+
+        // Image preview functionality
+        $('input[type="file"]').on('change', function (e) {
             const file = e.target.files[0];
-            if (file) {
+            const $card = $(this).closest('.image-upload-card');
+
+            if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
-                const card = $(this).closest('.image-upload-card');
-                
-                reader.onload = function(event) {
-                    card.css('background-image', `url(${event.target.result})`);
-                    card.find('.upload-placeholder').hide();
-                    card.css('background-size', 'cover');
-                    card.css('background-position', 'center');
-                }
-                
+                reader.onload = function (event) {
+                    const img = $('<img>', {
+                        src: event.target.result,
+                        class: 'w-100 h-100 rounded',
+                        style: 'object-fit: cover;'
+                    });
+                    $card.html(img);
+                };
                 reader.readAsDataURL(file);
+            } else {
+                $card.find('.upload-placeholder').show();
             }
         });
     });
 </script>
 @endsection
+
+
 
 @endsection

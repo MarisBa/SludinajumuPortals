@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-class AdVertisementController extends Controller
+class AdvertisementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,16 +19,17 @@ class AdVertisementController extends Controller
      */
     public function create()
     {
-        
-        return view('ads.create');
+        $categories = \App\Models\Category::all();
+        return view('ads.create', compact('categories'));
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

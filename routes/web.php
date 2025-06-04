@@ -6,7 +6,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\ChildcategoryController;
 use App\Http\Controllers\MenuController;
-use App\Http\Controllers\AdVertisementController;
+use App\Http\Controllers\AdvertisementController;
+
+
 
 
 
@@ -60,3 +62,5 @@ View::composer(['*'], function($view){
 });
 
 Route::resource('ads', AdvertisementController::class);
+
+Route::post('/ads/store', [AdvertisementController::class, 'store'])->name('ads.store');
