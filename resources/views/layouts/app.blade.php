@@ -85,15 +85,19 @@
                             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                                 {{$menuItem->name}}
                             </a>
-                            <ul class="dropdown-menu w-100"> <!-- Added w-100 -->
+                            <ul class="dropdown-menu w-100">
+                                @foreach($menuItem->subcategories as $subMenuItem)
                                 <li>
-                                    <a class="dropdown-item dropdown-toggle" href="#">Subcategory</a>
+                                    <a class="dropdown-item dropdown-toggle" href="#">{{$subMenuItem->name}}</a>
                                     <ul class="dropdown-menu">
+                                        @foreach($subMenuItem->childcategories as $childMenu)
                                         <li>
-                                            <a class="dropdown-item" href="#">Childcategory</a>
+                                            <a class="dropdown-item" href="#">{{$childMenu->name}}</a>
                                         </li>
+                                        @endforeach
                                     </ul>
                                 </li>
+                                @endforeach
                             </ul>
                         </li>
                         @endforeach
