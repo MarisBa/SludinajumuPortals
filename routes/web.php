@@ -63,4 +63,4 @@ View::composer(['*'], function($view){
 
 Route::resource('ads', AdvertisementController::class);
 
-Route::post('/ads/store', [AdvertisementController::class, 'store'])->name('ads.store');
+Route::post('/ads/store', [AdvertisementController::class, 'store'])->middleware('auth')->name('ads.store');

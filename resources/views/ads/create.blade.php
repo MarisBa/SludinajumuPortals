@@ -208,22 +208,31 @@
                                         <label for="country_id">Country</label>
                                         <select class="form-control select2" name="country_id" id="country_id">
                                             <option value="">Select Country</option>
+                                            @foreach (App\Models\Country::all() as $country)
+                                         <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                         @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="state_id">State/Region</label>
-                                        <select class="form-control select2" name="state_id" id="state_id" disabled>
+                                        <select class="form-control select2" name="state_id" id="state_id" >
                                             <option value="">Select State</option>
+                                            @foreach (App\Models\State::all() as $State)
+                                         <option value="{{ $State->id }}">{{ $State->name }}</option>
+                                         @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="city_id">City</label>
-                                        <select class="form-control select2" name="city_id" id="city_id" disabled>
+                                        <select class="form-control select2" name="city_id" id="city_id" >
                                             <option value="">Select City</option>
+                                            @foreach (App\Models\City::all() as $city)
+                                         <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                         @endforeach
                                         </select>
                                     </div>
                                 </div>
