@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\View;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\ChildcategoryController;
+use App\Http\Controllers\MenuController;
+
 
 
 
@@ -44,3 +46,4 @@ Route::group(['prefix' => 'auth'], function () {
 
 });
 
+Route::get('/', [MenuController::class, 'menu']);
