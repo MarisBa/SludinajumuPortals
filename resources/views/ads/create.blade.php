@@ -1,45 +1,11 @@
 @extends('layouts.app')
 @section('content')
-<div></div>
-        <example-component/>
-    </div>
+
 <div class="container-fluid py-4">
     
     <div class="row">
         <!-- Sidebar Column -->
-        <div class="col-lg-3 mb-4">
-            <div class="card profile-card">
-                <div class="card-body text-center">
-                    <div class="avatar-container mb-3">
-                        <img class="avatar" src="/img/man.jpg" alt="User Avatar">
-                    </div>
-                    <h5 class="profile-name">John Doe</h5>
-                    <p class="text-muted small">Premium Member</p>
-                </div>
-                
-                <div class="sidebar-menu">
-                    <a href="#" class="sidebar-item active">
-                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                    </a>
-                    <a href="#" class="sidebar-item">
-                        <i class="fas fa-user"></i> Profile
-                    </a>
-                    <a href="#" class="sidebar-item">
-                        <i class="fas fa-plus-circle"></i> Create Ad
-                    </a>
-                    <a href="#" class="sidebar-item">
-                        <i class="fas fa-check-circle"></i> Published Ads
-                    </a>
-                    <a href="#" class="sidebar-item">
-                        <i class="fas fa-clock"></i> Pending Ads
-                    </a>
-                    <a href="#" class="sidebar-item">
-                        <i class="fas fa-envelope"></i> Messages
-                        <span class="badge badge-pill badge-primary float-right">3</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+        @include('ads.sidebar')
 
         <!-- Main Content Column -->
         <div class="col-lg-9">

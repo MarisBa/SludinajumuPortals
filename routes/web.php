@@ -72,3 +72,5 @@ Route::get('/get-childcategories/{subcategory_id}', [App\Http\Controllers\Catego
 
 Route::get('/get-states/{country_id}', [App\Http\Controllers\LocationController::class, 'getStates']);
 Route::get('/get-cities/{state_id}', [App\Http\Controllers\YourController::class, 'getCities']);
+
+Route::get('/ads', [AdvertisementController::class, 'index'])->middleware('auth');
