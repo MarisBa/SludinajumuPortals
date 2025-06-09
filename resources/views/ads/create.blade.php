@@ -109,33 +109,29 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="category_id">Category</label>
-                                        <select class="form-control select2" name="category_id" id="category_id">
+                                        <select class="form-control select2" name="category_id" id="category_id" required>
                                             <option value="">Select Category</option>
                                             @foreach (App\Models\Category::all() as $category)
-                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                         @endforeach
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="subcategory_id">Subcategory</label>
-                                        <select class="form-control select2" name="subcategory_id" id="subcategory_id">
+                                        <select class="form-control select2" name="subcategory_id" id="subcategory_id" required>
                                             <option value="">Select Subcategory</option>
-                                            @foreach (App\Models\Subcategory::all() as $subcategory)
-                                         <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
-                                         @endforeach
+                                            <!-- Subcategories will be loaded dynamically -->
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="childcategory_id">Child Category</label>
-                                        <select class="form-control select2" name="childcategory_id" id="childcategory_id" >
-                                            <option value="">Select childcategory</option>
-                                            @foreach (App\Models\Childcategory::all() as $childcategory)
-                                         <option value="{{ $childcategory->id }}">{{ $childcategory->name }}</option>
-                                         @endforeach
+                                        <select class="form-control select2" name="childcategory_id" id="childcategory_id">
+                                            <option value="">Select Child Category</option>
+                                            <!-- Child categories will be loaded dynamically -->
                                         </select>
                                     </div>
                                 </div>
@@ -514,7 +510,70 @@
     }
 </style>
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+$(document).ready(function() {
+    // Category change event
+    $('#category_id').change(function() {
+        var category_id = $(this).val();
+        if(category_id) {
+            $.ajax({
+                url: '/get-subcategories/' + category_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#subcategory_id').empty();
+                    $('#subcategory_id').append('<option value="">Select Subcategory</option>');
+                    $.each(data, function(key, value) {
+                        $('#subcategory_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                    });
+                    
+                    // Clear child categories when category changes
+                    $('#childcategory_id').empty();
+                    $('#childcategory_id').append('<option value="">Select Child Category</option>');
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            $('#subcategory_id').empty();
+            $('#subcategory_id').append('<option value="">Select Subcategory</option>');
+            $('#childcategory_id').empty();
+            $('#childcategory_id').append('<option value="">Select Child Category</option>');
+        }
+    });
+
+    // Subcategory change event
+    $('#subcategory_id').change(function() {
+        var subcategory_id = $(this).val();
+        if(subcategory_id) {
+            $.ajax({
+                url: '/get-childcategories/' + subcategory_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#childcategory_id').empty();
+                    $('#childcategory_id').append('<option value="">Select Child Category</option>');
+                    $.each(data, function(key, value) {
+                        $('#childcategory_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            $('#childcategory_id').empty();
+            $('#childcategory_id').append('<option value="">Select Child Category</option>');
+        }
+    });
+});
+
+
+
+
 function previewImage(input, previewId) {
     const preview = document.getElementById(previewId);
     const file = input.files[0];

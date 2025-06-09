@@ -64,3 +64,7 @@ View::composer(['*'], function($view){
 Route::resource('ads', AdvertisementController::class);
 
 Route::post('/ads/store', [AdvertisementController::class, 'store'])->middleware('auth')->name('ads.store');
+
+
+Route::get('/get-subcategories/{category_id}', [App\Http\Controllers\CategoryController::class, 'getSubcategories']);
+Route::get('/get-childcategories/{subcategory_id}', [App\Http\Controllers\CategoryController::class, 'getChildcategories']);

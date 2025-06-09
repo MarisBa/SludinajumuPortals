@@ -84,6 +84,19 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+
+
+     public function getSubcategories($category_id)
+    {
+        $subcategories = \App\Models\Subcategory::where('category_id', $category_id)->get();
+        return response()->json($subcategories);
+    }
+
+    public function getChildcategories($subcategory_id)
+    {
+        $childcategories = \App\Models\Childcategory::where('subcategory_id', $subcategory_id)->get();
+        return response()->json($childcategories);
+    }
     public function destroy(string $id)
 {
     $category = Category::findOrFail($id);
