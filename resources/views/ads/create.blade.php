@@ -69,33 +69,33 @@
                             
                             <div class="row">
                                 <div class="col-md-4 mb-3">
-                                    <div class="image-upload-card" onclick="document.getElementById('image').click()">
+                                    <div class="image-upload-card" onclick="document.getElementById('feature_image').click()">
                                         <div class="upload-placeholder">
                                             <i class="fas fa-camera fa-2x"></i>
                                             <span>Main Image</span>
                                         </div>
-                                        <img id="image-preview" class="preview-image" style="display:none;">
-                                        <input type="file" name="image" id="image" style="display:none;" onchange="previewImage(this, 'image-preview')">
+                                        <img id="feature_image_preview" class="preview-image" style="display:none;">
+                                        <input type="file" name="feature_image" id="feature_image" style="display:none;" onchange="previewImage(this, 'feature_image_preview')">
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <div class="image-upload-card" onclick="document.getElementById('image1').click()">
+                                    <div class="image-upload-card" onclick="document.getElementById('first_image').click()">
                                         <div class="upload-placeholder">
                                             <i class="fas fa-camera fa-2x"></i>
                                             <span>Second Image</span>
                                         </div>
-                                        <img id="image1-preview" class="preview-image" style="display:none;">
-                                        <input type="file" name="image1" id="image1" style="display:none;" onchange="previewImage(this, 'image1-preview')">
+                                        <img id="first_image_preview" class="preview-image" style="display:none;">
+                                        <input type="file" name="first_image" id="first_image" style="display:none;" onchange="previewImage(this, 'first_image_preview')">
                                     </div>
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                    <div class="image-upload-card" onclick="document.getElementById('image2').click()">
+                                    <div class="image-upload-card" onclick="document.getElementById('second_image').click()">
                                         <div class="upload-placeholder">
                                             <i class="fas fa-camera fa-2x"></i>
                                             <span>Third Image</span>
                                         </div>
-                                        <img id="image2-preview" class="preview-image" style="display:none;">
-                                        <input type="file" name="image2" id="image2" style="display:none;" onchange="previewImage(this, 'image2-preview')">
+                                        <img id="second_image_preview" class="preview-image" style="display:none;">
+                                        <input type="file" name="second_image" id="second_image" style="display:none;" onchange="previewImage(this, 'second_image_preview')">
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +232,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="city_id">City</label>
-                                    <select class="form-control select2" name="city_id" id="city_id" required>
+                                    <select class="form-control select2" name="city_id" id="city_id">
                                         <option value="">Select City</option>
                                         <!-- Cities will be loaded dynamically -->
                                     </select>
@@ -590,7 +590,7 @@ function previewImage(input, previewId) {
 // Country, State, City dynamic dropdowns
 $(document).ready(function() {
     // Country change event
-        $('#country_id').change(function() {
+    $('#country_id').change(function() {
         var country_id = $(this).val();
         if(country_id) {
             $.ajax({
@@ -615,7 +615,6 @@ $(document).ready(function() {
                 error: function(xhr, status, error) {
                     console.error("Error loading states: ", error);
                     $('#state_id').empty().append('<option value="">Error loading states</option>');
-                    // You could also show a user-friendly message here
                     alert('Failed to load states. Please try again.');
                 }
             });
@@ -660,6 +659,62 @@ $(document).ready(function() {
             }, 500);
         }, 500);
     @endif
+
+    // Category change event
+    $('#category_id').change(function() {
+        var category_id = $(this).val();
+        if(category_id) {
+            $.ajax({
+                url: '/get-subcategories/' + category_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#subcategory_id').empty();
+                    $('#subcategory_id').append('<option value="">Select Subcategory</option>');
+                    $.each(data, function(key, value) {
+                        $('#subcategory_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                    });
+                    
+                    // Clear child categories when category changes
+                    $('#childcategory_id').empty();
+                    $('#childcategory_id').append('<option value="">Select Child Category</option>');
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            $('#subcategory_id').empty();
+            $('#subcategory_id').append('<option value="">Select Subcategory</option>');
+            $('#childcategory_id').empty();
+            $('#childcategory_id').append('<option value="">Select Child Category</option>');
+        }
+    });
+
+    // Subcategory change event
+    $('#subcategory_id').change(function() {
+        var subcategory_id = $(this).val();
+        if(subcategory_id) {
+            $.ajax({
+                url: '/get-childcategories/' + subcategory_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#childcategory_id').empty();
+                    $('#childcategory_id').append('<option value="">Select Child Category</option>');
+                    $.each(data, function(key, value) {
+                        $('#childcategory_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            $('#childcategory_id').empty();
+            $('#childcategory_id').append('<option value="">Select Child Category</option>');
+        }
+    });
 });
 </script>
 
