@@ -54,7 +54,9 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>
-                                    <img src="{{ Storage::url($ad->feature_image) }}" alt="Ad Image">
+                               <img src="{{ route('ad.image', basename($ad->feature_image)) }}" width="150" alt="Ad Image">
+
+
 
                                 </td>
                                 <td>{{ $ad->name }}</td>

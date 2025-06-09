@@ -74,3 +74,4 @@ Route::get('/get-states/{country_id}', [App\Http\Controllers\LocationController:
 Route::get('/get-cities/{state_id}', [App\Http\Controllers\YourController::class, 'getCities']);
 
 Route::get('/ads', [AdvertisementController::class, 'index'])->middleware('auth');
+Route::get('/ad-image/{filename}', [App\Http\Controllers\AdImageController::class, 'show'])->name('ad.image');
