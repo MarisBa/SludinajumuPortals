@@ -68,3 +68,7 @@ Route::post('/ads/store', [AdvertisementController::class, 'store'])->middleware
 
 Route::get('/get-subcategories/{category_id}', [App\Http\Controllers\CategoryController::class, 'getSubcategories']);
 Route::get('/get-childcategories/{subcategory_id}', [App\Http\Controllers\CategoryController::class, 'getChildcategories']);
+
+
+Route::get('/get-states/{country_id}', [App\Http\Controllers\LocationController::class, 'getStates']);
+Route::get('/get-cities/{state_id}', [App\Http\Controllers\YourController::class, 'getCities']);

@@ -209,40 +209,36 @@
                             </div>
                             
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="country_id">Country</label>
-                                        <select class="form-control select2" name="country_id" id="country_id">
-                                            <option value="">Select Country</option>
-                                            @foreach (App\Models\Country::all() as $country)
-                                         <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                         @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="state_id">State/Region</label>
-                                        <select class="form-control select2" name="state_id" id="state_id" >
-                                            <option value="">Select State</option>
-                                            @foreach (App\Models\State::all() as $State)
-                                         <option value="{{ $State->id }}">{{ $State->name }}</option>
-                                         @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="city_id">City</label>
-                                        <select class="form-control select2" name="city_id" id="city_id" >
-                                            <option value="">Select City</option>
-                                            @foreach (App\Models\City::all() as $city)
-                                         <option value="{{ $city->id }}">{{ $city->name }}</option>
-                                         @endforeach
-                                        </select>
-                                    </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="country_id">Country</label>
+                                    <select class="form-control select2" name="country_id" id="country_id" required>
+                                        <option value="">Select Country</option>
+                                        @foreach (App\Models\Country::all() as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="state_id">State/Region</label>
+                                    <select class="form-control select2" name="state_id" id="state_id" required>
+                                        <option value="">Select State/Region</option>
+                                        <!-- States will be loaded dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="city_id">City</label>
+                                    <select class="form-control select2" name="city_id" id="city_id" required>
+                                        <option value="">Select City</option>
+                                        <!-- Cities will be loaded dynamically -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                         
                         <!-- Contact Information -->
@@ -590,6 +586,81 @@ function previewImage(input, previewId) {
         reader.readAsDataURL(file);
     }
 }
+
+// Country, State, City dynamic dropdowns
+$(document).ready(function() {
+    // Country change event
+        $('#country_id').change(function() {
+        var country_id = $(this).val();
+        if(country_id) {
+            $.ajax({
+                url: '/get-states/' + country_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#state_id').empty();
+                    $('#state_id').append('<option value="">Select State/Region</option>');
+                    if(data.length > 0) {
+                        $.each(data, function(key, value) {
+                            $('#state_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                        });
+                    } else {
+                        $('#state_id').append('<option value="">No states found</option>');
+                    }
+                    
+                    // Clear cities when country changes
+                    $('#city_id').empty();
+                    $('#city_id').append('<option value="">Select City</option>');
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error loading states: ", error);
+                    $('#state_id').empty().append('<option value="">Error loading states</option>');
+                    // You could also show a user-friendly message here
+                    alert('Failed to load states. Please try again.');
+                }
+            });
+        } else {
+            $('#state_id').empty().append('<option value="">Select State/Region</option>');
+            $('#city_id').empty().append('<option value="">Select City</option>');
+        }
+    });
+
+    // State change event
+    $('#state_id').change(function() {
+        var state_id = $(this).val();
+        if(state_id) {
+            $.ajax({
+                url: '/get-cities/' + state_id,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#city_id').empty();
+                    $('#city_id').append('<option value="">Select City</option>');
+                    $.each(data, function(key, value) {
+                        $('#city_id').append('<option value="'+ value.id +'">'+ value.name +'</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error loading cities: ", error);
+                    $('#city_id').empty().append('<option value="">Error loading cities</option>');
+                }
+            });
+        } else {
+            $('#city_id').empty().append('<option value="">Select City</option>');
+        }
+    });
+
+    // Initialize with old values if form validation fails
+    @if(old('country_id'))
+        $('#country_id').val({{ old('country_id') }}).trigger('change');
+        setTimeout(function() {
+            $('#state_id').val({{ old('state_id') ?? 'null' }}).trigger('change');
+            setTimeout(function() {
+                $('#city_id').val({{ old('city_id') ?? 'null' }});
+            }, 500);
+        }, 500);
+    @endif
+});
 </script>
 
 <!-- Include necessary JS libraries -->
