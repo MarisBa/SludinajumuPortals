@@ -7,71 +7,65 @@ use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\ChildcategoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\AdvertisementController;
-
-
-
-
-
-
-
-
-
-
+use App\Http\Controllers\AdImageController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\YourController; // Replace with actual controller name for cities
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| These routes are loaded by the RouteServiceProvider and all of them
+| will be assigned to the "web" middleware group.
 |
 */
 
-
+Route::get('/', [MenuController::class, 'menu'])->name('home');
 
 Route::get('/home', function () {
     return view('index');
 });
 
-// Authentication Routes
-
-
 Route::get('/auth', function () {
-    return view('backend.admin.index'); // Make sure this matches the path
+    return view('backend.admin.index');
 });
 
-Route::get('/dashboard', 'DashboardController@index');
+// Dashboard route
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::group(['prefix' => 'auth'], function () {
+// Authenticated admin routes (for categories)
+Route::prefix('auth')->middleware('auth')->group(function () {
     Route::resource('/category', CategoryController::class);
     Route::resource('/subcategory', SubcategoryController::class);
     Route::resource('/childcategory', ChildcategoryController::class);
-
 });
 
-Route::get('/', [MenuController::class, 'menu']);
+// Ads routes
+Route::middleware('auth')->group(function () {
+    Route::get('/ads', [AdvertisementController::class, 'index'])->name('ads.index');
+    Route::get('/ads/create', [AdvertisementController::class, 'create'])->name('ads.create');
+    Route::post('/ads/store', [AdvertisementController::class, 'store'])->name('ads.store');
+    Route::get('/ads/{id}/edit', [AdvertisementController::class, 'edit'])->name('ads.edit');
+    Route::put('/ads/{id}/update', [AdvertisementController::class, 'update'])->name('ads.update');
+    Route::delete('/ads/{id}', [AdvertisementController::class, 'destroy'])->name('ads.destroy');
+});
 
+// Serve private ad images via controller
+Route::get('/ad-image/{filename}', [AdImageController::class, 'show'])->name('ad.image');
 
-Route::get('/ads/create', [AdVertisementController::class, 'create']);
+// Dynamic dependent dropdowns (AJAX)
+Route::get('/get-subcategories/{category_id}', [CategoryController::class, 'getSubcategories']);
+Route::get('/get-childcategories/{subcategory_id}', [CategoryController::class, 'getChildcategories']);
+Route::get('/get-states/{country_id}', [LocationController::class, 'getStates']);
+Route::get('/get-cities/{state_id}', [YourController::class, 'getCities']); // Replace 'YourController'
 
-View::composer(['*'], function($view){
-    $menus = App\Models\Category::with('subcategories')->get();
+// Global view composer for menus
+View::composer(['*'], function ($view) {
+    $menus = \App\Models\Category::with('subcategories')->get();
     $view->with('menus', $menus);
 });
 
+
 Route::resource('ads', AdvertisementController::class);
-
-Route::post('/ads/store', [AdvertisementController::class, 'store'])->middleware('auth')->name('ads.store');
-
-
-Route::get('/get-subcategories/{category_id}', [App\Http\Controllers\CategoryController::class, 'getSubcategories']);
-Route::get('/get-childcategories/{subcategory_id}', [App\Http\Controllers\CategoryController::class, 'getChildcategories']);
-
-
-Route::get('/get-states/{country_id}', [App\Http\Controllers\LocationController::class, 'getStates']);
-Route::get('/get-cities/{state_id}', [App\Http\Controllers\YourController::class, 'getCities']);
-
-Route::get('/ads', [AdvertisementController::class, 'index'])->middleware('auth');
-Route::get('/ad-image/{filename}', [App\Http\Controllers\AdImageController::class, 'show'])->name('ad.image');

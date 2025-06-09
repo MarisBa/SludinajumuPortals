@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Advertisement;
 use Illuminate\Support\Str;
 use App\Http\Requests\AdsFormRequest; // Assuming you have a form request for validation
+use App\Http\Requests\AdsFormUpdateRequest; // ✅ This is the key line
+
 class AdvertisementController extends Controller
 {
     /**
@@ -44,38 +46,66 @@ class AdvertisementController extends Controller
         $data['user_id'] = auth()->user()->id;
 
         Advertisement::create($data);
-        return "created";
+        return redirect()->route('ads.index')->with('message', 'Advertisement created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+        public function show($id)
+        {
+            $ad = Advertisement::findOrFail($id);
+            return view('ads.show', compact('ad'));
+        }
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $ad =  Advertisement::find($id);
+
+        return view('ads.edit', compact('ad'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AdsFormUpdateRequest $request, $id)
     {
-        //
+        $ad = Advertisement::find($id);
+        $featureImage = $ad->feature_image;
+        $firstImage = $ad->first_image;
+        $secondImage = $ad->second_image;
+        $data = $request->all();
+        if ($request->hasFile('feature_image')) {
+            $featureImage = $request->file('feature_image')->store('public/category');
+        }
+        if ($request->hasFile('first_image')) {
+            $firstImage = $request->file('first_image')->store('public/category');
+        }
+        if ($request->hasFile('second_image')) {
+            $secondImage = $request->file('second_image')->store('public/category');
+        }
+        $data['feature_image'] = $featureImage;
+        $data['first_image'] = $firstImage;
+        $data['second_image'] = $secondImage;
+
+        $ad->update($data);
+        return redirect()->route('ads.index')->with('message','Your ad was updated!');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+public function destroy(string $id)
     {
-        //
+        $ad = Advertisement::findOrFail($id);
+        $ad->delete();
+
+        return redirect()->route('ads.index')->with('message', 'Advertisement deleted.');
     }
+
 }
