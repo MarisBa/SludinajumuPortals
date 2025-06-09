@@ -10,17 +10,8 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\AdImageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
-use App\Http\Controllers\YourController; // Replace with actual controller name for cities
+use App\Http\Controllers\ProfileController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| These routes are loaded by the RouteServiceProvider and all of them
-| will be assigned to the "web" middleware group.
-|
-*/
 
 Route::get('/', [MenuController::class, 'menu'])->name('home');
 
@@ -59,7 +50,6 @@ Route::get('/ad-image/{filename}', [AdImageController::class, 'show'])->name('ad
 Route::get('/get-subcategories/{category_id}', [CategoryController::class, 'getSubcategories']);
 Route::get('/get-childcategories/{subcategory_id}', [CategoryController::class, 'getChildcategories']);
 Route::get('/get-states/{country_id}', [LocationController::class, 'getStates']);
-Route::get('/get-cities/{state_id}', [YourController::class, 'getCities']); // Replace 'YourController'
 
 // Global view composer for menus
 View::composer(['*'], function ($view) {
@@ -69,3 +59,6 @@ View::composer(['*'], function ($view) {
 
 
 Route::resource('ads', AdvertisementController::class);
+
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::post('/profile', 'ProfileController@updateProfile')->name('update.profile')->middleware('auth');

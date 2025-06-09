@@ -6,31 +6,43 @@
                      class="img-fluid rounded-circle mx-auto d-block" 
                      style="width: 120px; height: 120px; object-fit: cover;">
             </div>
-            <h5 class="profile-name">John Doe</h5>
+            <h5 class="profile-name"><b>{{auth()->user()->name}}</b></h5>
             <p class="text-muted small">Premium Member</p>
         </div>
 
         <div class="sidebar-menu">
-            <a href="#" class="sidebar-item active">
-                <i class="fas fa-tachometer-alt"></i> Dashboard
-            </a>
-            <a href="#" class="sidebar-item">
-                <i class="fas fa-user"></i> Profile
-            </a>
-            <a href="#" class="sidebar-item">
-                <i class="fas fa-plus-circle"></i> Create Ad
-            </a>
-            <a href="#" class="sidebar-item">
-                <i class="fas fa-check-circle"></i> Published Ads
-            </a>
-            <a href="#" class="sidebar-item">
-                <i class="fas fa-clock"></i> Pending Ads
-            </a>
-            <a href="#" class="sidebar-item">
-                <i class="fas fa-envelope"></i> Messages
-                <span class="badge badge-pill badge-primary ml-auto">3</span>
-            </a>
-        </div>
+    <a href="{{ route('dashboard') }}" 
+       class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+    </a>
+
+    <a href="{{ route('profile') }}" 
+       class="sidebar-item {{ request()->routeIs('profile') ? 'active' : '' }}">
+        <i class="fas fa-user"></i> Profile
+    </a>
+
+    <a href="{{ route('ads.create') }}" 
+       class="sidebar-item {{ request()->routeIs('ads.create') ? 'active' : '' }}">
+        <i class="fas fa-plus-circle"></i> Create Ad
+    </a>
+
+    <a href="{{ route('ads.index') }}" 
+       class="sidebar-item {{ request()->routeIs('ads.index') ? 'active' : '' }}">
+        <i class="fas fa-check-circle"></i> Published Ads
+    </a>
+
+    <a href="" 
+       class="sidebar-item {{ request()->routeIs('ads.pending') ? 'active' : '' }}">
+        <i class="fas fa-clock"></i> Pending Ads
+    </a>
+
+    <a href="" 
+       class="sidebar-item {{ request()->routeIs('messages.index') ? 'active' : '' }}">
+        <i class="fas fa-envelope"></i> Messages
+        <span class="badge badge-pill badge-primary ml-auto">3</span>
+    </a>
+</div>
+
     </div>
 </div>
 
