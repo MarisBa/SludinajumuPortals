@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Str; @endphp
 @extends('layouts.app')
 @section('content')
 
@@ -7,27 +8,28 @@
                 <div class="card">
                     <div class="card-header text-white text-center" style="background-color: red;">Filter ::</div>
                     <div class="card-body">
-                        //loop
-                        <p>
-                            name
-                        </p>
-                        //endloop
-                        
+                    @foreach($filterByChildCategories as $filterchildcategory)
+                            <p>{{ $filterchildcategory->childcategory?->name ?? 'No child category' }}</p>
 
+                    @endforeach
                     </div>
+
 
                 </div>
             </div>
             <div class="col-md-9">
                 <div class="row">
-                    loop
+                   @forelse($advertisements as $advertisement)
                         <div class="col-3">
-                            
+                          <img src="{{ route('ad.image', basename($advertisement->feature_image)) }}" class="img-thumbnail">
+
+                            {{$advertisement->name}} /USD{{$advertisement->price}}
                         </div>
                        
                        
-
-                   //endloop
+                    @empty 
+                        Sorry,we are unable to find product based on this cantegory
+                     @endforelse
                 </div>
             </div>
         </div>
