@@ -11,6 +11,7 @@ use App\Http\Controllers\AdImageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FrontendController;
 
 
 Route::get('/', [MenuController::class, 'menu'])->name('home');
@@ -43,6 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/ads/{id}', [AdvertisementController::class, 'destroy'])->name('ads.destroy');
 });
 
+
+
 // Serve private ad images via controller
 Route::get('/ad-image/{filename}', [AdImageController::class, 'show'])->name('ad.image');
 
@@ -62,3 +65,8 @@ Route::resource('ads', AdvertisementController::class);
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::post('/profile', 'ProfileController@updateProfile')->name('update.profile')->middleware('auth');
+
+
+
+Route::get('/product/{categorySlug}/{subcategorySlug}', [FrontendController::class, 'findBasedOnSubcategory'])
+    ->name('subcategory.show');

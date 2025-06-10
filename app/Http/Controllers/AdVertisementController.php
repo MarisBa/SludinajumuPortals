@@ -16,7 +16,7 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
-        $ads = Advertisement::where('user_id', auth()->user()->id)->get();
+        $ads = Advertisement::latest()->where('user_id', auth()->user()->id)->get();
         return view('ads.index', compact('ads'));
     }
 
@@ -100,12 +100,19 @@ class AdvertisementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-public function destroy(string $id)
-    {
-        $ad = Advertisement::findOrFail($id);
-        $ad->delete();
-
-        return redirect()->route('ads.index')->with('message', 'Advertisement deleted.');
+// In AdvertisementController.php
+public function destroy($id)
+{
+    $ad = Advertisement::findOrFail($id);
+    
+    // Delete the image file if needed
+    if (Storage::exists($ad->feature_image)) {
+        Storage::delete($ad->feature_image);
     }
-
+    
+    $ad->delete();
+    
+    return redirect()->route('ads.index')
+        ->with('success', 'Advertisement deleted successfully');
+}
 }

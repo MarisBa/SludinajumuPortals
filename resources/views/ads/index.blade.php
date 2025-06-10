@@ -74,15 +74,37 @@
                                 <td>
                                     <a href="{{ route('ads.show', $ad->id) }}" class="btn btn-sm btn-info">View</a>
                                 </td>
-                                <td>
-                                    <!-- Example delete form/button -->
-                                    <form action="{{ route('ads.destroy', $ad->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
+                               <td>
+    <!-- Delete button triggers modal -->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{$ad->id}}">
+                                    Delete
+                                </button>
+                                
+                                <!-- Delete Modal -->
+                                <div class="modal fade" id="deleteModal{{$ad->id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form action="{{ route('ads.destroy', $ad->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete this advertisement?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         @empty
                             <tr>
                                 <td colspan="8" class="text-center">You have no ads</td>
