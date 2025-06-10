@@ -93,7 +93,12 @@
                                     <ul class="dropdown-menu">
                                         @foreach($subMenuItem->childcategories as $childMenu)
                                         <li>
-                                            <a class="dropdown-item" href="#">{{$childMenu->name}}</a>
+                                            <a class="dropdown-item" href="{{route('childcategory.show',[
+                                                $menuItem->slug,
+                                                $subMenuItem->slug,
+                                                 $childMenu->slug]
+                                                
+                                                )}}">{{$childMenu->name}}</a>
                                         </li>
                                         @endforeach
                                     </ul>
