@@ -22,7 +22,24 @@
             </div>
 
             <br>
-            <form action=""></form>
+            <form action="{{url()->current()}}" method="GET">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="">Minimum price</label>
+                                <input type="text" name="minPrice" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Maximum price</label>
+                                <input type="text" name="maxPrice" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-danger">Search</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </form>
         </div>
 
         <!-- Main content -->
