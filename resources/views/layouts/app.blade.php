@@ -82,7 +82,7 @@
                     <ul class="navbar-nav w-100 d-flex justify-content-between"> <!-- Added w-100 and justify-content-between -->
                         @foreach($menus as $menuItem)
                         <li class="nav-item dropdown flex-grow-1 text-center"> <!-- Added flex-grow-1 and text-center -->
-                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{route('category.show', $menuItem->slug)}}" data-toggle="dropdown">
                                 {{$menuItem->name}}
                             </a>
                             <ul class="dropdown-menu w-100">

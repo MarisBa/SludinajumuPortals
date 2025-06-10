@@ -8,8 +8,17 @@ use App\Models\Advertisement;
 use App\Models\Category;
 use App\Models\Subcategory;
 
+
 class FrontendController extends Controller
 {
+
+        public function findBasedOnCategory(Category $categorySlug)
+    {
+        $advertisements = $categorySlug->ads;
+        $filterBySubcategory = Subcategory::where('category_id',$categorySlug->id)->get();
+        return view('product.category',compact('advertisements','filterBySubcategory'));
+    }
+
         public function findBasedOnSubcategory( Request $request,
         $categorySlug, Subcategory $subcategorySlug
     ) {
@@ -62,4 +71,10 @@ class FrontendController extends Controller
     'filterByChildCategories')
 );
  }
+
+public function show($id, $slug)
+{
+    $advertisement = Advertisement::where('id', $id)->where('slug', $slug)->firstOrFail();
+    return view('product.show', compact('advertisement'));
+}
 }
