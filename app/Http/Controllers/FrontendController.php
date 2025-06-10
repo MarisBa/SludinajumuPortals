@@ -72,9 +72,9 @@ class FrontendController extends Controller
 );
  }
 
-public function show($id, $slug)
-{
-    $advertisement = Advertisement::where('id', $id)->where('slug', $slug)->firstOrFail();
-    return view('product.show', compact('advertisement'));
-}
+public function show($id,$slug)
+    {
+        $advertisement = Advertisement::where('id',$id)->where('slug',$slug)->first();
+        return view('product.show',compact('advertisement'));
+    }
 }

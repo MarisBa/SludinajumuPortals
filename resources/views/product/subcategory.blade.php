@@ -57,11 +57,13 @@
                 @forelse($advertisements as $advertisement)
                     <div class="col-md-3 mb-4">
                         <div class="card h-100">
+                            <a href="{{route('product.view',[$advertisement->id,$advertisement->slug])}}">
                             <img src="{{ route('ad.image', basename($advertisement->feature_image)) }}" class="card-img-top img-thumbnail" alt="{{ $advertisement->name }}">
                             <div class="card-body p-2 text-center">
                                 <p class="mb-1">{{ $advertisement->name }}</p>
                                 <strong>USD {{ $advertisement->price }}</strong>
                             </div>
+                            </a>
                         </div>
                     </div>
                 @empty 
