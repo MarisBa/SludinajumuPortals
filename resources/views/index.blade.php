@@ -54,7 +54,7 @@
                                 <img src="/product/car1.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 1">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0" style="color: blue;">Car Model 1/$25,000</p>
+                                <p class="mb-0" style="color: blue;">Toyota trx</p>
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                                 <img src="/product/car2.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 2">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Car Model 2/$32,500</p>
+                                <p class="mb-0">Toyota Yaris</p>
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                                 <img src="/product/car3.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 3">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Car Model 3/$28,750</p>
+                                <p class="mb-0">BMW m4</p>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                                 <img src="/product/car4.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 4">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Car Model 4/$45,000</p>
+                                <p class="mb-0">BMW e39</p>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                                 <img src="/product/car5.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 5">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Car Model 5/$38,900</p>
+                                <p class="mb-0">Audi a5</p>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                                 <img src="/product/car6.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 6">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Car Model 6/$52,300</p>
+                                <p class="mb-0">Lamborgini evolution</p>
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                 <img src="/product/car7.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 7">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Car Model 7/$41,200</p>
+                                <p class="mb-0">Aston Martin</p>
                             </div>
                         </div>
                     </div>
@@ -130,7 +130,7 @@
                                 <img src="/product/car8.jpg" class="card-img-top img-fluid h-100 w-100 object-fit-cover" alt="Car 8">
                             </div>
                             <div class="card-footer text-center">
-                                <p class="mb-0">Car Model 8/$67,500</p>
+                                <p class="mb-0">BMW m3</p>
                             </div>
                         </div>
                     </div>
