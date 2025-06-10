@@ -12,13 +12,27 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
+use App\Models\Advertisement;
 
 
-Route::get('/', [MenuController::class, 'menu'])->name('home');
 
 Route::get('/home', function () {
-    return view('index');
+    $ads = \App\Models\Advertisement::where('published', 1)
+        ->whereNotNull('feature_image')
+        ->latest()
+        ->take(8)
+        ->get();
+
+    return view('index', compact('ads'));
 });
+
+
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login'); // or any other route like '/' or '/auth'
+})->name('logout');
+
 
 Route::get('/auth', function () {
     return view('backend.admin.index');
@@ -79,5 +93,4 @@ Route::get('/product/{categorySlug}/{subcategorySlug}', [FrontendController::cla
 Route::get('/product/{categorySlug}', [FrontendController::class, 'findBasedOnCategory'])->name('category.show');
 
 Route::get('/product-detail/{id}/{slug}', [FrontendController::class, 'show'])->name('product.view');
-
 

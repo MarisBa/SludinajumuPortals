@@ -116,4 +116,17 @@ public function destroy($id)
     return redirect()->route('ads.index')
         ->with('success', 'Advertisement deleted successfully');
 }
+
+
+public function homepage()
+{
+    $ads = Advertisement::where('published', 1)
+        ->whereNotNull('feature_image')
+        ->latest()
+        ->take(6)
+        ->get();
+
+    return view('home', compact('ads'));
+}
+
 }

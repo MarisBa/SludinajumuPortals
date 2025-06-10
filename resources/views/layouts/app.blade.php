@@ -22,7 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-danger shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -60,12 +60,15 @@
                                     <a class="dropdown-item" href="{{ url('/ads/create') }}">
                                         <i class="bi bi-plus-circle me-1"></i> Create Ad
                                     </a>
-                                    
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                    <a class="dropdown-item" href="{{ url('/ads') }}">
+                                        <i class="bi bi-plus-circle me-1"></i> My Ad
                                     </a>
+                                    
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit">Logout</button>
+                                    </form>
+
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
@@ -124,8 +127,40 @@
         </main>
     </div>
     <style>
-    body {
-        overflow-x: hidden;
+
+     #productCarousel .card {
+        background-color: #007bff; /* Bootstrap primary blue */
+        border: 2px solid #0056b3;
+        color: white;
+    }
+
+    #productCarousel .card-footer,
+    #productCarousel .card-body {
+        background-color: #007bff;
+        color: white;
+        border-top: 1px solid #0056b3;
+    }
+
+    #productCarousel .card-img-container {
+        border-bottom: 2px solid #0056b3;
+    }
+
+    #productCarousel .btn {
+        background-color: #0056b3;
+        border-color: #004080;
+        color: white;
+    }
+
+    #productCarousel .btn:hover {
+        background-color: #003366;
+        border-color: #002244;
+        color: white;
+    }
+
+    /* Optional: Ensure headings inside cards stay white */
+    #productCarousel .card-footer p,
+    #productCarousel .card-footer strong {
+        color: white;
     }
     
     /* Main navbar styling */
