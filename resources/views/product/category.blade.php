@@ -10,14 +10,16 @@
                 <div class="card-header text-white text-center" style="background-color: red;">Filter ::</div>
                 <div class="card-body">
                     @foreach($filterBySubcategory as $subcategory)
-                        <p>
+                            <p>
+                                <a href="{{ route('subcategory.show', [
+                                    'categorySlug' => $subcategory->category->slug,
+                                    'subcategorySlug' => $subcategory->slug
+                                ]) }}">
+                                    {{ $subcategory->name }}
+                                </a>
+                            </p>
+                        @endforeach
 
-
-                            <a href="  {{url()->current()}}/{{($subcategory->slug)??''}}">
-                            {{$subcategory->name??''}}
-                        </a>
-                        </p>
-                    @endforeach
                 </div>
             </div>
 
