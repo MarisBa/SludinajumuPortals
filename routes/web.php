@@ -70,3 +70,7 @@ Route::post('/profile', 'ProfileController@updateProfile')->name('update.profile
 
 Route::get('/product/{categorySlug}/{subcategorySlug}', [FrontendController::class, 'findBasedOnSubcategory'])
     ->name('subcategory.show');
+
+Route::get('/product/{categorySlug}/{subcategorySlug}/{childCategorySlug}',
+ [FrontendController::class, 'findBasedOnChildcategory'])
+    ->name('childcategory.show');

@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Http\Requests\AdsFormRequest; // Assuming you have a form request for validation
 use App\Http\Requests\AdsFormUpdateRequest; // ✅ This is the key line
 
+
 class AdvertisementController extends Controller
 {
     /**

@@ -11,9 +11,28 @@ use App\Models\Subcategory;
 class FrontendController extends Controller
 {
         public function findBasedOnSubcategory(
-        $categorySlug, $subcategorySlug
+        $categorySlug, Subcategory $subcategorySlug
     ) {
+        $advertisements = $subcategorySlug->ads;
 
-        return view('product.subcategory');
+         $filterByChildCategories = $subcategorySlug->ads->unique('childcategory_id');
+        return view(
+    'product.subcategory',
+    compact('advertisements', 'filterByChildCategories')
+);
+
 }
+
+ public function findBasedOnChildcategory($categorySlug,
+        Subcategory $subcategorySlug,
+        Childcategory $childCategorySlug,){
+        $advertisements = $childCategorySlug->ads;
+
+         $filterByChildCategories = $subcategorySlug->ads->unique('childcategory_id');
+        return view(
+    'product.childcategory',
+    compact('advertisements', 
+    'filterByChildCategories')
+);
+ }
 }

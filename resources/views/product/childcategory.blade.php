@@ -13,16 +13,15 @@
                         <p>
 
 
-                            <a href="{{url()->current()}}/{{($filterchildcategory->childcategory->slug)??''}}">
+                            <a href="{{($filterchildcategory->childcategory->slug)??''}}">
                                 {{ $filterchildcategory->childcategory?->name ?? 'No child category' }}
                             </a>
                         </p>
                     @endforeach
                 </div>
             </div>
+            
 
-            <br>
-            <form action=""></form>
         </div>
 
         <!-- Main content -->
