@@ -45,8 +45,20 @@
                         <p>{{ $advertisement->description }}</p>
                     </div>
                 </div>
-                
-</div>
+                <hr>
+                <div class="card">
+                    <div class="card-header">More info</div>
+                        <p>Country: {{ $advertisement->country->name }}</p>
+                        <p>State: {{ $advertisement->state->name }}</p>
+                        <p>Product-link: {{ $advertisement->link }}</p>
+                        <p>Product-Condition: {{ $advertisement->product_condition }}</p>
+
+
+
+                    </div>
+         
+
+            </div>
             <div class="col-md-6">
 
             <h1>{{ $advertisement->name }}</h1>
