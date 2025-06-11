@@ -8,7 +8,7 @@ use App\Models\Advertisement;
 use Illuminate\Support\Str;
 use App\Http\Requests\AdsFormRequest; // Assuming you have a form request for validation
 use App\Http\Requests\AdsFormUpdateRequest; // ✅ This is the key line
-
+use Illuminate\Support\Facades\Storage;
 
 class AdvertisementController extends Controller
 {
@@ -58,6 +58,8 @@ class AdvertisementController extends Controller
             $ad = Advertisement::findOrFail($id);
             return view('ads.show', compact('ad'));
         }
+
+        
 
 
     /**
