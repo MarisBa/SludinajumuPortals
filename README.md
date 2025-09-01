@@ -48,3 +48,6 @@ bash
 Kopēt kodu
 php artisan serve
 npm run dev
+
+<img width="2561" height="1238" alt="image" src="https://github.com/user-attachments/assets/6367b11e-7dc2-4657-99f0-dd225ad0df85" />
+
