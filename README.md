@@ -52,4 +52,5 @@ npm run dev
 
 
 
+<img width="2561" height="1238" alt="sluinajums" src="https://github.com/user-attachments/assets/57696825-f203-4e64-b6ed-c4bef9a7db11" />
 
