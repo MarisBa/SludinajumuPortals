@@ -49,7 +49,7 @@ Kopēt kodu
 php artisan serve
 npm run dev
 ##
-<img width="2561" height="1238" alt="sluinajums" src="https://github.com/user-attachments/assets/1596cf17-aab9-40b5-b98b-53e98bdf8746" />
+
 
 
 
