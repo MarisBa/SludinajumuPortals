@@ -23,3 +23,30 @@
 
 <img width="2561" height="1238" alt="sluinajums" src="https://github.com/user-attachments/assets/57696825-f203-4e64-b6ed-c4bef9a7db11" />
 
+1. Klonē repozitoriju:
+```bash
+git clone https://github.com/MarisBa/SludinajumuPortals.git
+cd SludinajumuPortals
+Instalē atkarības:
+
+bash
+Kopēt kodu
+composer install
+npm install
+Konfigurē .env failu:
+
+bash
+Kopēt kodu
+cp .env.example .env
+php artisan key:generate
+Palaid datu bāzes migrācijas:
+
+bash
+Kopēt kodu
+php artisan migrate
+Palaid vietējo serveri:
+
+bash
+Kopēt kodu
+php artisan serve
+npm run dev
