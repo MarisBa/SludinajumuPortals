@@ -39,108 +39,161 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Hero Carousel -->
-<div class="container-fluid px-0">
-    <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+<div class="position-relative vh-100 overflow-hidden">
+    <!-- Full-screen background carousel -->
+    <div class="position-absolute top-0 start-0 w-100 h-100">
+        <div class="w-100 h-100 position-relative">
+            <img src="{{ asset('img/latvija1.jpg') }}" class="position-absolute w-100 h-100 object-fit-cover carousel-img" />
+            <img src="{{ asset('img/latvija2.jpg') }}" class="position-absolute w-100 h-100 object-fit-cover carousel-img" />
+            <img src="{{ asset('img/latvija3.jpg') }}" class="position-absolute w-100 h-100 object-fit-cover carousel-img" />
         </div>
+    </div>
 
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{{ asset('img/latvija1.jpg') }}" class="d-block w-100" alt="Latvija">
+    <!-- Overlay for darkening/blurring -->
+    <div id="overlay" class="position-absolute top-0 start-0 w-100 h-100"
+     style="backdrop-filter: blur(0px); background-color: rgba(0,0,0,0.25); transition: backdrop-filter 0.3s ease, background-color 0.3s ease;"></div>
 
-                <div class="carousel-caption d-none d-md-block">
-                    <h2 class="fw-bold">Izzini Latviju</h2>
-                    <p>Uzdod jautājumus un dalies ar zināšanām par Latviju</p>
-                </div>
+    <!-- Content on top -->
+    <div class="position-relative z-1 d-flex justify-content-center align-items-center h-100">
+        <div class="bg-white bg-opacity-75 p-4 rounded shadow text-center">
+            <h1 class="display-4 fw-bold px-4">Izzini Latviju</h1>
+
+            <!-- Buttons -->
+            <div class="mb-4 pt-4">
+                <button id="askQuestionBtn" class="btn btn-primary me-2">Jautā</button>
+                <button id="makePostBtn" class="btn btn-secondary">Dalies</button>
             </div>
-            <div class="carousel-item">
-                <img src="{{ asset('img/latvija2.jpg') }}" class="d-block w-100" alt="Daba">
-                <div class="carousel-caption d-none d-md-block">
-                    <h2>Daba un kultūra</h2>
-                    <p>Atklāj Latvijas skaistākās vietas</p>
+
+            <!-- Question Form -->
+            <form id="questionForm" class="mt-4 d-none animate-form" enctype="multipart/form-data">
+                <input type="text" class="form-control mb-2" placeholder="Jautājums" required>
+                <textarea class="form-control mb-2" rows="3" placeholder="Apraksts" required></textarea>
+                <select class="form-select mb-2">
+                    <option selected disabled>Kategorija</option>
+                    <option value="travel">Ceļošana</option>
+                    <option value="food">Ēdieni</option>
+                    <option value="nature">Daba</option>
+                    <option value="culture">Kultūra</option>
+                    <option value="transport">Transports</option>
+                    <option value="sports">Sports</option>
+                </select>
+                <div class="mb-2">
+                    <label for="questionImage" id="questionFileBtn" class="btn btn-outline-secondary w-100">Pievieno attēlu</label>
+                    <input type="file" id="questionImage" accept="image/*" class="d-none">
                 </div>
-            </div>
-            <div class="carousel-item">
-                <img src="{{ asset('img/latvija3.jpg') }}" class="d-block w-100" alt="Pilsētas">
-                <div class="carousel-caption d-none d-md-block">
-                    <h2>Pilsētas un vēsture</h2>
-                    <p>Dalies ar savu pieredzi un zināšanām</p>
+                <button type="submit" class="btn btn-success w-100">Publicēt</button>
+            </form>
+
+            <!-- Post Form -->
+            <form id="postForm" class="mt-4 d-none animate-form" enctype="multipart/form-data">
+                <input type="text" class="form-control mb-2" placeholder="Posts" required>
+                <textarea class="form-control mb-2" rows="3" placeholder="Apraksts" required></textarea>
+                <select class="form-select mb-2">
+                    <option selected disabled>Kategorija</option>
+                    <option value="travel">Ceļošana</option>
+                    <option value="food">Ēdieni</option>
+                    <option value="nature">Daba</option>
+                    <option value="culture">Kultūra</option>
+                    <option value="transport">Transports</option>
+                    <option value="sports">Sports</option>
+                </select>
+                <div class="mb-2">
+                    <label for="postImage" id="postFileBtn" class="btn btn-outline-secondary w-100">Pievieno attēlu</label>
+                    <input type="file" id="postImage" accept="image/*" class="d-none">
                 </div>
-            </div>
+                <button type="submit" class="btn btn-success w-100">Publicēt</button>
+            </form>
         </div>
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Iepriekšējais</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Nākamais</span>
-        </button>
     </div>
 </div>
 
-<!-- Latest Questions -->
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Jaunākie Jautājumi</h1>
-        <a href="#" class="btn btn-outline-primary">Skatīt visus</a>
-    </div>
+<!-- Popular Questions/Posts -->
+<div class="container py-5">
+    <h2 class="fw-bold mb-4 text-center">Populārākie jautājumi un ieraksti</h2>
 
-    @if($questions->count())
-        <div class="row g-3">
-            @foreach($questions->take(6) as $question)
-                <div class="col-md-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="#" class="text-decoration-none">
-                                    {{ Str::limit($question->title, 60) }}
-                                </a>
-                            </h5>
-                            <p class="card-text text-muted mb-2">
-                                {{ Str::limit($question->body, 100) }}
-                            </p>
-                            <small class="text-secondary">
-                                Kategorija: {{ $question->category->name ?? 'Vispārīgi' }}
-                            </small>
-                        </div>
-                        <div class="card-footer text-end">
-                            <a href="#" class="btn btn-sm btn-primary">
-                                Apskatīt
-                            </a>
-                        </div>
+    <div class="row g-4">
+        @foreach($questions as $q)
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ Str::limit($q->title, 60) }}</h5>
+                        <p class="card-text">{{ Str::limit($q->body, 120) }}</p>
+                        <span class="badge bg-secondary mb-3 align-self-start">{{ $q->category->name }}</span>
+                        <a href="#" class="btn btn-primary mt-auto">Skatīt vairāk</a>
                     </div>
                 </div>
-            @endforeach
-        </div>
-    @else
-        <p class="text-muted">Pagaidām nav jautājumu.</p>
-    @endif
+            </div>
+        @endforeach
+    </div>
 </div>
-@endsection
 
-@section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        new bootstrap.Carousel(document.getElementById('mainCarousel'), {
-            interval: 3000,
-            wrap: true,
-            pause: 'hover'
-        });
-    });
+// Toggle forms and overlay
+const askBtn = document.getElementById('askQuestionBtn');
+const postBtn = document.getElementById('makePostBtn');
+const questionForm = document.getElementById('questionForm');
+const postForm = document.getElementById('postForm');
+const overlay = document.getElementById('overlay');
+
+function toggleForm(formToShow, otherForm) {
+    const isOpen = !formToShow.classList.contains('d-none');
+
+    if (isOpen) {
+        // Closing the form
+        formToShow.classList.remove('fade-in');
+        formToShow.classList.add('fade-out');
+        setTimeout(() => formToShow.classList.add('d-none'), 300);
+        overlay.style.backdropFilter = 'blur(0px)';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.25)';
+    } else {
+        // Opening the form
+        otherForm.classList.add('d-none'); // hide the other form immediately
+        formToShow.classList.remove('fade-out', 'd-none'); // reset any previous fade-out
+        formToShow.classList.add('fade-in');
+        overlay.style.backdropFilter = 'blur(5px)';
+        overlay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    }
+}
+
+
+askBtn.addEventListener('click', () => toggleForm(questionForm, postForm));
+postBtn.addEventListener('click', () => toggleForm(postForm, questionForm));
+
+// File input handling
+const questionFileInput = document.getElementById('questionImage');
+const questionFileBtn = document.getElementById('questionFileBtn');
+questionFileInput.addEventListener('change', () => {
+    questionFileBtn.textContent = questionFileInput.files.length ? questionFileInput.files[0].name : 'Pievieno attēlu';
+});
+
+const postFileInput = document.getElementById('postImage');
+const postFileBtn = document.getElementById('postFileBtn');
+postFileInput.addEventListener('change', () => {
+    postFileBtn.textContent = postFileInput.files.length ? postFileInput.files[0].name : 'Pievieno attēlu';
+});
 </script>
-@endsection
 
 <style>
-    /* Hero Carousel images */
-    #mainCarousel .carousel-item img {
-        height: 500px;       /* izvēlies vajadzīgo augstumu, piemēram, 400px, 500px vai 600px */
-        object-fit: cover;   /* lai bilde neaizstiepjas, bet piegriežas */
-    }
+.carousel-img {
+    opacity: 0;
+    animation: fadeSlide 15s infinite;
+}
+.carousel-img:nth-child(1) { animation-delay: 0s; }
+.carousel-img:nth-child(2) { animation-delay: 5s; }
+.carousel-img:nth-child(3) { animation-delay: 10s; }
+@keyframes fadeSlide {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    33% { opacity: 1; }
+    43% { opacity: 0; }
+    100% { opacity: 0; }
+}
+.object-fit-cover { object-fit: cover; }
+
+.animate-form {
+    transition: all 0.3s ease;
+}
+.fade-in { opacity: 1; transform: translateY(0); }
+.fade-out { opacity: 0; transform: translateY(-20px); }
 </style>
-s
+@endsection
