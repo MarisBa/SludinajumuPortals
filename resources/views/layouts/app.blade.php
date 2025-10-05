@@ -20,61 +20,60 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-danger shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-primary shadow-sm border-bottom border-light">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">
-                    {{ config('app.name', 'Izzini Latviju') }}
+                <!-- Website Name on the Left -->
+                <a class="navbar-brand fw-bold fs-4 text-white" href="{{ url('/home') }}">
+                    Izzini Latviju
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+
+                <!-- Toggler for mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+                <!-- Right Side -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
+                    <ul class="navbar-nav ms-auto align-items-center">
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <li class="nav-item me-2">
+                                    <a class="btn btn-outline-light fw-bold px-4 py-2" href="{{ route('login') }}">
+                                        Pieslēgties
+                                    </a>
                                 </li>
                             @endif
-
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('RegisterNiga') }}</a>
+                                    <a class="btn btn-light text-primary fw-bold px-4 py-2" href="{{ route('register') }}">
+                                        Reģistrēties
+                                    </a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle fw-bold fs-5 text-white" href="#" role="button" data-bs-toggle="dropdown">
                                     {{ Auth::user()->name }}
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('/ads/create') }}">
-                                        <i class="bi bi-plus-circle me-1"></i> Create Ad
-                                    </a>
-                                    <a class="dropdown-item" href="{{ url('/ads') }}">
-                                        <i class="bi bi-plus-circle me-1"></i> My Ad
-                                    </a>
-                                    
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit">Logout</button>
-                                    </form>
-
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-3 p-2" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item py-2 px-3" href="{{ url('/profile') }}">
+                                            <i class="bi bi-person me-2"></i> Profils
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2 px-3" href="{{ url('/ads') }}">
+                                            <i class="bi bi-stickies me-2"></i> Mani posti
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item py-2 px-3 text-danger fw-bold">Iziet</button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </li>
                         @endguest
                     </ul>
@@ -82,53 +81,15 @@
             </div>
         </nav>
 
-                <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm navbar-hover">
-            <div class="container-fluid px-0"> <!-- Changed to container-fluid and removed padding -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHover">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarHover">
-                    <ul class="navbar-nav w-100 d-flex justify-content-between"> <!-- Added w-100 and justify-content-between -->
-                        @foreach($menus as $menuItem)
-                        <li class="nav-item dropdown flex-grow-1 text-center"> <!-- Added flex-grow-1 and text-center -->
-                            <a class="nav-link dropdown-toggle" href="{{route('category.show', $menuItem->slug)}}" data-toggle="dropdown">
-                                {{$menuItem->name}}
-                            </a>
-                            <ul class="dropdown-menu w-100">
-                                @foreach($menuItem->subcategories as $subMenuItem)
-                                <li>
-                                    <a class="dropdown-item dropdown-toggle" href="{{route('subcategory.show',[
-                                        $menuItem->slug,$subMenuItem->slug])}}">{{$subMenuItem->name}}</a>
-                                    <ul class="dropdown-menu">
-                                        @foreach($subMenuItem->childcategories as $childMenu)
-                                        <li>
-                                            <a class="dropdown-item" href="{{route('childcategory.show',[
-                                                $menuItem->slug,
-                                                $subMenuItem->slug,
-                                                 $childMenu->slug]
-                                                
-                                                )}}">{{$childMenu->name}}</a>
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <main class="py-4">
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <main class="py-0">
            @yield('content')
         </main>
     </div>
     <style>
 
-     #productCarousel .card {
+    #productCarousel .card {
         background-color: #007bff; /* Bootstrap primary blue */
         border: 2px solid #0056b3;
         color: white;
@@ -163,33 +124,6 @@
         color: white;
     }
     
-    /* Main navbar styling */
-    .navbar-hover {
-        padding: 0;
-    }
-    
-    .navbar-hover .navbar-nav {
-        width: 100%;
-        height: 55px !important;
-        display: flex !important;
-    }
-    
-    .navbar-hover .nav-item {
-        flex: 1;
-        text-align: center;
-        position: relative;
-    }
-    
-    .navbar-hover .nav-link {
-        padding: 1rem;
-        color: #333;
-        font-weight: 500;
-    }
-    
-    .navbar-hover .nav-link:hover {
-        background-color: #f8f9fa;
-    }
-    
     /* Dropdown styling */
     .dropdown:hover > .dropdown-menu {
         display: block;
@@ -202,7 +136,61 @@
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         margin-top: 0;
     }
-    
+
+    .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ffffff !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    }
+
+    .navbar-brand::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: #FFF;; /* Accent line color */
+        transition: width 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .navbar-brand:hover {
+        transform: scale(1.05);
+    }
+
+    .navbar-brand:hover::after {
+        width: 100%;
+    }
+
+    /* User dropdown */
+    .navbar-nav .dropdown-menu {
+        border-radius: 0.75rem;
+        min-width: 200px;
+        padding: 0.5rem 0;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        background-color: #ffffff;
+    }
+    .navbar-nav .dropdown-item {
+        padding: 0.6rem 1.2rem;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+    }
+    .navbar-nav .dropdown-item:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* Username bigger and bolder */
+    .navbar-nav .nav-link.dropdown-toggle {
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
     /* Multi-level dropdown styling */
     @media only screen and (min-width: 992px) {
         .navbar-hover .dropdown-menu .dropdown-toggle::after {

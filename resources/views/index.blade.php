@@ -51,15 +51,16 @@
 
     <!-- Overlay for darkening/blurring -->
     <div id="overlay" class="position-absolute top-0 start-0 w-100 h-100"
-     style="backdrop-filter: blur(0px); background-color: rgba(0,0,0,0.25); transition: backdrop-filter 0.3s ease, background-color 0.3s ease;"></div>
+        style="backdrop-filter: blur(0px); background-color: rgba(0,0,0,0.25); transition: backdrop-filter 0.3s ease, background-color 0.3s ease;">
+    </div>
 
     <!-- Content on top -->
     <div class="position-relative z-1 d-flex justify-content-center align-items-center h-100">
-        <div class="bg-white bg-opacity-75 p-4 rounded shadow text-center">
-            <h1 class="display-4 fw-bold px-4">Izzini Latviju</h1>
+        <div class="hero-container text-center mx-auto rounded-4 shadow-lg">
+            <h1 class="hero-title display-3 fw-bold mb-4">Izzini Latviju</h1>
 
             <!-- Buttons -->
-            <div class="mb-4 pt-4">
+            <div class="mb-2" style="padding-top: 4rem;">
                 <button id="askQuestionBtn" class="btn btn-primary me-2">Jautā</button>
                 <button id="makePostBtn" class="btn btn-secondary">Dalies</button>
             </div>
@@ -81,7 +82,7 @@
                     <label for="questionImage" id="questionFileBtn" class="btn btn-outline-secondary w-100">Pievieno attēlu</label>
                     <input type="file" id="questionImage" accept="image/*" class="d-none">
                 </div>
-                <button type="submit" class="btn btn-success w-100">Publicēt</button>
+                <button type="submit" id="postBtn" class="btn btn-success w-100">Publicēt</button>
             </form>
 
             <!-- Post Form -->
@@ -101,7 +102,7 @@
                     <label for="postImage" id="postFileBtn" class="btn btn-outline-secondary w-100">Pievieno attēlu</label>
                     <input type="file" id="postImage" accept="image/*" class="d-none">
                 </div>
-                <button type="submit" class="btn btn-success w-100">Publicēt</button>
+                <button type="submit" id="postBtn" class="btn btn-success w-100">Publicēt</button>
             </form>
         </div>
     </div>
@@ -195,5 +196,109 @@ postFileInput.addEventListener('change', () => {
 }
 .fade-in { opacity: 1; transform: translateY(0); }
 .fade-out { opacity: 0; transform: translateY(-20px); }
+
+#overlay {
+    background: 
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.6)),
+        rgba(0, 0, 0, 0.25); /* base dim layer */
+    transition: backdrop-filter 0.3s ease, background 0.3s ease;
+    pointer-events: none; /* So it doesn’t block clicks */
+    z-index: 0; /* Adjust if needed */
+}
+
+form textarea {
+    resize: vertical;          /* only up/down */
+    min-height: 100px;         /* comfortable starting height */
+    max-height: 500px;         /* prevent huge stretching */
+    overflow-y: auto;          /* add scrollbar if needed */
+}
+
+/* --- HERO CONTAINER --- */
+.hero-container {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    max-width: 850px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 4rem 3rem;
+}
+
+.hero-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* --- TITLE + SUBTITLE --- */
+/* --- HERO CONTAINER --- */
+.hero-container {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    max-width: 850px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 1.5rem;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 4rem 3rem;
+}
+
+.hero-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* --- TITLE + SUBTITLE --- */
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #1f2937; /* Neutral dark gray-blue */
+    margin-bottom: 1rem;
+}
+
+
+/* --- BUTTONS --- */
+#askQuestionBtn,
+#makePostBtn,
+#postBtn {
+    font-size: 1.15rem;
+    font-weight: 600;
+    padding: 0.9rem 2.5rem;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    transition: all 0.25s ease;
+}
+
+/* Primary (blue) */
+#askQuestionBtn {
+    background-color: #2563eb; /* solid modern blue */
+    color: #fff;
+}
+
+#askQuestionBtn:hover {
+    background-color: #1e40af; /* darker shade on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+}
+
+/* Secondary (neutral gray) */
+#makePostBtn {
+    background-color: #6b7280; /* gray */
+    color: #fff;
+}
+
+#makePostBtn:hover {
+    background-color: #4b5563;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(75, 85, 99, 0.35);
+}
+
+/* Optional: subtle button spacing */
+#askQuestionBtn + #makePostBtn {
+    margin-left: 1rem;
+}
+
 </style>
 @endsection
