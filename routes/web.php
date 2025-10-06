@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Illuminate\Http\Request;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\ChildcategoryController;
@@ -14,7 +15,20 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
 use App\Models\Advertisement;
 
+Route::post('/api/questions', function (Request $request) {
+    // For now, just log or dump to see data
+    \Log::info('Question form submitted', $request->all());
+    return response()->json(['message' => 'Question received']);
+});
 
+Route::post('/api/posts', function (Request $request) {
+    \Log::info('Post form submitted', $request->all());
+    return response()->json(['message' => 'Post received']);
+});
+
+Route::get('/', function () {
+    return redirect('/home');
+});
 
 Route::get('/home', function () {
     $ads = \App\Models\Advertisement::where('published', 1)

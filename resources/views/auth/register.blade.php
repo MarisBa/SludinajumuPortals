@@ -1,77 +1,79 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-10 col-md-12">
-            <div class="card shadow-lg border-0 rounded overflow-hidden">
-                <div class="row g-0">
-                    <!-- Left image section -->
-                    <div class="col-md-6 d-none d-md-block">
-                        <img src="{{ asset('img/register.jpg') }}" 
-                             alt="Register Image" 
-                             class="img-fluid h-100 w-100 object-fit-cover">
-                    </div>
-
-                    <!-- Right form section -->
-                    <div class="col-md-6 bg-white p-5">
-                        <div class="text-center mb-4">
-                            <h2 class="fw-bold text-primary">Reģistrējies</h2>
-                            <p class="text-muted">Reģistrējies un izzini Latviju!</p>
+<div class="d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 70px);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div class="card shadow-lg border-0 rounded overflow-hidden">
+                    <div class="row g-0">
+                        <!-- Left image section -->
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="{{ asset('img/register.jpg') }}" 
+                                alt="Register Image" 
+                                class="img-fluid h-100 w-100 object-fit-cover">
                         </div>
 
-                        <form action="" method="post">@csrf
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Vārds</label>
-                                <input type="text" name="name" id="name" 
-                                       class="form-control @error('name') is-invalid @enderror" 
-                                       placeholder="Ievadi savu vārdu">
-                                @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                        <!-- Right form section -->
+                        <div class="col-md-6 bg-white p-5">
+                            <div class="text-center mb-4">
+                                <h2 class="fw-bold text-primary">Reģistrējies</h2>
+                                <p class="text-muted">Reģistrējies un izzini Latviju!</p>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">E-pasts</label>
-                                <input type="email" name="email" id="email" 
-                                       class="form-control @error('email') is-invalid @enderror" 
-                                       placeholder="Ievadi savu e-pastu">
-                                @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            <form action="" method="post">@csrf
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Vārds</label>
+                                    <input type="text" name="name" id="name" 
+                                        class="form-control @error('name') is-invalid @enderror" 
+                                        placeholder="Ievadi savu vārdu">
+                                    @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Parole</label>
-                                <input type="password" name="password" id="password" 
-                                       class="form-control @error('password') is-invalid @enderror" 
-                                       placeholder="Ievadi savu paroli">
-                                @error('password')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">E-pasts</label>
+                                    <input type="email" name="email" id="email" 
+                                        class="form-control @error('email') is-invalid @enderror" 
+                                        placeholder="Ievadi savu e-pastu">
+                                    @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="password_confirmation" class="form-label">Apstiprini paroli</label>
-                                <input type="password" name="password_confirmation" id="password_confirmation" 
-                                       class="form-control @error('password_confirmation') is-invalid @enderror" 
-                                       placeholder="Apstiprini savu paroli">
-                            </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Parole</label>
+                                    <input type="password" name="password" id="password" 
+                                        class="form-control @error('password') is-invalid @enderror" 
+                                        placeholder="Ievadi savu paroli">
+                                    @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
-                            <div class="d-grid mt-4">
-                                <button type="submit" class="btn btn-primary btn-lg fw-bold">
-                                    Reģistrēties
-                                </button>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="password_confirmation" class="form-label">Apstiprini paroli</label>
+                                    <input type="password" name="password_confirmation" id="password_confirmation" 
+                                        class="form-control @error('password_confirmation') is-invalid @enderror" 
+                                        placeholder="Apstiprini savu paroli">
+                                </div>
 
-                            <div class="text-center mt-3">
-                                <small class="text-muted">Jau ir konts? 
-                                    <a href="{{ route('login') }}" class="text-primary fw-bold">Pieslēdzies</a>
-                                </small>
-                            </div>
-                        </form>
-                    </div>
-                </div> <!-- row g-0 -->
+                                <div class="d-grid mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg fw-bold">
+                                        Reģistrēties
+                                    </button>
+                                </div>
+
+                                <div class="text-center mt-3">
+                                    <small class="text-muted">Jau ir konts? 
+                                        <a href="{{ route('login') }}" class="text-primary fw-bold">Pieslēdzies</a>
+                                    </small>
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- row g-0 -->
+                </div>
             </div> <!-- card -->
         </div> <!-- col -->
     </div> <!-- row -->

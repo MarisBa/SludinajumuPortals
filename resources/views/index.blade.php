@@ -57,7 +57,7 @@
     <!-- Content on top -->
     <div class="position-relative z-1 d-flex justify-content-center align-items-center h-100">
         <div class="hero-container text-center mx-auto rounded-4 shadow-lg">
-            <h1 class="hero-title display-3 fw-bold mb-4">Izzini Latviju</h1>
+            <h1 class="hero-title display-3 fw-bold mb-4">Izzini Latviju!</h1>
 
             <!-- Buttons -->
             <div class="mb-2" style="padding-top: 4rem;">
@@ -67,9 +67,9 @@
 
             <!-- Question Form -->
             <form id="questionForm" class="mt-4 d-none animate-form" enctype="multipart/form-data">
-                <input type="text" class="form-control mb-2" placeholder="Jautājums" required>
-                <textarea class="form-control mb-2" rows="3" placeholder="Apraksts" required></textarea>
-                <select class="form-select mb-2">
+                <input type="text" name="title" class="form-control mb-2" placeholder="Jautājums" required>
+                <textarea name="body" class="form-control mb-2" rows="3" placeholder="Apraksts" required></textarea>
+                <select name="category" class="form-select mb-2" required>
                     <option selected disabled>Kategorija</option>
                     <option value="travel">Ceļošana</option>
                     <option value="food">Ēdieni</option>
@@ -80,16 +80,16 @@
                 </select>
                 <div class="mb-2">
                     <label for="questionImage" id="questionFileBtn" class="btn btn-outline-secondary w-100">Pievieno attēlu</label>
-                    <input type="file" id="questionImage" accept="image/*" class="d-none">
+                    <input type="file" id="questionImage" name="image" accept="image/*" class="d-none">
                 </div>
                 <button type="submit" id="postBtn" class="btn btn-success w-100">Publicēt</button>
             </form>
 
             <!-- Post Form -->
             <form id="postForm" class="mt-4 d-none animate-form" enctype="multipart/form-data">
-                <input type="text" class="form-control mb-2" placeholder="Posts" required>
-                <textarea class="form-control mb-2" rows="3" placeholder="Apraksts" required></textarea>
-                <select class="form-select mb-2">
+                <input type="text" name="title" class="form-control mb-2" placeholder="Posts" required>
+                <textarea name="body" class="form-control mb-2" rows="3" placeholder="Apraksts" required></textarea>
+                <select name="category" class="form-select mb-2" required>
                     <option selected disabled>Kategorija</option>
                     <option value="travel">Ceļošana</option>
                     <option value="food">Ēdieni</option>
@@ -100,7 +100,7 @@
                 </select>
                 <div class="mb-2">
                     <label for="postImage" id="postFileBtn" class="btn btn-outline-secondary w-100">Pievieno attēlu</label>
-                    <input type="file" id="postImage" accept="image/*" class="d-none">
+                    <input type="file" id="postImage" name="image" accept="image/*" class="d-none">
                 </div>
                 <button type="submit" id="postBtn" class="btn btn-success w-100">Publicēt</button>
             </form>
@@ -108,25 +108,56 @@
     </div>
 </div>
 
-<!-- Popular Questions/Posts -->
-<div class="container py-5">
-    <h2 class="fw-bold mb-4 text-center">Populārākie jautājumi un ieraksti</h2>
+<!-- Category Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-primary shadow-sm border-top border-light">
+    <div class="container justify-content-center">
+        <ul class="navbar-nav flex-wrap fs-6 text-white">
+            <li class="nav-item mx-2">
+                <a class="nav-link fw-semibold active" href="#">Visi</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link fw-semibold" href="#">Ceļošana</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link fw-semibold" href="#">Ēdieni</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link fw-semibold" href="#">Daba</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link fw-semibold" href="#">Kultūra</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link fw-semibold" href="#">Transports</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link fw-semibold" href="#">Sports</a>
+            </li>
+            <!-- Add other categories -->
+        </ul>
+    </div>
+</nav>
 
-    <div class="row g-4">
-        @foreach($questions as $q)
-            <div class="col-md-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ Str::limit($q->title, 60) }}</h5>
-                        <p class="card-text">{{ Str::limit($q->body, 120) }}</p>
-                        <span class="badge bg-secondary mb-3 align-self-start">{{ $q->category->name }}</span>
-                        <a href="#" class="btn btn-primary mt-auto">Skatīt vairāk</a>
+<!-- Posts container -->
+<div class="posts-container">
+    <div class="container py-4">
+        <div class="row g-4">
+            @foreach($questions as $q)
+                <div class="col-md-4 post-item" data-category="{{ strtolower($q->category->name) }}">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ Str::limit($q->title, 60) }}</h5>
+                            <p class="card-text">{{ Str::limit($q->body, 120) }}</p>
+                            <span class="badge bg-secondary mb-3 align-self-start">{{ $q->category->name }}</span>
+                            <a href="#" class="btn btn-primary mt-auto">Skatīt vairāk</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
 </div>
+
 
 <script>
 // Toggle forms and overlay
@@ -173,6 +204,76 @@ postFileInput.addEventListener('change', () => {
     postFileBtn.textContent = postFileInput.files.length ? postFileInput.files[0].name : 'Pievieno attēlu';
 });
 </script>
+
+<script>
+const categoryLinks = document.querySelectorAll('.nav-link');
+const posts = document.querySelectorAll('.post-item');
+
+categoryLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Remove active class from all
+        categoryLinks.forEach(l => l.classList.remove('active'));
+
+        // Add active class to the clicked one
+        link.classList.add('active');
+
+        const selected = link.textContent.trim().toLowerCase();
+
+        // Show all if "Visi" selected
+        if (selected === 'visi') {
+            posts.forEach(post => post.style.display = 'block');
+        } else {
+            posts.forEach(post => {
+                const category = post.getAttribute('data-category');
+                post.style.display = (category === selected) ? 'block' : 'none';
+            });
+        }
+    });
+});
+</script>
+
+<script>
+async function sendFormData(form, url) {
+    const formData = new FormData(form);
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert('Dati veiksmīgi nosūtīti!');
+            form.reset();
+        } else {
+            console.error(result);
+            alert('Kļūda nosūtot datus!');
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Tīkla kļūda.');
+    }
+}
+
+// Hook up forms
+document.getElementById('questionForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    sendFormData(e.target, '/api/questions');
+});
+
+document.getElementById('postForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    sendFormData(e.target, '/api/posts');
+});
+</script>
+
 
 <style>
 .carousel-img {
@@ -298,6 +399,12 @@ form textarea {
 /* Optional: subtle button spacing */
 #askQuestionBtn + #makePostBtn {
     margin-left: 1rem;
+}
+
+.posts-container {
+    height: calc(100vh - 158px); /* Adjust: total height minus navbars (main + category) */
+    overflow-y: auto;             /* Add vertical scroll if content is too long */
+    padding-bottom: 2rem;         /* Optional: extra spacing at bottom */
 }
 
 </style>
