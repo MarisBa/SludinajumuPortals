@@ -6,35 +6,88 @@ use Illuminate\Support\Str;
 
 @section('content')
 
-<div class="container-fluid px-0">
-    <div id="mainCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
-        </div>
+<style>
+/* ---------- Global Styles ---------- */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #212529;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: #0057B7;
+}
+.btn-primary {
+    background-color: #0057B7;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #00449e;
+}
+.text-shadow {
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.bg-gradient {
+    background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+}
+.hover-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hover-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+.border-bottom-light {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
 
-        <div class="carousel-inner" style="height: 500px;"> {{-- Palielināts augstums, lai labāk redzētu ainavas --}}
-            <div class="carousel-item active">
-                <img src="/img/latvija1.jpg" class="d-block w-100 h-100 object-fit-cover object-position-bottom" alt="Latvijas ainava 1 - Rudens meži no putna lidojuma">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded">
-                    <h1 class="display-5 fw-bold">Atklāj Latvijas Neparastās Vietas</h1>
-                    <p class="fs-5">Dalies ar saviem atklājumiem un ceļojumu iespaidiem.</p>
+/* ---------- Jauna Klase Fiksētam Augstumam ---------- */
+.fixed-carousel-height {
+    height: 450px; /* Definē fiksētu augstumu desktopā */
+}
+/* Nodrošina responsīvu korekciju mazākiem ekrāniem */
+@media (max-width: 767.98px) {
+    .fixed-carousel-height {
+        height: 300px; /* Mazāks augstums mobilajās ierīcēs */
+    }
+}
+/* Nodrošina 100% augstumu visiem iekšējiem elementiem */
+.carousel-item,
+.carousel-item img {
+    height: 100%;
+}
+</style>
+
+<div class="container-fluid px-0">
+    <div id="mainCarousel" class="carousel slide carousel-fade fixed-carousel-height" data-bs-ride="carousel">
+
+        <div class="carousel-inner h-100"> {{-- Uzstādīts h-100 --}}
+            <div class="carousel-item active position-relative h-100"> {{-- Uzstādīts h-100 --}}
+                <img src="/img/latvija1.jpg" class="d-block w-100 h-100 object-fit-cover" alt="Latvijas ainava 1"> {{-- Uzstādīts h-100 --}}
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient"></div>
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center h-100 text-center">
+                    <h1 class="display-4 fw-bold text-white text-shadow">Atklāj Latvijas Neparastās Vietas</h1>
+                    <p class="lead text-white">Dalies ar saviem atklājumiem un ceļojumu iespaidiem.</p>
                 </div>
             </div>
-            <div class="carousel-item">
-                <img src="/img/latvija2.jpg" class="d-block w-100 h-100 object-fit-cover object-position-bottom" alt="Latvijas ainava 2 - Baltijas jūras piekraste">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded">
-                    <h1 class="display-5 fw-bold">Daba, Atpūta un Piedzīvojumi</h1>
-                    <p class="fs-5">Ieteikumi, kur atpūsties pie dabas un ko darīt aktīvi.</p>
+
+            <div class="carousel-item position-relative h-100">
+                <img src="/img/latvija2.jpg" class="d-block w-100 h-100 object-fit-cover" alt="Latvijas ainava 2">
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient"></div>
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center h-100 text-center">
+                    <h1 class="display-4 fw-bold text-white text-shadow">Daba, Atpūta un Piedzīvojumi</h1>
+                    <p class="lead text-white">Ieteikumi, kur atpūsties pie dabas un ko darīt aktīvi.</p>
                 </div>
             </div>
-            <div class="carousel-item">
-                <img src="/img/latvija3.jpg" class="d-block w-100 h-100 object-fit-cover object-position-bottom" alt="Latvijas ainava 3 - Rīgas panorāma saullēktā">
-                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-3 rounded">
-                    <h1 class="display-5 fw-bold">Rīgas Pulss: Dzīve un Kultūra Galvaspilsētā</h1>
-                    <p class="fs-5">Jautājumi par pilsētas dzīvi, pasākumiem un vēsturi.</p>
+
+            <div class="carousel-item position-relative h-100">
+                <img src="/img/latvija3.jpg" class="d-block w-100 h-100 object-fit-cover" alt="Latvijas ainava 3">
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient"></div>
+                <div class="carousel-caption d-flex flex-column align-items-center justify-content-center h-100 text-center">
+                    <h1 class="display-4 fw-bold text-white text-shadow">Rīgas Pulss: Dzīve un Kultūra</h1>
+                    <p class="lead text-white">Jautājumi par pilsētas dzīvi, pasākumiem un vēsturi.</p>
                 </div>
             </div>
         </div>
@@ -52,47 +105,42 @@ use Illuminate\Support\Str;
 
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-        <h2>Jaunākās Diskusijas par Latviju</h2>
+        <h2 class="fw-bold">Jaunākās Diskusijas par Latviju</h2>
         <a href="{{ route('ads.create') }}" class="btn btn-primary btn-lg shadow-sm">
             <i class="bi bi-plus-circle me-2"></i> Uzsākt Jaunu Diskusiju
         </a>
     </div>
 
     @if($ads->count())
-        <div class="list-group list-group-flush">
+        <div class="row g-4">
             @foreach($ads as $ad)
-                <a href="{{ route('product.view', ['id' => $ad->id, 'slug' => $ad->slug]) }}" class="list-group-item list-group-item-action py-3 d-flex justify-content-between align-items-start border-bottom-light">
-                    
-                    <div class="d-flex w-100 me-3">
-                        <div class="icon-container me-3 text-center text-primary" style="min-width: 40px;">
-                            <i class="bi bi-question-circle-fill fs-4"></i>
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ route('product.view', ['id' => $ad->id, 'slug' => $ad->slug]) }}" class="text-decoration-none text-dark">
+                        <div class="card h-100 shadow-sm border-0 hover-card">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold">{{ Str::limit($ad->name, 80) }}</h5>
+                                <p class="text-muted small mb-2">
+                                    <i class="bi bi-tag me-1"></i>{{ $ad->category->name ?? 'Vispārīgi' }}
+                                </p>
+                                <p class="card-text">{{ Str::limit($ad->description ?? $ad->address, 120) }}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+                                <small class="text-secondary">
+                                    <i class="bi bi-clock me-1"></i>{{ $ad->updated_at->diffForHumans() }}
+                                </small>
+                                <span class="badge bg-success"><i class="bi bi-chat-left-text me-1"></i>{{ rand(1, 50) }}</span>
+                            </div>
                         </div>
-                        
-                        <div>
-                            <h5 class="mb-1 text-dark">{{ Str::limit($ad->name, 80) }}</h5>
-                            <small class="text-muted d-block mb-1">
-                                <i class="bi bi-tag me-1"></i> Kategorija: <strong>{{ $ad->category->name ?? 'Vispārīgi' }}</strong>
-                            </small>
-                            <p class="mb-1 d-none d-sm-block">{{ Str::limit($ad->description ?? $ad->address, 120) }}</p>
-                            
-                            <small class="text-secondary">
-                                Pēdējā aktivitāte: {{ $ad->updated_at->diffForHumans() }}
-                            </small>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-column text-end ms-auto">
-                        <span class="badge bg-success text-white mb-1">{{ rand(1, 50) }}</span> 
-                        <small class="text-muted">Atbildes</small>
-                    </div>
-                </a>
+                    </a>
+                </div>
             @endforeach
         </div>
 
         <div class="text-center mt-5 mb-5">
-            <a href="{{ route('ads.index') }}" class="btn btn-outline-secondary btn-lg">Apskatīt Visas Diskusijas un Tēmas</a>
+            <a href="{{ route('ads.index') }}" class="btn btn-outline-secondary btn-lg">
+                Apskatīt Visas Diskusijas un Tēmas
+            </a>
         </div>
-        
     @else
         <div class="alert alert-info text-center my-5" role="alert">
             Šobrīd forumā nav jaunu tēmu. Sāciet pirmo diskusiju!
@@ -100,19 +148,24 @@ use Illuminate\Support\Str;
     @endif
 </div>
 
-<div class="container py-4 border-top">
-    <div class="row text-center">
-        <div class="col-4">
-            <h3 class="fw-bold text-primary">{{ $ads->count() }}</h3>
-            <p class="text-muted">Aktīvās Diskusijas</p>
-        </div>
-        <div class="col-4">
-            <h3 class="fw-bold text-primary">{{ rand(100, 500) }}</h3>
-            <p class="text-muted">Reģistrētie Lietotāji</p>
-        </div>
-        <div class="col-4">
-            <h3 class="fw-bold text-primary">{{ rand(500, 9000) }}</h3>
-            <p class="text-muted">Kopējais Postu Skaits</p>
+<div class="bg-light py-5 mt-5 border-top">
+    <div class="container text-center">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <i class="bi bi-chat-left-text display-5 text-primary mb-2"></i>
+                <h3 class="fw-bold text-dark">{{ $ads->count() }}</h3>
+                <p class="text-muted mb-0">Aktīvās Diskusijas</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-people display-5 text-success mb-2"></i>
+                <h3 class="fw-bold text-dark">{{ rand(100, 500) }}</h3>
+                <p class="text-muted mb-0">Reģistrētie Lietotāji</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-pencil-square display-5 text-warning mb-2"></i>
+                <h3 class="fw-bold text-dark">{{ rand(500, 9000) }}</h3>
+                <p class="text-muted mb-0">Kopējais Postu Skaits</p>
+            </div>
         </div>
     </div>
 </div>
@@ -122,11 +175,11 @@ use Illuminate\Support\Str;
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Galvenā karuseļa inicializācija
         new bootstrap.Carousel(document.getElementById('mainCarousel'), {
-            interval: 5000, // Karuselis mainās lēnāk, lai labāk varētu izlasīt virsrakstu
+            interval: 5000,
             wrap: true,
             pause: 'hover'
         });
     });
 </script>
+@endsection
