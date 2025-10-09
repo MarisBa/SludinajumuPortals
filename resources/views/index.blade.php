@@ -120,7 +120,6 @@ a:hover {
     }
 }
 </style>
-
 <div class="container-fluid px-0">
     <div id="mainCarousel" class="carousel slide carousel-fade fixed-carousel-height" data-bs-ride="carousel">
         <div class="carousel-inner h-100">
@@ -166,42 +165,23 @@ a:hover {
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
         <h2 class="fw-bold">Jaunākās Diskusijas par Latviju</h2>
-        <a href="{{ route('ads.create') }}" class="btn btn-primary btn-lg shadow-sm">
+        <a href="{{ route('forum.posts.create') }}" class="btn btn-primary btn-lg shadow-sm">
             <i class="bi bi-plus-circle me-2"></i> Uzsākt Jaunu Diskusiju
         </a>
     </div>
 
     @if($ads->count())
-        <div class="row g-4">
-            @foreach($ads as $ad)
-                <div class="col-md-6 col-lg-4">
-                    <a href="{{ route('product.view', ['id' => $ad->id, 'slug' => $ad->slug]) }}" class="text-decoration-none text-dark">
-                        {{-- SVARĪGI: 'hover-card' klase satur animācijas sākuma stāvokli (opacity: 0, translateY) --}}
-                        <div class="card h-100 hover-card">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ Str::limit($ad->name, 80) }}</h5>
-                                <p class="text-muted small mb-2">
-                                    <i class="bi bi-tag me-1"></i>{{ $ad->category->name ?? 'Vispārīgi' }}
-                                </p>
-                                <p class="card-text">{{ Str::limit($ad->description ?? $ad->address, 120) }}</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between align-items-center">
-                                <small class="text-secondary">
-                                    <i class="bi bi-clock me-1"></i>{{ $ad->updated_at->diffForHumans() }}
-                                </small>
-                             
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            @endforeach
-        </div>
+
+        {{-- Include forum posts section --}}
+        @include('forum_posts._posts_grid', ['posts' => $posts, 'categories' => $categories])
+
 
         <div class="text-center mt-5 mb-5">
-            <a href="{{ route('ads.index') }}" class="btn btn-outline-secondary btn-lg">
+            <a href="{{ route('forum.posts.index') }}" class="btn btn-outline-secondary btn-lg">
                 Apskatīt Visas Diskusijas un Tēmas
             </a>
         </div>
+
     @else
         <div class="alert alert-info text-center my-5" role="alert">
             Šobrīd forumā nav jaunu tēmu. Sāciet pirmo diskusiju!

@@ -5,14 +5,14 @@
 
     {{-- Header --}}
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 pb-2 border-bottom">
-        <h1 class="h2 mb-3 mb-sm-0">Your Forum Posts</h1>
+        <h1 class="h2 mb-3 mb-sm-0">Tavi ieraksti</h1>
 
         {{-- Create New Post Button --}}
         <a href="{{ route('forum.posts.create') }}" class="btn btn-primary btn-lg d-flex align-items-center">
             <svg class="bi me-2" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>
-            Create New Post
+            Izveido jaunu ierakstu
         </a>
     </div>
 
@@ -57,7 +57,7 @@
                             {{-- Footer/Metadata --}}
                             <div class="d-flex justify-content-between align-items-center pt-2 border-top mt-auto">
                                 <small class="text-muted">Created: {{ $post->created_at->diffForHumans() }}</small>
-                                <span class="text-primary fw-semibold">View Details
+                                <span class="text-primary fw-semibold">Skatīt vairāk
                                     <svg class="bi ms-1" width="16" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
                                     </svg>

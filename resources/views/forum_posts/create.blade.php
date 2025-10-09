@@ -5,10 +5,8 @@
 
     <!-- Header Section -->
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-primary">Create New Forum Post</h1>
-        <p class="lead text-secondary">
-            Share your knowledge with the community. Select a category and start writing!
-        </p>
+        <h1 class="display-4 fw-bold text-primary">Pievieno jaunu ierakstu</h1>
+        
     </div>
 
     <!-- Card Container -->
@@ -40,9 +38,9 @@
 
             <!-- Category Selection -->
             <div class="mb-4">
-                <label for="category_id" class="form-label fw-semibold">Select Category</label>
+                <label for="category_id" class="form-label fw-semibold">Izvēlieties kategoriju</label>
                 <select class="form-select" name="category_id" id="category_id" required>
-                    <option value="">-- Choose a Topic Category --</option>
+                    <option value="">-- izvelies kategoriju --</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
@@ -56,9 +54,9 @@
 
             <!-- Title -->
             <div class="mb-4">
-                <label for="title" class="form-label fw-semibold">Post Title</label>
+                <label for="title" class="form-label fw-semibold">Nosaukums</label>
                 <input type="text" name="title" id="title" value="{{ old('title') }}"
-                       class="form-control" placeholder="e.g., Best practices for Laravel 11 routing" required maxlength="255">
+                       class="form-control" placeholder="" required maxlength="255">
                 @error('title')
                     <div class="text-danger small mt-1">{{ $message }}</div>
                 @enderror
@@ -66,8 +64,8 @@
 
             <!-- Body -->
             <div class="mb-4">
-                <label for="body" class="form-label fw-semibold">Post Content</label>
-                <textarea name="body" id="body" rows="8" class="form-control" placeholder="Write the detailed body of your post here..." required>{{ old('body') }}</textarea>
+                <label for="body" class="form-label fw-semibold">Apraksts</label>
+                <textarea name="body" id="body" rows="8" class="form-control" placeholder="Ievadiet detalizētu ieraksta aprakstu šeit..." required>{{ old('body') }}</textarea>
                 @error('body')
                     <div class="text-danger small mt-1">{{ $message }}</div>
                 @enderror
@@ -75,7 +73,7 @@
 
             <!-- Feature Image -->
             <div class="mb-4">
-                <label for="feature_image" class="form-label fw-semibold">Feature Image (Optional)</label>
+                <label for="feature_image" class="form-label fw-semibold">Bilde</label>
                 <input type="file" name="feature_image" id="feature_image" class="form-control" accept="image/*">
                 @error('feature_image')
                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -85,7 +83,7 @@
             <!-- Submit Button -->
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary btn-lg fw-bold">
-                    Publish Forum Post
+                    Publisko ierakstu
                 </button>
             </div>
         </form>

@@ -8,7 +8,7 @@
         <div class="col-lg-3 mb-4">
             <!-- Filter by Child Category -->
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-danger text-white text-center fw-bold">Filter Categories</div>
+                <div class="card-header bg-danger text-white text-center fw-bold">Filtedasdasdr Categories</div>
                 <div class="card-body">
                     @forelse($filterByChildCategories as $filterchildcategory)
                         @php $child = $filterchildcategory->childcategory ?? null; @endphp

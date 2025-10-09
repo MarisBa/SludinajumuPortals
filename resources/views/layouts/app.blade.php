@@ -16,11 +16,9 @@
     <!-- CONSOLIDATED CSS: Using only Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Optional: Bootstrap Icons for use in the dropdown -->
+    <!-- Bootstrap Icons for use in the dropdown -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
     
-
     <!-- Scripts (Laravel Vite/Mix compilation) -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -28,9 +26,9 @@
     <div id="app">
         
         <!-- TOP NAVBAR (Standard Bootstrap 5) -->
-        <nav class="navbar navbar-expand-md navbar-light bg-danger shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-danger shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">
+                <a class="navbar-brand text-white fw-bold" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -46,39 +44,39 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ url('/ads/create') }}">
-                                        <i class="bi bi-plus-circle me-1"></i> Create Ad
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ url('/forum-posts/create') }}">
+                                        <i class="bi bi-plus-circle me-2"></i> Izveidot ierakstu
                                     </a>
-                                    <a class="dropdown-item" href="{{ url('/ads') }}">
-                                        <i class="bi bi-list-task me-1"></i> My Ads
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ url('/forum-posts') }}">
+                                        <i class="bi bi-list-task me-2"></i> Mani ieraksti
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ url('/profile') }}">
+                                        <i class="bi bi-list-task me-2"></i> Mans profils
                                     </a>
                                     
-                                    <!-- Fixed Logout Form: Using a button styled as a dropdown item -->
-                                    <form method="POST" action="{{ route('logout') }}" class="dropdown-item p-0">
-                                        @csrf
-                                        <button type="submit" class="btn btn-link nav-link w-full text-start p-2 m-0 border-0 bg-transparent text-danger">
-                                            <i class="bi bi-box-arrow-right me-1"></i> Logout
-                                        </button>
-                                    </form>
+                                    <div class="dropdown-divider"></div>
 
-                                    <!-- Hidden Logout Form (kept for compatibility, though redundant with the visible one) -->
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    {{-- FIXED LOGOUT FORM: Simplified to use standard dropdown-item look --}}
+                                    <form method="POST" action="{{ route('logout') }}">
                                         @csrf
+                                        <button type="submit" class="dropdown-item d-flex align-items-center text-danger">
+                                            <i class="bi bi-box-arrow-right me-2"></i> {{ __('Logout') }}
+                                        </button>
                                     </form>
                                 </div>
                             </li>
@@ -89,44 +87,7 @@
         </nav>
 
         <!-- CATEGORY NAVBAR (Custom Hover/Multi-level) -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm navbar-hover"> 
-            <div class="container-fluid px-0"> 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHover" aria-controls="navbarHover" aria-expanded="false" aria-label="Toggle Category Navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarHover">
-                    <ul class="navbar-nav w-100 d-flex justify-content-between"> 
-                        @foreach($menus as $menuItem)
-                        <li class="nav-item dropdown flex-grow-1 text-center">
-                             <!-- Removed data-toggle="dropdown" to rely purely on hover CSS -->
-                            <a class="nav-link dropdown-toggle" href="{{route('category.show', $menuItem->slug)}}">
-                                {{ $menuItem->name }}
-                            </a>
-                            <ul class="dropdown-menu w-100">
-                                @foreach($menuItem->subcategories as $subMenuItem)
-                                <!-- Added dropdown-submenu class for CSS targeting -->
-                                <li class="dropdown-submenu"> 
-                                    <a class="dropdown-item dropdown-toggle" href="{{route('subcategory.show', [ $menuItem->slug, $subMenuItem->slug ])}}">
-                                        {{$subMenuItem->name}}
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        @foreach($subMenuItem->childcategories as $childMenu)
-                                        <li>
-                                            <a class="dropdown-item" href="{{route('childcategory.show', [ $menuItem->slug, $subMenuItem->slug, $childMenu->slug ])}}">
-                                                {{$childMenu->name}}
-                                            </a>
-                                        </li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        
         
         <!-- MAIN CONTENT AREA -->
         <main class="py-4">
@@ -136,48 +97,57 @@
     
     <!-- JavaScript Dependencies -->
     
-    <!-- CONSOLIDATED JS: Using only Bootstrap 5 JavaScript Bundle (Includes Popper.js). Removed jQuery/BS4. -->
+    <!-- CONSOLIDATED JS: Using only Bootstrap 5 JavaScript Bundle (Includes Popper.js). -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // FIX: Prevents multi-level dropdown from closing immediately on mobile/click
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('.dropdown-submenu .dropdown-toggle').forEach(function(element){
+                element.addEventListener('click', function(e){
+                    
+                    if(!this.closest('.navbar-hover').classList.contains('collapsing') && !this.closest('.navbar-hover').classList.contains('show')) {
+                        // Desktop/Hover behavior is handled by CSS, but this handles mobile click logic
+                        let submenu = this.nextElementSibling;
+                        if(submenu && submenu.classList.contains('dropdown-menu')) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            // Close other open submenus at the same level
+                            let parent = this.closest('.dropdown-submenu').parentNode;
+                            parent.querySelectorAll('.dropdown-submenu .dropdown-menu').forEach(function(otherMenu){
+                                if(otherMenu !== submenu) {
+                                    otherMenu.classList.remove('show');
+                                }
+                            });
+                            
+                            // Toggle the current submenu
+                            submenu.classList.toggle('show');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
     <!-- Custom Style for Navbar-Hover and Multi-Level Dropdown -->
     <style>
-        /* CSS for Product Carousel (kept as is) */
-        #productCarousel .card { background-color: #007bff; border: 2px solid #0056b3; color: white; }
-        #productCarousel .card-footer, #productCarousel .card-body { background-color: #007bff; color: white; border-top: 1px solid #0056b3; }
-        #productCarousel .card-img-container { border-bottom: 2px solid #0056b3; }
-        #productCarousel .btn { background-color: #0056b3; border-color: #004080; color: white; }
-        #productCarousel .btn:hover { background-color: #003366; border-color: #002244; color: white; }
-        #productCarousel .card-footer p, #productCarousel .card-footer strong { color: white; }
-        
         /* Category Navbar Styling */
         .navbar-hover { padding: 0; }
-        /* Use lg breakpoint for full-width nav */
-        @media only screen and (min-width: 992px) {
-            .navbar-hover .navbar-nav { width: 100%; height: 55px !important; display: flex !important; }
-        }
-        .navbar-hover .nav-item { flex: 1; text-align: center; position: relative; }
         .navbar-hover .nav-link { padding: 1rem; color: #333; font-weight: 500; }
         .navbar-hover .nav-link:hover { background-color: #f8f9fa; }
         
-        /* HOVER FIX: This CSS enables hover instead of click for the main categories */
-        .navbar-hover .nav-item.dropdown:hover > .dropdown-menu {
-            display: block;
-        }
-
-        /* Dropdown Menu Styles */
-        .navbar-hover .dropdown-menu {
-            width: 100%;
-            border-radius: 0;
-            border: none;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-top: 0;
-            /* Added min-width for mobile/tablet safety */
-            min-width: 200px; 
-        }
-
-        /* Multi-level Dropdown Styling (Desktop) */
+        /* Desktop: Full-width nav and spacing */
         @media only screen and (min-width: 992px) {
-            /* Position the second-level menu */
+            .navbar-hover .navbar-nav { width: 100%; height: 55px !important; display: flex !important; }
+            .navbar-hover .nav-item { flex: 1; text-align: center; position: relative; }
+
+            /* HOVER FIX: Main level */
+            .navbar-hover .nav-item.dropdown:hover > .dropdown-menu {
+                display: block;
+            }
+
+            /* Multi-level Dropdown Styling (Desktop) */
             .dropdown-submenu {
                 position: relative; /* Needed for positioning nested menu */
             }
@@ -185,8 +155,9 @@
                 position: absolute;
                 left: 100%;
                 top: 0;
-                min-width: 200px;
+                min-width: 220px;
                 display: none; /* Initially hidden */
+                margin-top: -1px; /* Align with parent item */
             }
 
             /* Show second-level menu on hover of the parent li */
@@ -201,6 +172,13 @@
                 right: 1rem;
                 top: 1rem;
             }
+            
+            /* Ensure the main category link is still clickable */
+            .navbar-hover .nav-item.dropdown > a.nav-link.dropdown-toggle[aria-expanded="false"]::after {
+                /* Reset standard caret position */
+                transform: none;
+                margin-left: .255em;
+            }
         }
         
         /* Mobile Responsiveness (Ensures nested menus stack) */
@@ -210,12 +188,19 @@
                 height: auto !important;
             }
             .navbar-hover .dropdown-menu {
-                width: auto;
+                width: 100%;
             }
-            /* Nested menus stack on mobile */
+            /* Nested menus stack on mobile and are indented */
             .dropdown-submenu .dropdown-menu {
                 position: static;
-                padding-left: 1rem;
+                padding-left: 1.5rem;
+                border: none;
+                box-shadow: none;
+            }
+            
+            /* Remove the nested menu toggle caret on mobile (optional, but cleaner) */
+            .dropdown-submenu .dropdown-toggle::after {
+                display: none; 
             }
         }
     </style>

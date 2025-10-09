@@ -14,8 +14,23 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ForumPostController; // <--- NEW IMPORT
 use App\Models\Advertisement;
+use App\Models\ForumPost; // 👈 Add this line
+use App\Models\Category;
 
 
+
+// Route::get('/home', function () {
+//     $ads = \App\Models\Advertisement::where('published', 1)
+//         ->whereNotNull('feature_image')
+//         ->latest()
+//         ->take(8)
+//         ->get();
+
+//     // Load latest forum posts (paginate so the included view works)
+//     $posts = ForumPost::latest()->paginate(6);
+
+//     return view('index', compact('ads', 'posts'));
+// });
 
 Route::get('/home', function () {
     $ads = \App\Models\Advertisement::where('published', 1)
@@ -24,10 +39,11 @@ Route::get('/home', function () {
         ->take(8)
         ->get();
 
-    return view('index', compact('ads'));
+    $posts = ForumPost::with('category')->latest()->get();
+    $categories = Category::all();
+
+    return view('index', compact('ads', 'posts', 'categories'));
 });
-
-
 
 Route::post('/logout', function () {
     Auth::logout();
