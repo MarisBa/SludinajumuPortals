@@ -23,7 +23,11 @@ Route::get('/home', function () {
         ->take(8)
         ->get();
 
-    return view('index', compact('ads'));
+    $totalAds = \App\Models\Advertisement::where('published', 1)->count();
+    $totalCategories = \App\Models\Category::count();
+    $totalUsers = \App\Models\User::count();
+
+    return view('index', compact('ads', 'totalAds', 'totalCategories', 'totalUsers'));
 });
 
 
@@ -67,6 +71,7 @@ Route::get('/ad-image/{filename}', [AdImageController::class, 'show'])->name('ad
 Route::get('/get-subcategories/{category_id}', [CategoryController::class, 'getSubcategories']);
 Route::get('/get-childcategories/{subcategory_id}', [CategoryController::class, 'getChildcategories']);
 Route::get('/get-states/{country_id}', [LocationController::class, 'getStates']);
+Route::get('/get-cities/{state_id}', [LocationController::class, 'getCities']);
 
 // Global view composer for menus
 View::composer(['*'], function ($view) {
@@ -75,15 +80,16 @@ View::composer(['*'], function ($view) {
 });
 
 
-Route::resource('ads', AdvertisementController::class);
-
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::post('/profile', 'ProfileController@updateProfile')->name('update.profile')->middleware('auth');
+Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('update.profile')->middleware('auth');
 
 
 // Most specific → Least specific
 
 
+
+// Public browse page
+Route::get('/browse', [FrontendController::class, 'browse'])->name('browse');
 
 // Specific to general — avoid conflicts
 Route::get('/product/{categorySlug}/{subcategorySlug}/{childCategorySlug}', [FrontendController::class, 'findBasedOnChildcategory'])->name('childcategory.show');

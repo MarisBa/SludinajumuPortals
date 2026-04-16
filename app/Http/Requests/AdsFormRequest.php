@@ -22,17 +22,18 @@ class AdsFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'feature_image'=>'required|mimes:png,jpg,jpeg',
-            'first_image'=>'required|mimes:png,jpg,jpeg',
-            'second_image'=>'required|mimes:png,jpg,jpeg',
-            'name'=>'required|min:3|max:120',
-            'description'=>'required|min:3',
-            'price'=> "required|regex:/^\d+(\.\d{1,2})?$/",
-            'price_status'=>'required',
-            'category_id'=>'required',
-            'product_condition'=>'required',
-            'country_id'=>'required',
-            //'phone_number'=>'numeric|size:10'
+            'ad_images' => 'nullable|array|max:12',
+            'ad_images.*' => 'image|mimes:png,jpg,jpeg,webp|max:5120',
+            'feature_image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:5120',
+            'first_image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:5120',
+            'second_image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:5120',
+            'name' => 'required|min:3|max:120',
+            'description' => 'required|min:3',
+            'price' => "required|regex:/^\d+(\.\d{1,2})?$/",
+            'price_status' => 'required',
+            'category_id' => 'required',
+            'product_condition' => 'required',
+            'country_id' => 'required',
         ];
     }
 }

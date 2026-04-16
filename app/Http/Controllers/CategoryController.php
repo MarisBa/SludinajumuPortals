@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryFormRequest; // Assuming you have a form request f
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 
 class CategoryController extends Controller
@@ -75,7 +76,7 @@ class CategoryController extends Controller
         if ($request->hasFile('image')) {
             Storage::delete($category->image);
             $imagePath = $request->file('image')->store('category', 'public');
-            $category->update(['name' => $request->name, 'image' => $image]);
+            $category->update(['name' => $request->name, 'image' => $imagePath]);
         }
          $category->update(['name' => $request->name]);
          return redirect()->route('category.index')->with('message', 'Category updated successfully');

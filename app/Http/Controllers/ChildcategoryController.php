@@ -38,7 +38,7 @@ class ChildcategoryController extends Controller
             'slug'=>Str::slug($name),
         ]);
         return back()
-            ->with('message','Subcategory updated');
+            ->with('message','Childcategory created');
     }
 
     /**

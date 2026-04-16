@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
+use App\Models\Subcategory;
 use App\Models\Childcategory;
+use App\Models\City;
 use App\Models\Country;
 use App\Models\State;
 use App\Models\User;
@@ -14,11 +16,43 @@ class Advertisement extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    protected $casts = ['images' => 'array'];
 
-
-        public function childcategory()
+    /**
+     * Get all images (combines legacy columns + new JSON column).
+     * Returns array of image paths/URLs.
+     */
+    public function getAllImages(): array
     {
-        return $this->hasOne(Childcategory::class, 'id', 'childcategory_id');
+        $imgs = [];
+        if (!empty($this->feature_image)) $imgs[] = $this->feature_image;
+        if (!empty($this->first_image)) $imgs[] = $this->first_image;
+        if (!empty($this->second_image)) $imgs[] = $this->second_image;
+        if (!empty($this->images) && is_array($this->images)) {
+            $imgs = array_merge($imgs, $this->images);
+        }
+        return array_values(array_unique($imgs));
+    }
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
+
+    public function childcategory()
+    {
+        return $this->belongsTo(Childcategory::class);
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 
     public function country()

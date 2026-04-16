@@ -17,7 +17,7 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
-        $ads = Advertisement::latest()->where('user_id', auth()->user()->id)->get();
+        $ads = Advertisement::with(['category', 'subcategory'])->latest()->where('user_id', auth()->user()->id)->get();
         return view('ads.index', compact('ads'));
     }
 
@@ -37,17 +37,36 @@ class AdvertisementController extends Controller
     public function store(AdsFormRequest $request)
     {
         $data = $request->all();
-        $featureImage = $request->file('feature_image')->store('public/category');
-        $firstImage = $request->file('first_image')->store('public/category');
-        $secondImage = $request->file('second_image')->store('public/category');
-        $data['feature_image'] =  $featureImage;
-        $data['first_image'] =  $firstImage;
-        $data['second_image'] =  $secondImage;
-        $data['slug'] =  Str::slug($request->name);
+        $data['slug'] = Str::slug($request->name);
         $data['user_id'] = auth()->user()->id;
 
+        // Handle multiple images (up to 12)
+        $allImages = [];
+
+        if ($request->hasFile('ad_images')) {
+            foreach ($request->file('ad_images') as $file) {
+                $allImages[] = $file->store('public/category');
+            }
+        }
+
+        // Legacy single file inputs (fallback)
+        if (empty($allImages)) {
+            if ($request->hasFile('feature_image')) $allImages[] = $request->file('feature_image')->store('public/category');
+            if ($request->hasFile('first_image')) $allImages[] = $request->file('first_image')->store('public/category');
+            if ($request->hasFile('second_image')) $allImages[] = $request->file('second_image')->store('public/category');
+        }
+
+        // Set feature_image to the first one for backward compatibility
+        $data['feature_image'] = $allImages[0] ?? null;
+        $data['first_image'] = $allImages[1] ?? null;
+        $data['second_image'] = $allImages[2] ?? null;
+        $data['images'] = count($allImages) > 3 ? json_encode(array_slice($allImages, 3)) : null;
+
+        // Remove ad_images from $data since it's not a column
+        unset($data['ad_images']);
+
         Advertisement::create($data);
-        return redirect()->route('ads.index')->with('message', 'Advertisement created successfully');
+        return redirect()->route('ads.index')->with('message', 'Sludinājums veiksmīgi izveidots!');
     }
 
     /**
@@ -67,9 +86,10 @@ class AdvertisementController extends Controller
      */
     public function edit(string $id)
     {
-        $ad =  Advertisement::find($id);
+        $ad = Advertisement::with(['category', 'subcategory', 'childcategory', 'country', 'state', 'city'])->findOrFail($id);
+        $categories = Category::all();
 
-        return view('ads.edit', compact('ad'));
+        return view('ads.edit', compact('ad', 'categories'));
     }
 
     /**
@@ -77,26 +97,25 @@ class AdvertisementController extends Controller
      */
     public function update(AdsFormUpdateRequest $request, $id)
     {
-        $ad = Advertisement::find($id);
-        $featureImage = $ad->feature_image;
-        $firstImage = $ad->first_image;
-        $secondImage = $ad->second_image;
-        $data = $request->all();
-        if ($request->hasFile('feature_image')) {
-            $featureImage = $request->file('feature_image')->store('public/category');
+        $ad = Advertisement::findOrFail($id);
+        $data = $request->except(['ad_images', 'feature_image', 'first_image', 'second_image', '_token', '_method']);
+
+        // Handle new images
+        if ($request->hasFile('ad_images')) {
+            $allImages = [];
+            foreach ($request->file('ad_images') as $file) {
+                $allImages[] = $file->store('public/category');
+            }
+            $data['feature_image'] = $allImages[0] ?? $ad->feature_image;
+            $data['first_image'] = $allImages[1] ?? $ad->first_image;
+            $data['second_image'] = $allImages[2] ?? $ad->second_image;
+            if (count($allImages) > 3) {
+                $data['images'] = json_encode(array_slice($allImages, 3));
+            }
         }
-        if ($request->hasFile('first_image')) {
-            $firstImage = $request->file('first_image')->store('public/category');
-        }
-        if ($request->hasFile('second_image')) {
-            $secondImage = $request->file('second_image')->store('public/category');
-        }
-        $data['feature_image'] = $featureImage;
-        $data['first_image'] = $firstImage;
-        $data['second_image'] = $secondImage;
 
         $ad->update($data);
-        return redirect()->route('ads.index')->with('message','Your ad was updated!');
+        return redirect()->route('ads.index')->with('message', 'Sludinājums veiksmīgi atjaunināts!');
 
     }
 
