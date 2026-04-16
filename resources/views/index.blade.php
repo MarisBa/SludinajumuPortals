@@ -54,55 +54,85 @@
         }
 
         /* ========================================
-           1. NAVBAR
+           1. NAVBAR — Transparent → Solid on scroll
            ======================================== */
         .sp-navbar {
-            background: var(--sp-white);
-            border-bottom: 1px solid var(--sp-border);
+            background: transparent;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             padding: 0;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1030;
+            transition: background .35s, border-color .35s, box-shadow .35s;
+        }
+
+        .sp-navbar.scrolled {
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom-color: var(--sp-border);
             box-shadow: var(--sp-shadow-sm);
         }
 
         .sp-navbar .navbar-brand {
             font-weight: 800;
             font-size: 1.35rem;
-            color: var(--sp-dark);
+            color: #fff;
             letter-spacing: -0.5px;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             padding: 0.875rem 0;
+            transition: color .3s;
+        }
+
+        .sp-navbar.scrolled .navbar-brand {
+            color: var(--sp-dark);
         }
 
         .sp-navbar .navbar-brand .brand-icon {
             width: 36px;
             height: 36px;
-            background: var(--sp-primary);
+            background: rgba(255,255,255,0.2);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
             font-size: 1rem;
+            transition: background .3s, color .3s;
+        }
+
+        .sp-navbar.scrolled .navbar-brand .brand-icon {
+            background: var(--sp-primary);
+            color: #fff;
         }
 
         .sp-navbar .navbar-brand:hover {
-            color: var(--sp-primary);
+            opacity: 0.9;
         }
 
         .sp-navbar .nav-link {
-            color: var(--sp-text);
+            color: rgba(255,255,255,0.9);
             font-weight: 500;
             font-size: 0.9rem;
             padding: 0.5rem 0.875rem;
             border-radius: 8px;
-            transition: all 0.15s ease;
+            transition: all .25s;
+        }
+
+        .sp-navbar.scrolled .nav-link {
+            color: var(--sp-text);
         }
 
         .sp-navbar .nav-link:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.12);
+        }
+
+        .sp-navbar.scrolled .nav-link:hover {
             color: var(--sp-primary);
             background: var(--sp-primary-light);
         }
@@ -111,25 +141,59 @@
             font-size: 1rem;
         }
 
+        /* Auth buttons — transparent state */
         .btn-post-ad {
-            background: var(--sp-primary);
-            color: #fff !important;
+            background: #fff;
+            color: var(--sp-primary) !important;
             font-weight: 600;
             font-size: 0.9rem;
             border: none;
             padding: 0.55rem 1.25rem;
             border-radius: 8px;
-            transition: all 0.15s ease;
+            transition: all .25s;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
         }
 
+        .sp-navbar.scrolled .btn-post-ad {
+            background: var(--sp-primary);
+            color: #fff !important;
+        }
+
         .btn-post-ad:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            color: var(--sp-primary) !important;
+        }
+
+        .sp-navbar.scrolled .btn-post-ad:hover {
             background: var(--sp-primary-hover);
             color: #fff !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        /* Register button */
+        .sp-nav-register {
+            background: #fff !important;
+            color: var(--sp-primary) !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            border: none !important;
+            transition: all .25s !important;
+        }
+
+        .sp-navbar.scrolled .sp-nav-register {
+            background: var(--sp-primary) !important;
+            color: #fff !important;
+        }
+
+        /* Mobile toggler */
+        .sp-navbar .navbar-toggler-icon {
+            filter: brightness(0) invert(1);
+            transition: filter .3s;
+        }
+        .sp-navbar.scrolled .navbar-toggler-icon {
+            filter: none;
         }
 
         .sp-navbar .dropdown-menu {
@@ -174,18 +238,30 @@
             display: flex !important;
             align-items: center;
             gap: 0.5rem;
+            color: rgba(255,255,255,0.9) !important;
+            transition: color .3s !important;
+        }
+
+        .sp-navbar.scrolled .sp-user-toggle {
+            color: var(--sp-text) !important;
         }
 
         .sp-user-avatar {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: var(--sp-primary-light);
+            background: rgba(255,255,255,0.2);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: var(--sp-primary);
+            color: #fff;
             font-size: 0.9rem;
+            transition: all .3s;
+        }
+
+        .sp-navbar.scrolled .sp-user-avatar {
+            background: var(--sp-primary-light);
+            color: var(--sp-primary);
         }
 
         .sp-user-menu {
@@ -312,9 +388,10 @@
            ======================================== */
         .sp-hero {
             position: relative;
-            padding: 5.5rem 0 6rem;
+            padding: 9rem 0 5rem;
             overflow: hidden;
             background: var(--sp-dark);
+            min-height: 600px;
         }
 
         .sp-hero-video {
@@ -333,8 +410,9 @@
             inset: 0;
             background: linear-gradient(
                 180deg,
-                rgba(15, 23, 42, 0.70) 0%,
-                rgba(15, 23, 42, 0.55) 40%,
+                rgba(15, 23, 42, 0.55) 0%,
+                rgba(15, 23, 42, 0.40) 30%,
+                rgba(15, 23, 42, 0.50) 60%,
                 rgba(15, 23, 42, 0.75) 100%
             );
             z-index: 1;
@@ -346,13 +424,13 @@
         }
 
         .sp-hero-title {
-            font-size: 2.75rem;
+            font-size: 3.25rem;
             font-weight: 800;
             color: #fff;
-            letter-spacing: -1px;
-            line-height: 1.15;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
             margin-bottom: 0.75rem;
-            text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+            text-shadow: 0 2px 30px rgba(0,0,0,0.2);
         }
 
         .sp-hero-subtitle {
@@ -367,10 +445,12 @@
         /* Search Bar */
         .sp-search-bar {
             max-width: 720px;
-            margin: 0 auto 2.5rem;
-            background: var(--sp-white);
+            margin: 0 auto 1.5rem;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: var(--sp-radius-lg);
-            box-shadow: var(--sp-shadow-xl);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             padding: 6px;
             display: flex;
             align-items: stretch;
@@ -968,11 +1048,12 @@
            ======================================== */
         @media (max-width: 767.98px) {
             .sp-hero {
-                padding: 2.5rem 0 3.5rem;
+                padding: 7rem 0 3rem;
+                min-height: auto;
             }
 
             .sp-hero-title {
-                font-size: 1.85rem;
+                font-size: 2rem;
             }
 
             .sp-hero-subtitle {
@@ -1029,6 +1110,12 @@
                 flex-direction: column;
                 gap: 0.75rem;
                 text-align: center;
+            }
+
+            /* Mobile: force solid nav when menu open */
+            .sp-navbar .navbar-collapse.show ~ .navbar-toggler ~ .brand-icon,
+            .sp-navbar .navbar-collapse.collapsing ~ .navbar-toggler ~ .brand-icon {
+                background: var(--sp-primary);
             }
 
             /* Mobile mega menu */
@@ -1216,12 +1303,19 @@
         <div class="sp-hero-overlay"></div>
 
         <div class="container text-center">
-            <h1 class="sp-hero-title">Pirkt & Pārdot Latvijā</h1>
+            {{-- Trust pill --}}
+            <div style="margin-bottom:1.25rem;">
+                <span style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);border-radius:99px;padding:.4rem 1rem;font-size:.8rem;color:rgba(255,255,255,0.9);font-weight:500;">
+                    <span style="font-size:1rem;">🇱🇻</span> Latvijas sludinājumu portāls
+                </span>
+            </div>
+
+            <h1 class="sp-hero-title">Pirkt & Pārdot<br>Latvijā</h1>
             <p class="sp-hero-subtitle">Atrodi labākos piedāvājumus no uzticamiem pārdevējiem visā Latvijā</p>
 
             {{-- Search Bar --}}
             <form action="{{ route('browse') }}" method="GET" class="sp-search-bar">
-                <input type="text" name="search" class="form-control" placeholder="Ko tu meklē?">
+                <input type="text" name="search" class="form-control" placeholder="Ko tu meklē? Piem. BMW, dīvāns, MacBook...">
                 <select name="category" class="form-select">
                     <option value="">Visas kategorijas</option>
                     @foreach($menus as $cat)
@@ -1232,6 +1326,14 @@
                     <i class="bi bi-search"></i> Meklēt
                 </button>
             </form>
+
+            {{-- Popular searches --}}
+            <div style="display:flex;justify-content:center;gap:.4rem;flex-wrap:wrap;margin-bottom:2rem;">
+                <span style="font-size:.78rem;color:rgba(255,255,255,0.5);padding:.35rem 0;margin-right:.25rem;">Populāri:</span>
+                @foreach(['Auto', 'iPhone', 'Dīvāns', 'Velosipēds', 'Dzīvoklis'] as $tag)
+                    <a href="{{ route('browse', ['search' => $tag]) }}" style="display:inline-block;background:rgba(255,255,255,0.1);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);font-size:.78rem;font-weight:500;padding:.3rem .85rem;border-radius:99px;text-decoration:none;transition:.2s;">{{ $tag }}</a>
+                @endforeach
+            </div>
 
             {{-- Stats --}}
             <div class="sp-stats">
@@ -1479,5 +1581,34 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Navbar transparent → solid on scroll
+    (function() {
+        var nav = document.querySelector('.sp-navbar');
+        if (!nav) return;
+        function onScroll() {
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        // Force solid when mobile menu opens
+        var toggler = nav.querySelector('.navbar-toggler');
+        if (toggler) {
+            toggler.addEventListener('click', function() {
+                setTimeout(function() {
+                    var menu = nav.querySelector('.navbar-collapse');
+                    if (menu && menu.classList.contains('show')) {
+                        nav.classList.add('scrolled');
+                    }
+                }, 50);
+            });
+        }
+    })();
+    </script>
 </body>
 </html>
