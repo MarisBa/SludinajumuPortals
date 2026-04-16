@@ -15,12 +15,6 @@
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t2);-webkit-font-smoothing:antialiased;}
 
-        .sp-nav{background:var(--wh);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:100;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-        .sp-nav .navbar-brand{font-weight:800;font-size:1.25rem;color:var(--dk);display:flex;align-items:center;gap:.5rem;}
-        .sp-nav .brand-sq{width:32px;height:32px;background:var(--pri);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;}
-        .sp-nav .nav-link{color:var(--t2);font-weight:500;font-size:.87rem;padding:.4rem .7rem;border-radius:var(--r-xs);transition:.15s;}
-        .sp-nav .nav-link:hover{color:var(--pri);background:var(--pri-lt);}
-
         .bc{display:flex;align-items:center;gap:.35rem;padding:1rem 0 .5rem;flex-wrap:wrap;}
         .bc a{color:var(--t4);text-decoration:none;font-size:.8rem;}.bc a:hover{color:var(--pri);}
         .bc .sep{color:var(--t5);font-size:.7rem;}.bc .cur{color:var(--t1);font-weight:500;font-size:.8rem;}
@@ -146,19 +140,7 @@
         </div>
     </div>
 
-    {{-- Navbar --}}
-    <nav class="navbar navbar-expand-lg sp-nav">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/home') }}">
-                <span class="brand-sq"><i class="bi bi-megaphone-fill"></i></span>
-                {{ config('app.name') }}
-            </a>
-            <div class="navbar-nav ms-auto gap-1">
-                <a class="nav-link" href="{{ route('ads.index') }}"><i class="bi bi-collection me-1"></i> Mani sludinājumi</a>
-                <a class="nav-link" href="{{ route('product.view', ['id' => $ad->id, 'slug' => $ad->slug]) }}" target="_blank"><i class="bi bi-eye me-1"></i> Skatīt</a>
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar')
 
     @php
         $images = $ad->getAllImages();

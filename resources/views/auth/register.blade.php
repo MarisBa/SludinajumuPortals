@@ -65,7 +65,7 @@
     <div class="auth-wrap">
         <div class="auth-form-side">
             <div class="auth-top">
-                <a href="{{ url('/home') }}"><i class="bi bi-megaphone-fill" style="color:var(--pri);"></i> <strong style="color:var(--dk);">{{ config('app.name') }}</strong></a>
+                <a href="{{ url('/home') }}"><img src="/img/logo.png" alt="Logo" style="height:28px;width:auto;"></a>
                 <a href="{{ url('/home') }}"><i class="bi bi-arrow-left"></i> Uz sākumu</a>
             </div>
 
@@ -149,7 +149,7 @@
 
         <div class="auth-brand-side">
             <div class="brand-content">
-                <div class="brand-logo"><i class="bi bi-megaphone-fill"></i></div>
+                <div class="brand-logo"><img src="/img/logo.png" alt="Logo" style="height:36px;filter:brightness(0) invert(1);"></div>
                 <div class="brand-title">Pievienojies kopienai</div>
                 <div class="brand-sub">Tūkstošiem cilvēku Latvijā jau pērk un pārdod katru dienu. Pievienojies viņiem!</div>
             </div>

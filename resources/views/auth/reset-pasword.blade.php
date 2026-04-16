@@ -34,8 +34,7 @@
     <div class="auth-card">
         <div style="text-align:center;margin-bottom:2rem;">
             <a href="{{ url('/home') }}" style="text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;">
-                <i class="bi bi-megaphone-fill" style="color:var(--pri);font-size:1.1rem;"></i>
-                <strong style="color:var(--dk);font-size:1.1rem;">{{ config('app.name') }}</strong>
+                <img src="/img/logo.png" alt="{{ config('app.name') }}" style="height:28px;width:auto;">
             </a>
         </div>
 

@@ -18,13 +18,6 @@
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t2);-webkit-font-smoothing:antialiased;}
 
-        /* Nav */
-        .sp-nav{background:var(--wh);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:100;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-        .sp-nav .navbar-brand{font-weight:800;font-size:1.25rem;color:var(--dk);display:flex;align-items:center;gap:.5rem;padding:.75rem 0;}
-        .sp-nav .brand-sq{width:32px;height:32px;background:var(--pri);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;}
-        .sp-nav .nav-link{color:var(--t2);font-weight:500;font-size:.87rem;padding:.4rem .7rem;border-radius:var(--r-xs);transition:.15s;}
-        .sp-nav .nav-link:hover{color:var(--pri);background:var(--pri-lt);}
-
         /* Progress */
         .wiz-progress{background:var(--wh);border-bottom:1px solid var(--bdr);padding:1rem 0;position:sticky;top:56px;z-index:90;}
         .wiz-steps{display:flex;justify-content:center;gap:0;max-width:600px;margin:0 auto;position:relative;}
@@ -176,18 +169,7 @@
 <body>
     <div class="toast-wrap" id="toastWrap"></div>
 
-    {{-- Navbar --}}
-    <nav class="navbar navbar-expand-lg sp-nav">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/home') }}">
-                <span class="brand-sq"><i class="bi bi-megaphone-fill"></i></span>
-                {{ config('app.name', 'SludinajumuPortals') }}
-            </a>
-            <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{{ url('/home') }}"><i class="bi bi-house-door me-1"></i> Sākums</a>
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar')
 
     {{-- Progress Bar --}}
     <div class="wiz-progress">

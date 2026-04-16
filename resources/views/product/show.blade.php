@@ -35,15 +35,6 @@
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--t2); -webkit-font-smoothing: antialiased; }
         .heading-font { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; }
 
-        /* ===== NAVBAR ===== */
-        .sp-nav { background: var(--wh); border-bottom: 1px solid var(--bdr); position: sticky; top: 0; z-index: 100; box-shadow: var(--sh); }
-        .sp-nav .navbar-brand { font-weight: 800; font-size: 1.25rem; color: var(--dk); display: flex; align-items: center; gap: .5rem; }
-        .sp-nav .brand-sq { width: 32px; height: 32px; background: var(--pri); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: .85rem; }
-        .sp-nav .nav-link { color: var(--t2); font-weight: 500; font-size: .87rem; padding: .4rem .7rem; border-radius: var(--r-xs); transition: .15s; }
-        .sp-nav .nav-link:hover { color: var(--pri); background: var(--pri-lt); }
-        .nav-post { background: var(--pri) !important; color: #fff !important; font-weight: 600; border-radius: var(--r-xs); padding: .45rem 1rem !important; }
-        .nav-post:hover { background: var(--pri-dk) !important; }
-
         /* ===== BREADCRUMB ===== */
         .bc { padding: 1rem 0 .25rem; display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; }
         .bc a { color: var(--t4); text-decoration: none; font-size: .8rem; transition: .15s; }
@@ -216,25 +207,7 @@
         <div class="lb-counter"><span id="lbIdx">1</span> / {{ count($images) }}</div>
     </div>
 
-    {{-- Navbar --}}
-    <nav class="navbar navbar-expand-lg sp-nav">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/home') }}">
-                <span class="brand-sq"><i class="bi bi-megaphone-fill"></i></span>
-                {{ config('app.name', 'SludinajumuPortals') }}
-            </a>
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#pNav"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="pNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/home') }}"><i class="bi bi-house-door me-1"></i> Sākums</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('browse') }}"><i class="bi bi-collection me-1"></i> Sludinājumi</a></li>
-                    @auth
-                        <li class="nav-item"><a class="nav-link nav-post" href="{{ url('/ads/create') }}"><i class="bi bi-plus-lg me-1"></i> Ievietot</a></li>
-                    @endauth
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar')
 
     <div class="container" style="padding-bottom: 2rem;">
 

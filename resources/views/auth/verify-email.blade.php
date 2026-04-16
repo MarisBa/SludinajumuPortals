@@ -28,7 +28,7 @@
 <body>
     <div class="v-card">
         <a href="{{ url('/home') }}" style="font-size:.85rem;color:var(--t4);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;margin-bottom:2rem;">
-            <i class="bi bi-megaphone-fill" style="color:var(--pri);"></i> <strong style="color:var(--dk);">{{ config('app.name') }}</strong>
+            <img src="/img/logo.png" alt="Logo" style="height:28px;width:auto;">
         </a>
 
         <div class="v-icon"><i class="bi bi-envelope-paper"></i></div>

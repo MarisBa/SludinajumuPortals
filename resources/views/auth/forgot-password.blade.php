@@ -33,7 +33,7 @@
 <body>
     <div class="auth-card">
         <div class="auth-top">
-            <a href="{{ url('/home') }}"><i class="bi bi-megaphone-fill" style="color:var(--pri);"></i> <strong style="color:var(--dk);">{{ config('app.name') }}</strong></a>
+            <a href="{{ url('/home') }}"><img src="/img/logo.png" alt="Logo" style="height:28px;width:auto;"></a>
             <a href="{{ route('login') }}"><i class="bi bi-arrow-left"></i> Atpakaļ</a>
         </div>
 

@@ -183,7 +183,7 @@
         <nav class="navbar navbar-expand-md top-navbar shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    <i class="bi bi-megaphone-fill me-2"></i>{{ config('app.name', 'SludinajumuPortals') }}
+                    <img src="/img/logo.png" alt="{{ config('app.name') }}" style="height:32px;width:auto;filter:brightness(0) invert(1);">
                 </a>
                 <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                     <i class="bi bi-list text-white fs-4"></i>
@@ -284,7 +284,7 @@
             <div class="container">
                 <div class="row g-4">
                     <div class="col-lg-4 col-md-6">
-                        <h6><i class="bi bi-megaphone-fill me-2"></i>{{ config('app.name', 'SludinajumuPortals') }}</h6>
+                        <h6><img src="/img/logo.png" alt="{{ config('app.name') }}" style="height:24px;width:auto;filter:brightness(0) invert(1);"></h6>
                         <p class="mb-0" style="font-size: 0.88rem;">Your trusted classifieds portal. Buy and sell with confidence.</p>
                     </div>
                     <div class="col-lg-2 col-md-6">

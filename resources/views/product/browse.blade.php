@@ -44,37 +44,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ---- Navbar (compact) ---- */
-        .sp-navbar {
-            background: var(--sp-white);
-            border-bottom: 1px solid var(--sp-border);
-            padding: 0;
-            position: sticky;
-            top: 0;
-            z-index: 1030;
-            box-shadow: var(--sp-shadow-sm);
-        }
-        .sp-navbar .navbar-brand {
-            font-weight: 800; font-size: 1.3rem; color: var(--sp-dark);
-            display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 0;
-        }
-        .sp-navbar .navbar-brand .brand-icon {
-            width: 34px; height: 34px; background: var(--sp-primary); border-radius: 9px;
-            display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.9rem;
-        }
-        .sp-navbar .navbar-brand:hover { color: var(--sp-primary); }
-        .sp-navbar .nav-link {
-            color: var(--sp-text); font-weight: 500; font-size: 0.88rem;
-            padding: 0.45rem 0.75rem; border-radius: 8px; transition: all 0.15s;
-        }
-        .sp-navbar .nav-link:hover { color: var(--sp-primary); background: var(--sp-primary-light); }
-        .btn-post-ad {
-            background: var(--sp-primary); color: #fff !important; font-weight: 600; font-size: 0.88rem;
-            border: none; padding: 0.5rem 1.1rem; border-radius: 8px; display: inline-flex;
-            align-items: center; gap: 0.4rem; transition: all 0.15s;
-        }
-        .btn-post-ad:hover { background: var(--sp-primary-hover); color: #fff !important; }
-
         /* ---- Hero Banner ---- */
         .browse-hero {
             background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
@@ -257,30 +226,7 @@
 </head>
 <body>
 
-    {{-- Navbar --}}
-    <nav class="navbar navbar-expand-lg sp-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/home') }}">
-                <span class="brand-icon"><i class="bi bi-megaphone-fill"></i></span>
-                {{ config('app.name', 'SludinajumuPortals') }}
-            </a>
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#browseNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="browseNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/home') }}"><i class="bi bi-house-door me-1"></i> Sākums</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ route('browse') }}"><i class="bi bi-collection me-1"></i> Sludinājumi</a></li>
-                    @guest
-                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right me-1"></i> Ielogoties</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('register') }}"><i class="bi bi-person-plus me-1"></i> Reģistrēties</a></li>
-                    @else
-                        <li class="nav-item"><a class="btn btn-post-ad" href="{{ url('/ads/create') }}"><i class="bi bi-plus-lg"></i> Ievietot</a></li>
-                    @endguest
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('partials.navbar')
 
     {{-- Hero Banner --}}
     <section class="browse-hero">
