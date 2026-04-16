@@ -190,7 +190,7 @@
 
                 {{-- ===== TAB 0: Profile ===== --}}
                 <div class="tab-panel active" id="tab0">
-                    <form action="{{ route('update.profile') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('account.profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="s-card">
                             <div class="s-card-title"><i class="bi bi-person-circle"></i> Publiskais profils</div>
@@ -280,8 +280,8 @@
 
                 {{-- ===== TAB 1: Security ===== --}}
                 <div class="tab-panel" id="tab1">
-                    <form action="{{ route('user-password.update') }}" method="POST">
-                        @csrf @method('PUT')
+                    <form action="{{ route('account.password.update') }}" method="POST">
+                        @csrf
                         <div class="s-card">
                             <div class="s-card-title"><i class="bi bi-key"></i> Parole</div>
                             <div class="s-card-sub">Regulāri mainiet paroli drošībai</div>

@@ -80,8 +80,47 @@ View::composer(['*'], function ($view) {
 });
 
 
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('update.profile')->middleware('auth');
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile')->middleware('auth');
+
+// Account settings routes
+Route::prefix('account')->middleware('auth')->group(function () {
+    // Profile
+    Route::post('/profile', [\App\Http\Controllers\Account\ProfileController::class, 'update'])->name('account.profile.update');
+
+    // Username check (JSON)
+    Route::get('/username/check', [\App\Http\Controllers\Account\UsernameController::class, 'check'])->name('account.username.check');
+
+    // Password
+    Route::post('/password', [\App\Http\Controllers\Account\PasswordController::class, 'update'])
+        ->name('account.password.update')
+        ->middleware('throttle:5,15');
+
+    // Phone verification
+    Route::post('/phone/send-otp', [\App\Http\Controllers\Account\PhoneVerificationController::class, 'send'])
+        ->name('account.phone.send')
+        ->middleware('throttle:3,10');
+    Route::post('/phone/verify-otp', [\App\Http\Controllers\Account\PhoneVerificationController::class, 'verify'])
+        ->name('account.phone.verify')
+        ->middleware('throttle:5,10');
+    Route::delete('/phone', [\App\Http\Controllers\Account\PhoneVerificationController::class, 'destroy'])
+        ->name('account.phone.destroy');
+
+    // Notifications
+    Route::post('/notifications', [\App\Http\Controllers\Account\NotificationPreferencesController::class, 'update'])
+        ->name('account.notifications.update');
+
+    // Privacy
+    Route::post('/privacy', [\App\Http\Controllers\Account\PrivacyController::class, 'update'])
+        ->name('account.privacy.update');
+
+    // Data export
+    Route::post('/data-export', [\App\Http\Controllers\Account\DataExportController::class, 'request'])
+        ->name('account.data-export')
+        ->middleware('throttle:2,60');
+});
+
+// Legacy profile update route (redirect to new)
+Route::post('/profile', [\App\Http\Controllers\Account\ProfileController::class, 'update'])->name('update.profile')->middleware('auth');
 
 
 // Most specific → Least specific
