@@ -47,7 +47,7 @@
                 @forelse($advertisements as $advertisement)
                     <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
                         <div class="card h-100 border-0 shadow-sm hover-shadow">
-                            <img src="{{ route('ad.image', basename($advertisement->feature_image)) }}" 
+                            <img src="{{ str_starts_with($advertisement->feature_image, 'http') ? $advertisement->feature_image : route('ad.image', basename($advertisement->feature_image)) }}" 
                                  class="card-img-top rounded-top img-fluid" 
                                  style="height: 200px; object-fit: cover;" 
                                  alt="{{ $advertisement->name }}">

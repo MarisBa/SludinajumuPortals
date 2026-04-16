@@ -74,7 +74,7 @@
                          data-date="{{ $advertisement->created_at->timestamp }}">
                         <a href="{{ route('product.view', ['id' => $advertisement->id, 'slug' => $advertisement->slug]) }}" class="text-decoration-none text-dark">
                             <div class="card h-100 border-0 shadow-sm hover-shadow">
-                                <img src="{{ route('ad.image', basename($advertisement->feature_image)) }}" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt="{{ $advertisement->name }}">
+                                <img src="{{ str_starts_with($advertisement->feature_image, 'http') ? $advertisement->feature_image : route('ad.image', basename($advertisement->feature_image)) }}" class="card-img-top rounded-top img-fluid" style="height: 200px; object-fit: cover;" alt="{{ $advertisement->name }}">
                                 <div class="card-body text-center">
                                     <h6 class="card-title text-truncate mb-1">{{ Str::limit($advertisement->name, 40) }}</h6>
                                     <p class="fw-bold text-danger mb-0 price-display">USD {{ number_format($advertisement->price, 2) }}</p>

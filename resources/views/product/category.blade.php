@@ -33,7 +33,7 @@
                 @forelse($advertisements as $advertisement)
                     <div class="col-md-3 mb-4">
                         <div class="card h-100">
-                            <img src="{{ route('ad.image', basename($advertisement->feature_image)) }}" class="card-img-top img-thumbnail" alt="Ad Image">
+                            <img src="{{ str_starts_with($advertisement->feature_image, 'http') ? $advertisement->feature_image : route('ad.image', basename($advertisement->feature_image)) }}" class="card-img-top img-thumbnail" alt="Ad Image">
                             <div class="card-body p-2 text-center">
                                 <p class="mb-1">{{ $advertisement->name }}</p>
                                 <strong>USD {{ $advertisement->price }}</strong>

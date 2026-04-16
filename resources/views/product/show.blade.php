@@ -25,7 +25,7 @@
                     <div class="carousel-inner rounded shadow">
                         @foreach($images as $index => $image)
                             <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                <img src="{{ route('ad.image', basename($image)) }}" class="d-block w-100 img-fluid" style="max-height: 400px; object-fit: cover;" alt="Product Image {{ $index + 1 }}">
+                                <img src="{{ str_starts_with($image, 'http') ? $image : route('ad.image', basename($image)) }}" class="d-block w-100 img-fluid" style="max-height: 400px; object-fit: cover;" alt="Product Image {{ $index + 1 }}">
                             </div>
                         @endforeach
                     </div>

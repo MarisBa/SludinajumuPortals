@@ -54,7 +54,7 @@
                             <tr>
                                 <th scope="row">{{ $key + 1 }}</th>
                                 <td>
-                               <img src="{{ route('ad.image', basename($ad->feature_image)) }}" width="150" alt="Ad Image">
+                               <img src="{{ str_starts_with($ad->feature_image, 'http') ? $ad->feature_image : route('ad.image', basename($ad->feature_image)) }}" width="150" alt="Ad Image">
 
 
 
