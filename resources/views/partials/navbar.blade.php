@@ -201,6 +201,17 @@
                         </li>
                     @endif
                 @else
+                    <li class="nav-item position-relative">
+                        <a class="nav-link" href="{{ url('/messages') }}" title="Ziņas">
+                            <i class="bi bi-chat-dots"></i>
+                            <span class="d-lg-none ms-1">Ziņas</span>
+                            <span class="badge bg-danger position-absolute"
+                                  id="navUnreadBadge"
+                                  style="top: 4px; right: -4px; display: none; font-size: .65rem; padding: .2rem .4rem; border-radius: 99px; line-height: 1;">
+                                0
+                            </span>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="btn btn-post-ad" href="{{ url('/ads/create') }}">
                             <i class="bi bi-plus-lg"></i> Ievietot sludinājumu
@@ -222,7 +233,14 @@
                             <hr class="dropdown-divider m-0">
                             <a class="dropdown-item" href="{{ url('/ads/create') }}"><i class="bi bi-plus-circle me-2"></i> Jauns sludinājums</a>
                             <a class="dropdown-item" href="{{ url('/ads') }}"><i class="bi bi-collection me-2"></i> Mani sludinājumi</a>
+                            <a class="dropdown-item" href="{{ url('/messages') }}"><i class="bi bi-chat-dots me-2"></i> Ziņas</a>
                             <a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person me-2"></i> Profils</a>
+                            @if(auth()->check() && auth()->user()->isAdmin())
+                                <hr class="dropdown-divider m-0">
+                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    <i class="bi bi-shield-lock me-2"></i> Admin panelis
+                                </a>
+                            @endif
                             <hr class="dropdown-divider m-0">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -251,3 +269,35 @@
 })();
 </script>
 @endif
+
+@auth
+<script>
+(function() {
+    async function updateUnreadBadge() {
+        try {
+            const response = await fetch('/messages/unread-count', {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+            if (!response.ok) return;
+
+            const data = await response.json();
+            const badge = document.getElementById('navUnreadBadge');
+            if (badge) {
+                if (data.total > 0) {
+                    badge.textContent = data.total > 99 ? '99+' : data.total;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        } catch (e) { /* silently fail */ }
+    }
+
+    updateUnreadBadge();
+    setInterval(updateUnreadBadge, 30000);
+})();
+</script>
+@endauth

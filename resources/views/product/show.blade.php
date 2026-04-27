@@ -410,6 +410,17 @@
 
                         {{-- 4. CTA --}}
                         <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: .5rem;">
+                            @auth
+                                @if(auth()->id() !== $advertisement->user_id)
+                                    <button type="button" class="btn-cta btn-sec" data-bs-toggle="modal" data-bs-target="#contactSellerModal">
+                                        <i class="bi bi-chat-dots-fill"></i> Rakstīt pārdevējam
+                                    </button>
+                                @endif
+                            @else
+                                <a href="{{ url('/login') }}" class="btn-cta btn-sec">
+                                    <i class="bi bi-chat-dots"></i> Pieslēdzies, lai rakstītu
+                                </a>
+                            @endauth
                             @if($advertisement->phone_number)
                                 <button class="btn-cta btn-pri" id="phoneBtn" onclick="revealPhone()">
                                     <i class="bi bi-telephone-fill"></i>
@@ -433,6 +444,19 @@
                                 <i class="bi bi-share"></i> Dalīties
                             </button>
                         </div>
+
+                        @auth
+                            @if(auth()->id() === $advertisement->user_id || auth()->user()->isAdmin())
+                                <div style="margin-top: .5rem;">
+                                    <a href="{{ route('pdf.ad', $advertisement->id) }}"
+                                       class="btn-cta btn-out"
+                                       style="height: 40px; font-size: .82rem;"
+                                       target="_blank">
+                                        <i class="bi bi-file-pdf"></i> Lejupielādēt PDF
+                                    </a>
+                                </div>
+                            @endif
+                        @endauth
                     </div>
 
                     {{-- 5. Seller --}}
@@ -674,5 +698,87 @@
     });
     @endif
     </script>
+
+    @auth
+        @if(auth()->id() !== $advertisement->user_id)
+        <div class="modal fade" id="contactSellerModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-chat-dots-fill text-primary"></i>
+                            Rakstīt pārdevējam
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Aizvērt"></button>
+                    </div>
+                    <form action="{{ url('/messages/start') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="advertisement_id" value="{{ $advertisement->id }}">
+
+                        <div class="modal-body">
+                            <div class="alert alert-light border">
+                                <div class="small text-muted">Sludinājums:</div>
+                                <strong>{{ $advertisement->name }}</strong><br>
+                                <span class="text-muted small">
+                                    Pārdevējs: {{ $advertisement->user->name ?? 'Lietotājs' }}
+                                </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted d-block mb-1">Ātrās ziņas:</small>
+                                <div class="d-flex flex-wrap gap-1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm template-btn">
+                                        Sveiki! Vai vēl ir pieejams?
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm template-btn">
+                                        Vai cena ir runājama?
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm template-btn">
+                                        Vai varētu apskatīt klātienē?
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Tava ziņa:</label>
+                                <textarea name="body"
+                                          id="contactSellerMessage"
+                                          class="form-control"
+                                          rows="4"
+                                          maxlength="2000"
+                                          required
+                                          placeholder="Sveiki! Es interesējos par šo sludinājumu..."></textarea>
+                                <small class="text-muted">Maksimums 2000 rakstzīmes</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Atcelt
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i> Sūtīt ziņu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const templateBtns = document.querySelectorAll('.template-btn');
+                const messageInput = document.getElementById('contactSellerMessage');
+                templateBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        if (messageInput) {
+                            messageInput.value = btn.textContent.trim();
+                            messageInput.focus();
+                        }
+                    });
+                });
+            });
+        </script>
+        @endif
+    @endauth
 </body>
 </html>

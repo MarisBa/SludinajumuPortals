@@ -102,6 +102,12 @@
                     </div>
 
                     <div class="f-group">
+                        <label class="f-label">Tālrunis</label>
+                        <input type="tel" name="phone" class="f-input @error('phone') is-err @enderror" value="{{ old('phone') }}" placeholder="+37120000000" autocomplete="tel" required>
+                        @error('phone')<div class="f-err">{{ $message }}</div>@enderror
+                    </div>
+
+                    <div class="f-group">
                         <label class="f-label">Parole</label>
                         <div class="pw-wrap">
                             <input type="password" name="password" class="f-input @error('password') is-err @enderror" id="regPw" autocomplete="new-password" required oninput="checkStrength(this.value)">

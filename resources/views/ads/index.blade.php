@@ -323,6 +323,9 @@
                                     <button class="kebab-item" onclick="shareAd('{{ route('product.view', ['id' => $ad->id, 'slug' => $ad->slug]) }}')">
                                         <i class="bi bi-share"></i> Dalīties
                                     </button>
+                                    <a href="{{ route('pdf.ad', $ad->id) }}" target="_blank" class="kebab-item">
+                                        <i class="bi bi-file-pdf"></i> Eksportēt PDF
+                                    </a>
                                     <div class="kebab-divider"></div>
                                     <button class="kebab-item danger" onclick="openDeleteModal({{ $ad->id }}, '{{ addslashes($ad->name) }}')">
                                         <i class="bi bi-trash3"></i> Dzēst

@@ -17,6 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name', 'username', 'bio', 'location', 'email', 'password',
         'address', 'avatar', 'phone', 'phone_verified_at', 'fb_id',
         'notification_prefs', 'privacy_prefs', 'password_changed_at',
+        'role', 'is_blocked',
     ];
 
     protected $hidden = [
@@ -91,5 +92,41 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeWithPhone($query)
     {
         return $query->whereNotNull('phone')->whereNotNull('phone_verified_at');
+    }
+
+    // ---- Role / blocking ----
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isBlocked(): bool
+    {
+        return (bool) $this->is_blocked;
+    }
+
+    // ---- Conversation relationships ----
+
+    public function buyerConversations()
+    {
+        return $this->hasMany(Conversation::class, 'buyer_id');
+    }
+
+    public function sellerConversations()
+    {
+        return $this->hasMany(Conversation::class, 'seller_id');
+    }
+
+    public function totalUnreadMessages(): int
+    {
+        $asBuyer = $this->buyerConversations()->sum('buyer_unread_count');
+        $asSeller = $this->sellerConversations()->sum('seller_unread_count');
+        return (int) ($asBuyer + $asSeller);
+    }
+
+    public function allConversations()
+    {
+        return Conversation::forUser($this->id);
     }
 }
