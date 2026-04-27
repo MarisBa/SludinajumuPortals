@@ -43,7 +43,9 @@ Route::get('/auth', function () {
 });
 
 // Dashboard route
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Authenticated admin routes (for categories)
 Route::prefix('auth')->middleware(['auth', 'admin'])->group(function () {

@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Force Laravel to handle /admin even though public/admin/ directory exists
+    # (the directory holds a legacy admin template referenced by /admin/template/... assets)
+    RewriteRule ^admin/?$ index.php [L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
