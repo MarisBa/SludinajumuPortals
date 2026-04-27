@@ -17,25 +17,25 @@
 
     <!-- plugins:js -->
 
-    <script src="/admin/template/vendors/base/vendor.bundle.base.js"></script>
+    <script src="/admin-template/template/vendors/base/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page-->
-    <script src="/admin/template/vendors/chart.js/Chart.min.js"></script>
-    <script src="/admin/template/vendors/datatables.net/jquery.dataTables.js"></script>
-    <script src="/admin/template/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="/admin-template/template/vendors/chart.js/Chart.min.js"></script>
+    <script src="/admin-template/template/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="/admin-template/template/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
     <!-- End plugin js for this page-->
     <!-- inject:js -->
-    <script src="/admin/template/js/off-canvas.js"></script>
-    <script src="/admin/template/js/hoverable-collapse.js"></script>
-    <script src="/admin/template/js/template.js"></script>
+    <script src="/admin-template/template/js/off-canvas.js"></script>
+    <script src="/admin-template/template/js/hoverable-collapse.js"></script>
+    <script src="/admin-template/template/js/template.js"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
-    <script src="/admin/template/js/dashboard.js"></script>
-    <script src="/admin/template/js/data-table.js"></script>
-    <script src="/admin/template/js/jquery.dataTables.js"></script>
-    <script src="/admin/template/js/dataTables.bootstrap4.js"></script>
+    <script src="/admin-template/template/js/dashboard.js"></script>
+    <script src="/admin-template/template/js/data-table.js"></script>
+    <script src="/admin-template/template/js/jquery.dataTables.js"></script>
+    <script src="/admin-template/template/js/dataTables.bootstrap4.js"></script>
     <!-- End custom js for this page-->
-    <script src="/admin/template/js/jquery.cookie.js" type="text/javascript"></script>
+    <script src="/admin-template/template/js/jquery.cookie.js" type="text/javascript"></script>
   </body>
   
   </html>

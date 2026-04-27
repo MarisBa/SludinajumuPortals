@@ -12,10 +12,6 @@ class PrivacyController extends Controller
         $request->user()->update([
             'privacy_prefs' => [
                 'profile_visibility' => $request->input('profile_visibility', 'public'),
-                'show_phone' => (bool) $request->input('show_phone', true),
-                'show_full_name' => (bool) $request->input('show_full_name', true),
-                'allow_messages' => (bool) $request->input('allow_messages', true),
-                'personalized_ads' => (bool) $request->input('personalized_ads', false),
             ],
         ]);
 

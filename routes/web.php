@@ -148,20 +148,6 @@ Route::prefix('account')->middleware('auth')->group(function () {
         ->name('account.password.update')
         ->middleware('throttle:5,15');
 
-    // Phone verification
-    Route::post('/phone/send-otp', [\App\Http\Controllers\Account\PhoneVerificationController::class, 'send'])
-        ->name('account.phone.send')
-        ->middleware('throttle:3,10');
-    Route::post('/phone/verify-otp', [\App\Http\Controllers\Account\PhoneVerificationController::class, 'verify'])
-        ->name('account.phone.verify')
-        ->middleware('throttle:5,10');
-    Route::delete('/phone', [\App\Http\Controllers\Account\PhoneVerificationController::class, 'destroy'])
-        ->name('account.phone.destroy');
-
-    // Notifications
-    Route::post('/notifications', [\App\Http\Controllers\Account\NotificationPreferencesController::class, 'update'])
-        ->name('account.notifications.update');
-
     // Privacy
     Route::post('/privacy', [\App\Http\Controllers\Account\PrivacyController::class, 'update'])
         ->name('account.privacy.update');
@@ -170,6 +156,10 @@ Route::prefix('account')->middleware('auth')->group(function () {
     Route::post('/data-export', [\App\Http\Controllers\Account\DataExportController::class, 'request'])
         ->name('account.data-export')
         ->middleware('throttle:2,60');
+
+    // Account deletion
+    Route::delete('/delete', [\App\Http\Controllers\Account\ProfileController::class, 'destroy'])
+        ->name('account.delete');
 });
 
 // Legacy profile update route (redirect to new)

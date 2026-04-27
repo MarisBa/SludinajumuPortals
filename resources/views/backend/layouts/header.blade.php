@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Majestic Admin</title>
   <!-- plugins:css -->
-  <link rel="stylesheet" href="/admin/template/vendors/mdi/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="/admin-template/template/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="vendors/base/vendor.bundle.base.css">
   <!-- endinject -->
   <!-- plugin css for this page -->
-  <link rel="stylesheet" href="/admin/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+  <link rel="stylesheet" href="/admin-template/template/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="/admin/template/css/style.css">
+  <link rel="stylesheet" href="/admin-template/template/css/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="/admin/template/images/favicon.png" />
+  <link rel="shortcut icon" href="/admin-template/template/images/favicon.png" />
 
 </head>
 <body>
@@ -58,7 +58,7 @@
               <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
               <a class="dropdown-item">
                 <div class="item-thumbnail">
-                   {{-- <img src="/admin/template/images/faces/face4.jpg" alt="image" class="profile-pic"> --}}
+                   {{-- <img src="/admin-template/template/images/faces/face4.jpg" alt="image" class="profile-pic"> --}}
                 </div>
                 <div class="item-content flex-grow">
                   <h6 class="ellipsis font-weight-normal">David Grey

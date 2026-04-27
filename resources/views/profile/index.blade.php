@@ -163,9 +163,7 @@
                 <div class="prof-tabs">
                     <div class="prof-tab active" onclick="switchTab(0,this)"><i class="bi bi-person me-1"></i> Profils</div>
                     <div class="prof-tab" onclick="switchTab(1,this)"><i class="bi bi-shield-lock me-1"></i> Drošība</div>
-                    <div class="prof-tab" onclick="switchTab(2,this)"><i class="bi bi-bell me-1"></i> Paziņojumi</div>
-                    <div class="prof-tab" onclick="switchTab(3,this)"><i class="bi bi-eye me-1"></i> Privātums</div>
-                    <div class="prof-tab" onclick="switchTab(4,this)"><i class="bi bi-patch-check me-1"></i> Verifikācija</div>
+                    <div class="prof-tab" onclick="switchTab(2,this)"><i class="bi bi-eye me-1"></i> Privātums</div>
                 </div>
 
                 {{-- ===== TAB 0: Profile ===== --}}
@@ -305,146 +303,92 @@
                         </div>
                     </form>
 
-                    {{-- 2FA --}}
-                    <div class="s-card">
-                        <div class="s-card-title"><i class="bi bi-shield-lock"></i> Divfaktoru autentifikācija (2FA)</div>
-                        <div class="s-card-sub">Papildu drošības slānis tavam kontam</div>
-                        <div class="d-flex align-items-center gap-3">
-                            <span class="pill-warn"><i class="bi bi-x-circle"></i> Izslēgts</span>
-                            <span style="font-size:.82rem;color:var(--t3);">2FA nav aktivizēta</span>
-                        </div>
-                        <div style="margin-top:.75rem;">
-                            <button class="btn-s btn-out" style="height:38px;font-size:.85rem;" disabled>
-                                <i class="bi bi-shield-plus"></i> Ieslēgt 2FA (drīzumā)
-                            </button>
-                        </div>
-                    </div>
-
                     {{-- Danger Zone --}}
                     <div class="danger-card">
                         <div style="font-size:1rem;font-weight:700;color:#dc2626;margin-bottom:.25rem;"><i class="bi bi-exclamation-triangle me-1"></i> Bīstamā zona</div>
                         <p style="font-size:.85rem;color:#991b1b;margin-bottom:.75rem;">Konta dzēšana ir neatgriezeniska. Visi tavi sludinājumi, ziņas un dati tiks dzēsti.</p>
-                        <button class="btn-s btn-dan" style="height:38px;font-size:.85rem;" onclick="showToast('Konta dzēšana nav pieejama šobrīd.')">
+                        <button type="button" class="btn-s btn-dan" style="height:38px;font-size:.85rem;" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
                             <i class="bi bi-trash3"></i> Dzēst kontu
                         </button>
                     </div>
+
+                    {{-- Account deletion modal --}}
+                    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="bi bi-exclamation-triangle-fill text-danger"></i>
+                                        Apstiprini konta dzēšanu
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Aizvērt"></button>
+                                </div>
+                                <form method="POST" action="{{ route('account.delete') }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="modal-body">
+                                        <div class="alert alert-warning">
+                                            <strong>Uzmanību!</strong> Šī darbība ir neatgriezeniska.
+                                            Visi tavi sludinājumi, ziņas un dati tiks dzēsti.
+                                        </div>
+                                        <label class="form-label">Lai apstiprinātu, ievadi savu paroli:</label>
+                                        <input type="password" name="password" class="form-control" required
+                                               placeholder="Pašreizējā parole" autocomplete="current-password">
+                                        @error('password')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Atcelt</button>
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="bi bi-trash"></i> Dzēst kontu uz visiem laikiem
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                {{-- ===== TAB 2: Notifications ===== --}}
+                {{-- ===== TAB 2: Privacy ===== --}}
                 <div class="tab-panel" id="tab2">
-                    <div class="s-card">
-                        <div class="s-card-title"><i class="bi bi-envelope"></i> E-pasta paziņojumi</div>
-                        <div class="s-card-sub">Izvēlies, par ko vēlies saņemt e-pastus</div>
+                    @php
+                        $currentVisibility = auth()->user()->privacy_prefs['profile_visibility'] ?? 'public';
+                    @endphp
 
-                        <div class="toggle-wrap">
-                            <div><div class="toggle-label">Jauna ziņa par sludinājumu</div><div class="toggle-desc">Kad kāds raksta par tavu sludinājumu</div></div>
-                            <div class="toggle-switch on" onclick="toggleSwitch(this)" role="switch" aria-checked="true" tabindex="0"><div class="toggle-thumb"></div></div>
+                    <form action="{{ route('account.privacy.update') }}" method="POST">
+                        @csrf
+                        <div class="s-card">
+                            <div class="s-card-title"><i class="bi bi-eye"></i> Profila redzamība</div>
+                            <div class="s-card-sub">Kas var redzēt tavu profilu</div>
+                            <div class="d-flex flex-column gap-2">
+                                <label style="display:flex;align-items:center;gap:.6rem;padding:.6rem .75rem;border:1.5px solid var(--bdr);border-radius:var(--r-xs);cursor:pointer;transition:.15s;" class="priv-radio">
+                                    <input type="radio" name="profile_visibility" value="public" {{ $currentVisibility === 'public' ? 'checked' : '' }} style="accent-color:var(--pri);">
+                                    <div><div style="font-size:.88rem;font-weight:500;color:var(--t1);">Publisks</div><div style="font-size:.72rem;color:var(--t4);">Jebkurš apmeklētājs var redzēt</div></div>
+                                </label>
+                                <label style="display:flex;align-items:center;gap:.6rem;padding:.6rem .75rem;border:1.5px solid var(--bdr);border-radius:var(--r-xs);cursor:pointer;" class="priv-radio">
+                                    <input type="radio" name="profile_visibility" value="registered" {{ $currentVisibility === 'registered' ? 'checked' : '' }} style="accent-color:var(--pri);">
+                                    <div><div style="font-size:.88rem;font-weight:500;color:var(--t1);">Tikai reģistrēti lietotāji</div><div style="font-size:.72rem;color:var(--t4);">Redzams tikai ielogotiem</div></div>
+                                </label>
+                            </div>
+                            <div style="margin-top:1rem;">
+                                <button type="submit" class="btn-s btn-pri"><i class="bi bi-check-lg"></i> Saglabāt</button>
+                            </div>
                         </div>
-                        <div class="toggle-wrap">
-                            <div><div class="toggle-label">Sludinājums saglabāts izlasē</div><div class="toggle-desc">Kad kāds pievieno tavu sludinājumu izlasei</div></div>
-                            <div class="toggle-switch on" onclick="toggleSwitch(this)" role="switch" aria-checked="true" tabindex="0"><div class="toggle-thumb"></div></div>
-                        </div>
-                        <div class="toggle-wrap">
-                            <div><div class="toggle-label">Sludinājums tuvojas beigu termiņam</div><div class="toggle-desc">3 dienas pirms sludinājuma beigu datuma</div></div>
-                            <div class="toggle-switch on" onclick="toggleSwitch(this)" role="switch" aria-checked="true" tabindex="0"><div class="toggle-thumb"></div></div>
-                        </div>
-                        <div class="toggle-wrap">
-                            <div><div class="toggle-label">Jaunumi un piedāvājumi</div><div class="toggle-desc">Akcijas, jaunas funkcijas un padomi</div></div>
-                            <div class="toggle-switch" onclick="toggleSwitch(this)" role="switch" aria-checked="false" tabindex="0"><div class="toggle-thumb"></div></div>
-                        </div>
-                        <div class="toggle-wrap">
-                            <div><div class="toggle-label">Iknedēļas kopsavilkums</div><div class="toggle-desc">Pārskats par tavu sludinājumu veiktspēju</div></div>
-                            <div class="toggle-switch" onclick="toggleSwitch(this)" role="switch" aria-checked="false" tabindex="0"><div class="toggle-thumb"></div></div>
-                        </div>
-
-                        <div style="margin-top:1rem;">
-                            <button class="btn-s btn-pri" onclick="showToast('Paziņojumu iestatījumi saglabāti!')"><i class="bi bi-check-lg"></i> Saglabāt</button>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- ===== TAB 3: Privacy ===== --}}
-                <div class="tab-panel" id="tab3">
-                    <div class="s-card">
-                        <div class="s-card-title"><i class="bi bi-eye"></i> Profila redzamība</div>
-                        <div class="s-card-sub">Kas var redzēt tavu profilu</div>
-                        <div class="d-flex flex-column gap-2">
-                            <label style="display:flex;align-items:center;gap:.6rem;padding:.6rem .75rem;border:1.5px solid var(--bdr);border-radius:var(--r-xs);cursor:pointer;transition:.15s;" class="priv-radio">
-                                <input type="radio" name="visibility" value="public" checked style="accent-color:var(--pri);">
-                                <div><div style="font-size:.88rem;font-weight:500;color:var(--t1);">Publisks</div><div style="font-size:.72rem;color:var(--t4);">Jebkurš apmeklētājs var redzēt</div></div>
-                            </label>
-                            <label style="display:flex;align-items:center;gap:.6rem;padding:.6rem .75rem;border:1.5px solid var(--bdr);border-radius:var(--r-xs);cursor:pointer;" class="priv-radio">
-                                <input type="radio" name="visibility" value="registered" style="accent-color:var(--pri);">
-                                <div><div style="font-size:.88rem;font-weight:500;color:var(--t1);">Tikai reģistrēti lietotāji</div><div style="font-size:.72rem;color:var(--t4);">Redzams tikai ielogotiem</div></div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="s-card">
-                        <div class="s-card-title"><i class="bi bi-telephone"></i> Kontaktu preferences</div>
-                        <div class="s-card-sub">Kā pircēji var ar tevi sazināties</div>
-                        <div class="toggle-wrap">
-                            <div><div class="toggle-label">Rādīt tālruni sludinājumos</div></div>
-                            <div class="toggle-switch on" onclick="toggleSwitch(this)" role="switch" aria-checked="true" tabindex="0"><div class="toggle-thumb"></div></div>
-                        </div>
-                        <div class="toggle-wrap">
-                            <div><div class="toggle-label">Ļaut pircējiem sūtīt ziņas</div></div>
-                            <div class="toggle-switch on" onclick="toggleSwitch(this)" role="switch" aria-checked="true" tabindex="0"><div class="toggle-thumb"></div></div>
-                        </div>
-                    </div>
+                    </form>
 
                     <div class="s-card">
                         <div class="s-card-title"><i class="bi bi-database"></i> Dati un privātums</div>
                         <div class="s-card-sub">GDPR tiesības un datu pārvaldība</div>
-                        <div class="d-flex gap-2 flex-wrap">
-                            <button class="btn-s btn-out" style="height:38px;font-size:.85rem;" onclick="showToast('Datu eksports tiks nosūtīts uz e-pastu.')">
+                        <form action="{{ route('account.data-export') }}" method="POST" class="m-0">
+                            @csrf
+                            <button type="submit" class="btn-s btn-out" style="height:38px;font-size:.85rem;">
                                 <i class="bi bi-download"></i> Lejupielādēt manus datus
                             </button>
-                            <button class="btn-s btn-out" style="height:38px;font-size:.85rem;" onclick="showToast('Meklēšanas vēsture dzēsta.')">
-                                <i class="bi bi-trash3"></i> Dzēst meklēšanas vēsturi
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- ===== TAB 4: Verification ===== --}}
-                <div class="tab-panel" id="tab4">
-                    <div class="s-card">
-                        <div class="s-card-title"><i class="bi bi-patch-check"></i> Verifikācijas līmenis</div>
-                        <div class="s-card-sub">Verificēti pārdevēji saņem 40% vairāk atbildes</div>
-
-                        @php
-                            $checks = [
-                                ['done' => (bool)auth()->user()->email_verified_at, 'label' => 'E-pasts verificēts', 'icon' => 'bi-envelope-check'],
-                                ['done' => (bool)(auth()->user()->phone ?? false), 'label' => 'Telefons verificēts', 'icon' => 'bi-telephone-check'],
-                                ['done' => (bool)(auth()->user()->avatar ?? false), 'label' => 'Profila foto pievienots', 'icon' => 'bi-camera'],
-                                ['done' => \App\Models\Advertisement::where('user_id', auth()->id())->count() >= 3, 'label' => 'Vismaz 3 sludinājumi publicēti', 'icon' => 'bi-collection'],
-                            ];
-                            $doneCount = collect($checks)->where('done', true)->count();
-                            $pct = round($doneCount / count($checks) * 100);
-                        @endphp
-
-                        <div class="text-center" style="margin-bottom:1.25rem;">
-                            <div style="font-size:2.5rem;font-weight:800;color:var(--pri);">{{ $pct }}%</div>
-                            <div style="font-size:.85rem;color:var(--t3);">Pabeigts</div>
-                            <div style="height:6px;background:var(--bdr);border-radius:99px;margin-top:.5rem;max-width:200px;margin-left:auto;margin-right:auto;">
-                                <div style="height:100%;background:var(--pri);border-radius:99px;width:{{ $pct }}%;transition:width .5s;"></div>
-                            </div>
-                        </div>
-
-                        @foreach($checks as $check)
-                            <div class="v-check">
-                                <div class="v-check-icon {{ $check['done'] ? 'v-done' : 'v-todo' }}">
-                                    <i class="bi {{ $check['done'] ? 'bi-check-lg' : $check['icon'] }}"></i>
-                                </div>
-                                <div class="v-check-text" style="{{ $check['done'] ? '' : 'color:var(--t3);' }}">{{ $check['label'] }}</div>
-                                @if($check['done'])
-                                    <span class="pill-ok"><i class="bi bi-check-circle-fill"></i> Gatavs</span>
-                                @else
-                                    <button class="btn-s btn-out" style="height:32px;padding:0 .75rem;font-size:.78rem;">Izpildīt</button>
-                                @endif
-                            </div>
-                        @endforeach
+                        </form>
+                        <small style="font-size:.75rem;color:var(--t4);display:block;margin-top:.5rem;">
+                            Saņem visus savus datus JSON formātā
+                        </small>
                     </div>
                 </div>
 
@@ -472,11 +416,11 @@
         document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
         el.classList.add('active');
         document.getElementById('tab' + idx).classList.add('active');
-        window.location.hash = ['profile','security','notifications','privacy','verification'][idx];
+        window.location.hash = ['profile','security','privacy'][idx];
     }
     // Init from hash
     (function(){
-        var map = {'#security':1,'#notifications':2,'#privacy':3,'#verification':4};
+        var map = {'#security':1,'#privacy':2};
         var h = window.location.hash;
         if (map[h] !== undefined) {
             var tabs = document.querySelectorAll('.prof-tab');
