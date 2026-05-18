@@ -1,52 +1,120 @@
-
 # SludinājumuPortāls
 
-**SludinājumuPortāls** ir Laravel ietvarā izstrādāta tīmekļa lietotne, kas nodrošina lietotājiem ērtu platformu sludinājumu publicēšanai, meklēšanai un pārvaldīšanai. Projekts ir veidots ar mērķi piedāvāt lietotājiem intuitīvu un funkcionālu pieredzi, vienlaikus nodrošinot stabilu un drošu tehnoloģisko pamatu.
+Latvijas sludinājumu portāls, izstrādāts ar Laravel 12 + Bootstrap 5.
+Lietotāji var publicēt sludinājumus, sazināties ar pārdevējiem un
+pārvaldīt savu kontu.
 
 ## Galvenās funkcijas
 
-- **Sludinājumu publicēšana un pārvaldība**: Lietotāji var viegli pievienot, rediģēt un dzēst savus sludinājumus.
-- **Meklēšanas un filtrēšanas iespējas**: Efektīva sludinājumu meklēšana pēc dažādiem kritērijiem.
-- **Lietotāju autentifikācija**: Droša lietotāju pieteikšanās un reģistrācija.
-- **Dizains un lietojamība**: Ērts un mūsdienīgs lietotāja interfeiss, kas nodrošina patīkamu lietošanas pieredzi.
+- Lietotāju reģistrācija un autentifikācija (ar 2FA atbalstu)
+- Sludinājumu publicēšana ar daudzpakāpju asistentu (5 soļi)
+- Pārlūkošana un meklēšana ar filtriem
+- Reāllaika ziņojumu sistēma starp pircēju un pārdevēju
+- Profila pārvaldība ar privātuma iestatījumiem
+- PDF eksports sludinājumiem un administratora pārskatiem
+- Administratora panelis (lietotāju un sludinājumu pārvaldība, bloķēšana)
+- GDPR atbilstošs datu eksports
+- Telefona OTP verifikācija (sākotnējā setup)
 
-## Tehnoloģijas
+## Tehnoloģiju steks
 
-- **Laravel** – PHP ietvars tīras un uzturamas koda bāzes izstrādei
-- **Redis** – kešatmiņas un sesiju pārvaldībai
-- **Vite** – mūsdienīgs JavaScript bundler ātrai resursu ielādei
-- **Vue.js** – interaktīvu lietotāja saskarnes elementu izveidei
-- **Tailwind CSS** – ātrai un pielāgojamai dizaina izstrādei
+| Daļa | Tehnoloģija |
+|---|---|
+| Backend | Laravel 12, PHP 8.2+ |
+| Datubāze | MySQL 8.0+ / MariaDB 10.3+ |
+| Frontend | Bootstrap 5, vanilla JavaScript |
+| Autentifikācija | Laravel Fortify |
+| API tokeni | Laravel Sanctum |
+| Kartes | Leaflet.js + OpenStreetMap |
+| PDF | barryvdh/laravel-dompdf |
 
-## Instalācija
+## Instalācija lokāli
 
-
-<img width="2561" height="1238" alt="sluinajums" src="https://github.com/user-attachments/assets/57696825-f203-4e64-b6ed-c4bef9a7db11" />
-
-1. Klonē repozitoriju:
 ```bash
+# Klonē projektu
 git clone https://github.com/MarisBa/SludinajumuPortals.git
 cd SludinajumuPortals
-Instalē atkarības:
 
-bash
-Kopēt kodu
+# Instalē atkarības
 composer install
 npm install
-Konfigurē .env failu:
 
-bash
-Kopēt kodu
+# Konfigurē environment
 cp .env.example .env
 php artisan key:generate
-Palaid datu bāzes migrācijas:
 
-bash
-Kopēt kodu
+# Konfigurē DB savienojumu .env failā
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=sludinajumi
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Palaid migrācijas un seederus
 php artisan migrate
-Palaid vietējo serveri:
+php artisan db:seed
+php artisan db:seed --class=AdminUserSeeder
 
-bash
-Kopēt kodu
+# Izveido storage symlink (attēlu augšupielādei)
+php artisan storage:link
+
+# Palaid serveri
 php artisan serve
-npm run dev
+
+# Atver pārlūkprogrammā: http://127.0.0.1:8000
+```
+
+## Noklusētie pieslēgšanās dati (testēšanai)
+
+**Administratora konts:**
+- E-pasts: `admin@portals.lv`
+- Parole: `admin123`
+
+⚠️ **SVARĪGI:** Produkcijā maini administratora paroli uz drošāku!
+
+## Galvenās URL adreses
+
+| Lapa | URL |
+|---|---|
+| Mājaslapa | `/home` |
+| Sludinājumu pārlūkošana | `/browse` |
+| Pieslēgšanās | `/login` |
+| Reģistrācija | `/register` |
+| Mani sludinājumi | `/ads` |
+| Jauns sludinājums | `/ads/create` |
+| Ziņas | `/messages` |
+| Profila iestatījumi | `/profile` |
+| Administratora panelis | `/admin` |
+
+## Datubāzes struktūra
+
+Projekta datubāze sastāv no šādām galvenajām tabulām:
+- `users` — lietotāji ar lomām un bloķēšanas statusu
+- `advertisements` — sludinājumi
+- `categories`, `subcategories`, `childcategories` — kategoriju hierarhija
+- `countries`, `states`, `cities` — ģeogrāfijas hierarhija
+- `conversations` — sarunas starp lietotājiem
+- `messages` — atsevišķas ziņas
+
+## Testēšana
+
+```bash
+# Palaid Laravel testus (ja ir)
+php artisan test
+
+# Pārbaudi maršrutus
+php artisan route:list
+
+# Iztīri cache (problēmu gadījumā)
+php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
+php artisan config:clear
+```
+
+## Autors
+
+Māris Balčūns
+Rīgas Valsts Tehnikums, Datorikas nodaļa
+Kvalifikācijas darbs 2026
