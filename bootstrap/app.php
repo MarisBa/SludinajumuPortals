@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Trust Coolify's reverse proxy so Laravel respects X-Forwarded-Proto: https
+        // and route()/url() generate https:// URLs (fixes mixed-content blocking).
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'check.blocked' => \App\Http\Middleware\CheckBlockedUser::class,
