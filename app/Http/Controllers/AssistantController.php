@@ -14,6 +14,19 @@ class AssistantController extends Controller
      */
     public function ask(Request $request, BuyingAssistantService $service)
     {
+        $apiKey = config('services.anthropic.key');
+        \Log::error('DIAG key_length=' . strlen((string)$apiKey) .
+            ' key_prefix=' . substr((string)$apiKey, 0, 15));
+
+        try {
+            $ping = \Illuminate\Support\Facades\Http::timeout(5)
+                ->withHeaders(['x-api-key' => $apiKey])
+                ->get('https://api.anthropic.com/v1/models');
+            \Log::error('DIAG anthropic_status=' . $ping->status());
+        } catch (\Exception $e) {
+            \Log::error('DIAG anthropic_unreachable=' . $e->getMessage());
+        }
+
         $validated = $request->validate([
             'query' => 'required|string|min:3|max:300',
         ]);
