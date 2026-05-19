@@ -139,7 +139,7 @@
                         <a href="{{ route('ads.index') }}" class="dash-nav-item"><i class="bi bi-collection"></i> Mani sludinājumi</a>
                         <a href="{{ url('/ads/create') }}" class="dash-nav-item"><i class="bi bi-plus-circle"></i> Jauns sludinājums</a>
                         <a href="{{ route('profile') }}" class="dash-nav-item active"><i class="bi bi-gear"></i> Iestatījumi</a>
-                        <a href="{{ url('/home') }}" class="dash-nav-item"><i class="bi bi-house-door"></i> Sākumlapa</a>
+                        <a href="{{ url('/') }}" class="dash-nav-item"><i class="bi bi-house-door"></i> Sākumlapa</a>
                     </div>
                 </div>
             </div>
@@ -401,7 +401,7 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <span style="font-size:.8rem;">&copy; {{ date('Y') }} {{ config('app.name') }}. Visas tiesības aizsargātas.</span>
                 <div class="d-flex gap-3">
-                    <a href="{{ url('/home') }}">Sākums</a>
+                    <a href="{{ url('/') }}">Sākums</a>
                     <a href="{{ route('browse') }}">Sludinājumi</a>
                 </div>
             </div>

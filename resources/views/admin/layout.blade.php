@@ -135,7 +135,7 @@
             </a>
 
             <div class="nav-section">Citi</div>
-            <a href="{{ url('/home') }}" class="side-link">
+            <a href="{{ url('/') }}" class="side-link">
                 <i class="bi bi-arrow-left"></i> Atpakaļ uz vietni
             </a>
         </nav>

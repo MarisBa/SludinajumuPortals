@@ -130,7 +130,7 @@
 
 <nav class="navbar navbar-expand-lg sp-navbar {{ $isTransparent ? '' : 'scrolled' }}" id="mainNavbar">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/home') }}">
+        <a class="navbar-brand" href="{{ url('/') }}">
             <img src="/img/logo.png" alt="{{ config('app.name') }}" class="nav-logo">
         </a>
 
@@ -141,7 +141,7 @@
         <div class="collapse navbar-collapse" id="spNavbar">
             <ul class="navbar-nav mx-auto align-items-lg-center gap-0">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('home') ? 'active-link' : '' }}" href="{{ url('/home') }}">
+                    <a class="nav-link {{ request()->is('/') ? 'active-link' : '' }}" href="{{ url('/') }}">
                         <i class="bi bi-house-door me-1"></i> Sākums
                     </a>
                 </li>

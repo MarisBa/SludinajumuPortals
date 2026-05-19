@@ -191,7 +191,7 @@
                         <a href="{{ route('profile') }}" class="dash-nav-item">
                             <i class="bi bi-person"></i> Profils
                         </a>
-                        <a href="{{ url('/home') }}" class="dash-nav-item">
+                        <a href="{{ url('/') }}" class="dash-nav-item">
                             <i class="bi bi-house-door"></i> Sākumlapa
                         </a>
                     </div>
@@ -353,7 +353,7 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <span style="font-size:.8rem;">&copy; {{ date('Y') }} {{ config('app.name') }}. Visas tiesības aizsargātas.</span>
                 <div class="d-flex gap-3">
-                    <a href="{{ url('/home') }}">Sākums</a>
+                    <a href="{{ url('/') }}">Sākums</a>
                     <a href="{{ route('browse') }}">Sludinājumi</a>
                 </div>
             </div>

@@ -33,7 +33,7 @@
 <body>
     <div class="auth-card">
         <div style="text-align:center;margin-bottom:2rem;">
-            <a href="{{ url('/home') }}" style="text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;">
+            <a href="{{ url('/') }}" style="text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;">
                 <img src="/img/logo.png" alt="{{ config('app.name') }}" style="height:28px;width:auto;">
             </a>
         </div>

@@ -1039,7 +1039,7 @@
                 <div class="col-lg-2 col-md-6">
                     <h6>Ātrās saites</h6>
                     <ul class="sp-footer-links">
-                        <li><a href="{{ url('/home') }}">Sākums</a></li>
+                        <li><a href="{{ url('/') }}">Sākums</a></li>
                         <li><a href="{{ route('browse') }}">Sludinājumi</a></li>
                         <li><a href="{{ url('/ads/create') }}">Ievietot sludinājumu</a></li>
                     </ul>

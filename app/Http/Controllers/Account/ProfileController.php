@@ -42,6 +42,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/home')->with('message', 'Tavs konts ir dzēsts.');
+        return redirect('/')->with('message', 'Tavs konts ir dzēsts.');
     }
 }

@@ -27,7 +27,7 @@
 </head>
 <body>
     <div class="v-card">
-        <a href="{{ url('/home') }}" style="font-size:.85rem;color:var(--t4);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;margin-bottom:2rem;">
+        <a href="{{ url('/') }}" style="font-size:.85rem;color:var(--t4);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;margin-bottom:2rem;">
             <img src="/img/logo.png" alt="Logo" style="height:28px;width:auto;">
         </a>
 

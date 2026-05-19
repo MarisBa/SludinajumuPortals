@@ -402,7 +402,7 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <span style="font-size: 0.82rem;">&copy; {{ date('Y') }} {{ config('app.name', 'SludinajumuPortals') }}. Visas tiesības aizsargātas.</span>
                 <div class="d-flex gap-3">
-                    <a href="{{ url('/home') }}">Sākums</a>
+                    <a href="{{ url('/') }}">Sākums</a>
                     <a href="{{ route('browse') }}">Sludinājumi</a>
                 </div>
             </div>

@@ -182,7 +182,7 @@
         {{-- Top Navbar --}}
         <nav class="navbar navbar-expand-md top-navbar shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">
+                <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="/img/logo.png" alt="{{ config('app.name') }}" style="height:32px;width:auto;filter:brightness(0) invert(1);">
                 </a>
                 <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
@@ -290,7 +290,7 @@
                     <div class="col-lg-2 col-md-6">
                         <h6>Quick Links</h6>
                         <div class="d-flex flex-column gap-2">
-                            <a href="{{ url('/home') }}">Home</a>
+                            <a href="{{ url('/') }}">Home</a>
                             <a href="{{ url('/ads') }}">Browse Ads</a>
                         </div>
                     </div>

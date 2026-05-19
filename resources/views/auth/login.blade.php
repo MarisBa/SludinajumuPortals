@@ -70,8 +70,8 @@
         {{-- Form Side --}}
         <div class="auth-form-side">
             <div class="auth-top">
-                <a href="{{ url('/home') }}"><img src="/img/logo.png" alt="Logo" style="height:28px;width:auto;"></a>
-                <a href="{{ url('/home') }}"><i class="bi bi-arrow-left"></i> Uz sākumu</a>
+                <a href="{{ url('/') }}"><img src="/img/logo.png" alt="Logo" style="height:28px;width:auto;"></a>
+                <a href="{{ url('/') }}"><i class="bi bi-arrow-left"></i> Uz sākumu</a>
             </div>
 
             <div class="auth-card fade-in">

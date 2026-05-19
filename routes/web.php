@@ -13,7 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\AssistantController;
 
-Route::get('/home', [FrontendController::class, 'home']);
+Route::get('/', [FrontendController::class, 'home'])->name('home');
 
 Route::get('/auth', [FrontendController::class, 'authPage']);
 
