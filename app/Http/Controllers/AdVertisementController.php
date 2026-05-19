@@ -18,9 +18,12 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
+        Log::error('ADS INDEX REACHED');
+
         try {
             $userId = auth()->id();
             if (!$userId) {
+                Log::error('ADS INDEX: no auth user, redirecting to login');
                 return redirect()->route('login');
             }
 
@@ -29,6 +32,7 @@ class AdvertisementController extends Controller
                 ->latest()
                 ->get();
 
+            Log::error('ADS INDEX: query OK, returning view with ' . $ads->count() . ' ads');
             return view('ads.index', compact('ads'));
         } catch (\Throwable $e) {
             Log::error('ADS 500: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
