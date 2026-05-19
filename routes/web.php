@@ -50,8 +50,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 // Authenticated admin routes (for categories)
 Route::prefix('auth')->middleware(['auth', 'admin'])->group(function () {
-    Route::resource('/category', CategoryController::class);
-    Route::resource('/subcategory', SubcategoryController::class);
+    Route::resource('/category', CategoryController::class)->except(['show']);
+    Route::resource('/subcategory', SubcategoryController::class)->except(['show']);
     Route::resource('/childcategory', ChildcategoryController::class)->except(['show']);
 });
 
