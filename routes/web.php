@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\ChildcategoryController;
@@ -13,35 +12,10 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\AssistantController;
-use App\Models\Advertisement;
 
+Route::get('/home', [FrontendController::class, 'home']);
 
-
-Route::get('/home', function () {
-    $ads = \App\Models\Advertisement::where('published', 1)
-        ->whereNotNull('feature_image')
-        ->latest()
-        ->take(8)
-        ->get();
-
-    $totalAds = \App\Models\Advertisement::where('published', 1)->count();
-    $totalCategories = \App\Models\Category::count();
-    $totalUsers = \App\Models\User::count();
-
-    return view('index', compact('ads', 'totalAds', 'totalCategories', 'totalUsers'));
-});
-
-
-
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/login'); // or any other route like '/' or '/auth'
-})->name('logout');
-
-
-Route::get('/auth', function () {
-    return view('backend.admin.index');
-});
+Route::get('/auth', [FrontendController::class, 'authPage']);
 
 // Dashboard route
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -126,13 +100,6 @@ Route::get('/get-subcategories/{category_id}', [CategoryController::class, 'getS
 Route::get('/get-childcategories/{subcategory_id}', [CategoryController::class, 'getChildcategories']);
 Route::get('/get-states/{country_id}', [LocationController::class, 'getStates']);
 Route::get('/get-cities/{state_id}', [LocationController::class, 'getCities']);
-
-// Global view composer for menus
-View::composer(['*'], function ($view) {
-    $menus = \App\Models\Category::with('subcategories')->get();
-    $view->with('menus', $menus);
-});
-
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile')->middleware('auth');
 

@@ -7,10 +7,31 @@ use App\Models\Childcategory;
 use App\Models\Advertisement;
 use App\Models\Category;
 use App\Models\Subcategory;
+use App\Models\User;
 
 
 class FrontendController extends Controller
 {
+    public function home()
+    {
+        $ads = Advertisement::where('published', 1)
+            ->whereNotNull('feature_image')
+            ->latest()
+            ->take(8)
+            ->get();
+
+        $totalAds = Advertisement::where('published', 1)->count();
+        $totalCategories = Category::count();
+        $totalUsers = User::count();
+
+        return view('index', compact('ads', 'totalAds', 'totalCategories', 'totalUsers'));
+    }
+
+    public function authPage()
+    {
+        return view('backend.admin.index');
+    }
+
     public function browse(Request $request)
     {
         $query = Advertisement::where('published', 1)->whereNotNull('feature_image');
