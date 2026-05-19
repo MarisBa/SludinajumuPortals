@@ -55,13 +55,14 @@ class AssistantController extends Controller
                 : route('ad.image', basename($img));
 
             return [
-                'id'        => $ad->id,
-                'name'      => $ad->name,
-                'price'     => $ad->price,
-                'location'  => $ad->listing_location ?? optional($ad->city)->name,
-                'image'     => $imgUrl,
-                'url'       => route('product.view', [$ad->id, $ad->slug]),
-                'ai_reason' => $ad->ai_reason ?? null,
+                'id'              => $ad->id,
+                'name'            => $ad->name,
+                'price'           => $ad->price,
+                'location'        => $ad->listing_location ?? optional($ad->city)->name,
+                'image'           => $imgUrl,
+                'url'             => route('product.view', [$ad->id, $ad->slug]),
+                'ai_reason'       => $ad->ai_reason ?? null,
+                'seller_verified' => $ad->user && $ad->user->email_verified_at !== null,
             ];
         })->values();
 
