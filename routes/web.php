@@ -52,7 +52,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::prefix('auth')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('/category', CategoryController::class);
     Route::resource('/subcategory', SubcategoryController::class);
-    Route::resource('/childcategory', ChildcategoryController::class);
+    Route::resource('/childcategory', ChildcategoryController::class)->except(['show']);
 });
 
 // PDF exports
@@ -180,7 +180,7 @@ Route::post('/asistents/jautat', [AssistantController::class, 'ask'])
     ->middleware('throttle:20,1');
 
 // Specific to general — avoid conflicts
-Route::get('/product/{categorySlug}/{subcategorySlug}/{childCategorySlug}', [FrontendController::class, 'findBasedOnChildcategory'])->name('childcategory.show');
+Route::get('/product/{categorySlug}/{subcategorySlug}/{childCategorySlug}', [FrontendController::class, 'findBasedOnChildcategory'])->name('product.childcategory');
 
 Route::get('/product/{categorySlug}/{subcategorySlug}', [FrontendController::class, 'findBasedOnSubcategory'])->name('subcategory.show');
 
