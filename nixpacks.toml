@@ -1,0 +1,5 @@
+[phases.setup]
+nixPkgs = ["php82", "nginx", "nodejs_22"]
+
+[start]
+cmd = "php artisan config:clear && php-fpm -D && nginx -g 'daemon off;'"

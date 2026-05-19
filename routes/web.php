@@ -12,6 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\AssistantController;
 use App\Models\Advertisement;
 
 
@@ -172,6 +173,11 @@ Route::post('/profile', [\App\Http\Controllers\Account\ProfileController::class,
 
 // Public browse page
 Route::get('/browse', [FrontendController::class, 'browse'])->name('browse');
+
+// AI pirkšanas asistents — pieejams arī viesiem; throttle aizsargā no pārslodzes.
+Route::post('/asistents/jautat', [AssistantController::class, 'ask'])
+    ->name('assistant.ask')
+    ->middleware('throttle:20,1');
 
 // Specific to general — avoid conflicts
 Route::get('/product/{categorySlug}/{subcategorySlug}/{childCategorySlug}', [FrontendController::class, 'findBasedOnChildcategory'])->name('childcategory.show');
