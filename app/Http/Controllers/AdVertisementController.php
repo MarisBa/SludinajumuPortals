@@ -39,6 +39,7 @@ class AdvertisementController extends Controller
         $data = $request->all();
         $data['slug'] = Str::slug($request->name);
         $data['user_id'] = auth()->user()->id;
+        $data['country_id'] = 120;
 
         // Handle multiple images (up to 12)
         $allImages = [];

@@ -355,26 +355,26 @@
                                 <label class="f-label">Atrašanās vieta</label>
                                 <input type="text" name="listing_location" class="f-input" value="{{ $ad->listing_location }}" data-orig="{{ $ad->listing_location }}" oninput="trackChange(this)">
                             </div>
+                            <input type="hidden" name="country_id" value="120">
                             <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="f-label">Valsts</label>
-                                    <select name="country_id" id="country_id" class="f-input f-select" onchange="loadStates(this.value)">
+                                <div class="col-md-6">
+                                    <label class="f-label">Reģions</label>
+                                    <select name="state_id" id="state_id" class="f-input f-select" onchange="loadCities(this.value)">
                                         <option value="">Izvēlies</option>
-                                        @foreach(App\Models\Country::all() as $c)
-                                            <option value="{{ $c->id }}" {{ $ad->country_id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
+                                        @foreach(App\Models\State::where('country_id', 120)->orderBy('name')->get() as $state)
+                                            <option value="{{ $state->id }}" {{ $ad->state_id == $state->id ? 'selected' : '' }}>{{ $state->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-4">
-                                    <label class="f-label">Reģions</label>
-                                    <select name="state_id" id="state_id" class="f-input f-select">
-                                        <option value="">Izvēlies</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="f-label">Pilsēta</label>
                                     <select name="city_id" id="city_id" class="f-input f-select">
                                         <option value="">Izvēlies</option>
+                                        @if($ad->state_id)
+                                            @foreach(App\Models\City::where('state_id', $ad->state_id)->orderBy('name')->get() as $city)
+                                                <option value="{{ $city->id }}" {{ $ad->city_id == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                             </div>
@@ -531,12 +531,12 @@
             data.forEach(function(s){ sel.innerHTML += '<option value="'+s.id+'">'+s.name+'</option>'; });
         });
     }
-    function loadStates(countryId) {
-        if (!countryId) return;
-        $.get('/get-states/' + countryId, function(data) {
-            var sel = document.getElementById('state_id');
-            sel.innerHTML = '<option value="">Izvēlies</option>';
-            data.forEach(function(s){ sel.innerHTML += '<option value="'+s.id+'">'+s.name+'</option>'; });
+    function loadCities(stateId) {
+        var sel = document.getElementById('city_id');
+        sel.innerHTML = '<option value="">Izvēlies</option>';
+        if (!stateId) return;
+        $.get('/get-cities/' + stateId, function(data) {
+            data.forEach(function(c){ sel.innerHTML += '<option value="'+c.id+'">'+c.name+'</option>'; });
         });
     }
 

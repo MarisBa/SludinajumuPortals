@@ -404,23 +404,19 @@
                                 <div class="f-help">Ieraksti pilsētu vai novadu, kur prece ir pieejama</div>
                             </div>
 
+                            <input type="hidden" name="country_id" value="120">
+
                             <div class="row g-3" style="margin-bottom:1.25rem;">
-                                <div class="col-md-4">
-                                    <label class="f-label">Valsts <span class="req">*</span></label>
-                                    <select name="country_id" id="country_id" class="f-input f-select" onchange="loadStates(this.value)">
-                                        <option value="">Izvēlies valsti</option>
-                                        @foreach(App\Models\Country::all() as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="f-label">Reģions</label>
                                     <select name="state_id" id="state_id" class="f-input f-select" onchange="loadCities(this.value)">
                                         <option value="">Izvēlies reģionu</option>
+                                        @foreach(App\Models\State::where('country_id', 120)->orderBy('name')->get() as $state)
+                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="f-label">Pilsēta</label>
                                     <select name="city_id" id="city_id" class="f-input f-select">
                                         <option value="">Izvēlies pilsētu</option>
@@ -564,7 +560,6 @@
         }
         if (n === 3) {
             if (!document.getElementById('adLocation').value.trim()) { shakeField('adLocation'); return false; }
-            if (!document.getElementById('country_id').value) { shakeField('country_id'); return false; }
         }
         return true;
     }
@@ -715,14 +710,6 @@
     }
 
     // === Location Dropdowns ===
-    function loadStates(countryId) {
-        if (!countryId) return;
-        $.get('/get-states/' + countryId, function(data) {
-            var sel = document.getElementById('state_id');
-            sel.innerHTML = '<option value="">Izvēlies reģionu</option>';
-            data.forEach(function(s) { sel.innerHTML += '<option value="' + s.id + '">' + s.name + '</option>'; });
-        });
-    }
     function loadCities(stateId) {
         if (!stateId) return;
         $.get('/get-cities/' + stateId, function(data) {
@@ -751,7 +738,6 @@
             { ok: (document.getElementById('adDesc').value || '').length >= 10, text: 'Apraksts (min 10 rakstzīmes)' },
             { ok: photos.length >= 1, text: 'Vismaz 1 fotogrāfija' },
             { ok: !!document.getElementById('adLocation').value, text: 'Atrašanās vieta norādīta' },
-            { ok: !!document.getElementById('country_id').value, text: 'Valsts izvēlēta' },
         ];
         var list = document.getElementById('checkList');
         list.innerHTML = '';

@@ -33,7 +33,7 @@ class AdsFormRequest extends FormRequest
             'price_status' => 'required',
             'category_id' => 'required',
             'product_condition' => 'required',
-            'country_id' => 'required',
+            'country_id' => 'nullable',
         ];
     }
 }
