@@ -19,6 +19,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\CheckBlockedUser::class,
         ]);
+
+        // TEMP: CSRF exception for the AI assistant endpoint while we diagnose why
+        // POST /asistents/jautat never reaches the controller. Restore CSRF protection
+        // by removing this exception once session/CSRF is confirmed working in prod.
+        $middleware->validateCsrfTokens(except: [
+            'asistents/jautat',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
