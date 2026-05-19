@@ -109,16 +109,24 @@ PROMPT;
 
         $userPrompt = "Lietotāja pieprasījums: \"{$userQuery}\"\n\nPieejamie sludinājumi (JSON):\n{$candidatesJson}";
 
+        $apiKey = config('services.anthropic.key');
+        $model  = config('services.anthropic.model');
+        $response = null;
+
         try {
+            if (empty($apiKey)) {
+                throw new \RuntimeException('ANTHROPIC_API_KEY nav konfigurēts (tukšs vai null).');
+            }
+
             // 2.3 — Anthropic API izsaukums
             $response = Http::timeout(25)
                 ->withHeaders([
-                    'x-api-key'         => config('services.anthropic.key'),
+                    'x-api-key'         => $apiKey,
                     'anthropic-version' => '2023-06-01',
                     'content-type'      => 'application/json',
                 ])
                 ->post('https://api.anthropic.com/v1/messages', [
-                    'model'      => config('services.anthropic.model'),
+                    'model'      => $model,
                     'max_tokens' => 1200,
                     'system'     => $systemPrompt,
                     'messages'   => [[
@@ -128,7 +136,8 @@ PROMPT;
                 ]);
 
             if ($response->failed()) {
-                throw new \RuntimeException('Anthropic API neveiksmīgs HTTP statuss: ' . $response->status());
+                Log::error('Assistant API response: ' . $response->body());
+                throw new \RuntimeException('Anthropic API neveiksmīgs HTTP statuss: ' . $response->status() . ' (model=' . $model . ')');
             }
 
             // 2.4 — Atbildes parsēšana
@@ -191,7 +200,10 @@ PROMPT;
         } catch (\Throwable $e) {
             // 2.5 — Drošības tīkls: ja AI nav pieejams vai atbild nepareizi,
             // tomēr atgriežam SQL atlasītus kandidātus bez paskaidrojumiem.
-            Log::warning('AI assistant fallback: ' . $e->getMessage());
+            Log::error('Assistant API error: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            if ($response !== null) {
+                Log::error('Assistant API response: ' . $response->body());
+            }
 
             return [
                 'ai_available'   => false,
