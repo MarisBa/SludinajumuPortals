@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use App\Http\Requests\AdsFormRequest; // Assuming you have a form request for validation
 use App\Http\Requests\AdsFormUpdateRequest; // ✅ This is the key line
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 
 class AdvertisementController extends Controller
 {
@@ -18,26 +17,17 @@ class AdvertisementController extends Controller
      */
     public function index()
     {
-        Log::error('ADS INDEX REACHED');
-
-        try {
-            $userId = auth()->id();
-            if (!$userId) {
-                Log::error('ADS INDEX: no auth user, redirecting to login');
-                return redirect()->route('login');
-            }
-
-            $ads = Advertisement::with(['category', 'subcategory'])
-                ->where('user_id', $userId)
-                ->latest()
-                ->get();
-
-            Log::error('ADS INDEX: query OK, returning view with ' . $ads->count() . ' ads');
-            return view('ads.index', compact('ads'));
-        } catch (\Throwable $e) {
-            Log::error('ADS 500: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
-            throw $e;
+        $userId = auth()->id();
+        if (!$userId) {
+            return redirect()->route('login');
         }
+
+        $ads = Advertisement::with(['category', 'subcategory'])
+            ->where('user_id', $userId)
+            ->latest()
+            ->get();
+
+        return view('ads.index', compact('ads'));
     }
 
     /**
