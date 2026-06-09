@@ -73,7 +73,7 @@ class FrontendController extends Controller
 
         public function findBasedOnCategory(Category $categorySlug)
     {
-        $advertisements = $categorySlug->ads;
+        $advertisements = $categorySlug->ads()->where('published', 1)->get();
         $filterBySubcategory = Subcategory::where('category_id',$categorySlug->id)->get();
         return view('product.category',compact('advertisements','filterBySubcategory'));
     }
@@ -83,21 +83,21 @@ class FrontendController extends Controller
     ) {
 
 
-        $advertisementBasedOnFilter = Advertisement::where(
-            'subcategory_id',
-            $subcategorySlug->id
-        )->when($request->minPrice, function ($query, $minPrice) {
-            return $query->where('price', '>=', $minPrice);
-        })->when($request->maxPrice, function ($query, $maxPrice) {
-            return $query->where('price', '<=', $maxPrice);
-        })->get();
+        $advertisementBasedOnFilter = Advertisement::where('subcategory_id', $subcategorySlug->id)
+            ->where('published', 1)
+            ->when($request->minPrice, function ($query, $minPrice) {
+                return $query->where('price', '>=', $minPrice);
+            })->when($request->maxPrice, function ($query, $maxPrice) {
+                return $query->where('price', '<=', $maxPrice);
+            })->get();
 
-        $advertisementWithoutFilter = $subcategorySlug->ads;
+        // Hit the DB once and reuse the collection for both the list and the facet.
+        $publishedAds = $subcategorySlug->ads()->where('published', 1)->get();
+        $advertisementWithoutFilter = $publishedAds;
+        $filterByChildCategories = $publishedAds->unique('childcategory_id');
 
-         $filterByChildCategories = $subcategorySlug->ads->unique('childcategory_id');
-
-         $advertisements = $request->minPrice || $request->maxPrice ?
-         $advertisementBasedOnFilter : $advertisementWithoutFilter;
+        $advertisements = $request->minPrice || $request->maxPrice ?
+            $advertisementBasedOnFilter : $advertisementWithoutFilter;
         return view(
     'product.subcategory',
     compact('advertisements', 'filterByChildCategories')
@@ -110,20 +110,20 @@ class FrontendController extends Controller
         Childcategory $childCategorySlug,
         Request $request){
 
-        $advertisementBasedOnFilter = Advertisement::where(
-            'childcategory_id',
-            $childCategorySlug->id
-        )->when($request->minPrice, function ($query, $minPrice) {
-            return $query->where('price', '>=', $minPrice);
-        })->when($request->maxPrice, function ($query, $maxPrice) {
-            return $query->where('price', '<=', $maxPrice);
-        })->get();
-        $advertisementWithoutFilter = $childCategorySlug->ads;
+        $advertisementBasedOnFilter = Advertisement::where('childcategory_id', $childCategorySlug->id)
+            ->where('published', 1)
+            ->when($request->minPrice, function ($query, $minPrice) {
+                return $query->where('price', '>=', $minPrice);
+            })->when($request->maxPrice, function ($query, $maxPrice) {
+                return $query->where('price', '<=', $maxPrice);
+            })->get();
 
-         $filterByChildCategories = $subcategorySlug->ads->unique('childcategory_id');
+        $advertisementWithoutFilter = $childCategorySlug->ads()->where('published', 1)->get();
 
-         $advertisements = $request->minPrice || $request->maxPrice ?
-        $advertisementBasedOnFilter : $advertisementWithoutFilter;
+        $filterByChildCategories = $subcategorySlug->ads()->where('published', 1)->get()->unique('childcategory_id');
+
+        $advertisements = $request->minPrice || $request->maxPrice ?
+            $advertisementBasedOnFilter : $advertisementWithoutFilter;
         return view(
     'product.childcategory',
     compact('advertisements', 
@@ -133,7 +133,13 @@ class FrontendController extends Controller
 
 public function show($id, $slug = null)
 {
-    $advertisement = Advertisement::with(['user', 'country', 'state', 'city', 'category', 'subcategory'])->findOrFail($id);
+    // Public sees only published ads; an authenticated owner can preview their own unpaid ad.
+    // Guests have auth()->id() === null, so the orWhere clause matches no rows for them.
+    $advertisement = Advertisement::with(['user', 'country', 'state', 'city', 'category', 'subcategory'])
+        ->where(function ($q) {
+            $q->where('published', 1)->orWhere('user_id', auth()->id());
+        })
+        ->findOrFail($id);
 
     $similarAds = Advertisement::where('published', 1)
         ->where('id', '!=', $advertisement->id)
