@@ -311,6 +311,12 @@
                                     <i class="bi bi-three-dots-vertical"></i>
                                 </button>
                                 <div class="kebab-menu">
+                                    @if(($ad->payment_status ?? 'unpaid') !== 'paid')
+                                        <a href="{{ route('payment.checkout', $ad->id) }}" class="kebab-item" style="color: var(--suc); font-weight: 600;">
+                                            <i class="bi bi-credit-card"></i> Apmaksāt un publicēt
+                                        </a>
+                                        <div class="kebab-divider"></div>
+                                    @endif
                                     <a href="{{ route('product.view', ['id' => $ad->id, 'slug' => $ad->slug]) }}" class="kebab-item">
                                         <i class="bi bi-eye"></i> Skatīt
                                     </a>

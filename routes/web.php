@@ -88,7 +88,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/ads/{id}/edit', [AdvertisementController::class, 'edit'])->name('ads.edit');
     Route::put('/ads/{id}/update', [AdvertisementController::class, 'update'])->name('ads.update');
     Route::delete('/ads/{id}', [AdvertisementController::class, 'destroy'])->name('ads.destroy');
+
+    // Stripe Checkout for ad publication
+    Route::get('/ads/{id}/pay', [\App\Http\Controllers\PaymentController::class, 'checkout'])->name('payment.checkout');
+    Route::get('/ads/{id}/payment/success', [\App\Http\Controllers\PaymentController::class, 'success'])->name('payment.success');
+    Route::get('/ads/{id}/payment/cancel', [\App\Http\Controllers\PaymentController::class, 'cancel'])->name('payment.cancel');
 });
+
+// Stripe webhook — no auth, no CSRF (excluded in bootstrap/app.php)
+Route::post('/stripe/webhook', [\App\Http\Controllers\PaymentController::class, 'webhook'])->name('payment.webhook');
 
 
 

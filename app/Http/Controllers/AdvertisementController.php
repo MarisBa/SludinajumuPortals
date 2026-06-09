@@ -75,8 +75,15 @@ class AdvertisementController extends Controller
         // Remove ad_images from $data since it's not a column
         unset($data['ad_images']);
 
-        Advertisement::create($data);
-        return redirect()->route('ads.index')->with('message', 'Sludinājums veiksmīgi izveidots!');
+        // Created as unpublished + unpaid; the user must complete Stripe Checkout
+        // before the ad goes live. PaymentController::webhook (with success() as a
+        // fast-path fallback) flips published=1 / payment_status='paid'.
+        $data['published'] = 0;
+        $data['payment_status'] = 'unpaid';
+
+        $ad = Advertisement::create($data);
+
+        return redirect()->route('payment.checkout', $ad->id);
     }
 
     /**
@@ -96,7 +103,9 @@ class AdvertisementController extends Controller
      */
     public function edit(string $id)
     {
-        $ad = Advertisement::with(['category', 'subcategory', 'childcategory', 'country', 'state', 'city'])->findOrFail($id);
+        $ad = Advertisement::with(['category', 'subcategory', 'childcategory', 'country', 'state', 'city'])
+            ->where('user_id', auth()->id())
+            ->findOrFail($id);
         $categories = Category::all();
 
         return view('ads.edit', compact('ad', 'categories'));
@@ -107,8 +116,14 @@ class AdvertisementController extends Controller
      */
     public function update(AdsFormUpdateRequest $request, $id)
     {
-        $ad = Advertisement::findOrFail($id);
-        $data = $request->except(['ad_images', 'feature_image', 'first_image', 'second_image', '_token', '_method']);
+        $ad = Advertisement::where('user_id', auth()->id())->findOrFail($id);
+        $data = $request->except([
+            'ad_images', 'feature_image', 'first_image', 'second_image',
+            '_token', '_method',
+            // Payment columns are never mass-assignable via the edit form;
+            // only PaymentController is allowed to mutate them.
+            'published', 'payment_status', 'paid_at', 'stripe_session_id',
+        ]);
 
         // Handle new images
         if ($request->hasFile('ad_images')) {
@@ -135,13 +150,13 @@ class AdvertisementController extends Controller
 // In AdvertisementController.php
 public function destroy($id)
 {
-    $ad = Advertisement::findOrFail($id);
-    
+    $ad = Advertisement::where('user_id', auth()->id())->findOrFail($id);
+
     // Delete the image file if needed
     if (Storage::exists($ad->feature_image)) {
         Storage::delete($ad->feature_image);
     }
-    
+
     $ad->delete();
     
     return redirect()->route('ads.index')

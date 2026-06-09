@@ -24,11 +24,13 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\CheckBlockedUser::class,
         ]);
 
-        // TEMP: CSRF exception for the AI assistant endpoint while we diagnose why
-        // POST /asistents/jautat never reaches the controller. Restore CSRF protection
-        // by removing this exception once session/CSRF is confirmed working in prod.
+        // CSRF exceptions:
+        // - asistents/jautat: TEMP, restore once session/CSRF is confirmed in prod.
+        // - stripe/webhook: PERMANENT — Stripe POSTs directly without a session;
+        //   request authenticity is enforced by the Stripe-Signature header instead.
         $middleware->validateCsrfTokens(except: [
             'asistents/jautat',
+            'stripe/webhook',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

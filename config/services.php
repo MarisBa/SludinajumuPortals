@@ -40,4 +40,11 @@ return [
         'model' => env('ANTHROPIC_MODEL', 'claude-sonnet-4-6'),
     ],
 
+    'stripe' => [
+        'secret'         => env('STRIPE_SECRET'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+        // Listing fee charged to publish one ad. Stripe expects integer cents.
+        'listing_price'  => env('STRIPE_LISTING_PRICE', 500),
+    ],
+
 ];
