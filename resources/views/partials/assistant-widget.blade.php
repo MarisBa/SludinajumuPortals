@@ -290,18 +290,21 @@
         box-shadow: 0 4px 10px rgba(37, 99, 235, .24);
     }
 
-    /* === Listing card === */
+    /* === Listing card — image is a real visual anchor, not a tiny thumbnail === */
     .ai-card {
         align-self: stretch;
         max-width: 100%;
         background: #fff;
         border: 1px solid var(--aw-bdr);
         border-radius: 14px;
-        overflow: hidden;
+        overflow: hidden;            /* clips the image to the card's rounded corners */
         text-decoration: none;
         color: inherit;
-        display: flex; gap: 14px;
-        padding: 14px;
+        display: flex;
+        align-items: stretch;        /* image fills full card height */
+        gap: 0;
+        padding: 0;                  /* image goes edge-to-edge on the left */
+        min-height: 110px;           /* consistent visual presence for every card */
         transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
     .ai-card:hover {
@@ -317,16 +320,18 @@
         border-bottom: 0;
     }
     .ai-card-img {
-        width: 76px; height: 76px;
-        flex: 0 0 76px;             /* lock dimensions; prevent any flex collapse */
+        width: 110px;
+        flex: 0 0 110px;             /* lock the image strip width; stretches to card height */
+        align-self: stretch;
         background: var(--aw-bg-soft);
-        border-radius: 12px;
+        border-radius: 0;            /* outer card border-radius does the rounding */
         object-fit: cover;
         display: block;
     }
     .ai-card-body {
         flex: 1; min-width: 0;
         display: flex; flex-direction: column; justify-content: center; gap: 4px;
+        padding: 14px 16px;          /* padding now lives on the body, not the card */
     }
     .ai-card-name {
         font-size: 14px;
