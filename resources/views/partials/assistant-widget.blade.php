@@ -52,240 +52,245 @@
 </div>
 
 <style>
-    /* === Dizaina mainīgie (lokāli widgetam) === */
+    /* ============================================================
+       AI Pirkšanas Asistents — visuals only.
+       JS contract: classes/IDs match the script block below.
+       ============================================================ */
+
+    /* === Local design tokens === */
     #ai-assistant-root {
-        --aw-primary: var(--primary, #2563eb);
-        --aw-primary-dark: #1d4ed8;
-        --aw-primary-soft: #eff6ff;
-        --aw-success: #10b981;
-        --aw-success-soft: #ecfdf5;
-        --aw-amber: #f59e0b;
-        --aw-amber-soft: #fef3c7;
-        --aw-amber-text: #78350f;
-        --aw-dark: var(--dark, #0f172a);
-        --aw-text: #1e293b;
-        --aw-muted: #64748b;
-        --aw-faint: #94a3b8;
-        --aw-bdr: #e2e8f0;
-        --aw-bg-soft: #f8fafc;
-        --aw-shadow-sm: 0 1px 2px rgba(15, 23, 42, .06);
-        --aw-shadow-md: 0 4px 12px rgba(15, 23, 42, .08);
-        --aw-shadow-lg: 0 12px 40px rgba(15, 23, 42, .15);
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --aw-primary:        #2563eb;
+        --aw-primary-dark:   #1d4ed8;
+        --aw-primary-soft:   #eff6ff;
+        --aw-primary-tint:   rgba(37, 99, 235, .08);
+        --aw-success:        #10b981;
+        --aw-success-soft:   #ecfdf5;
+        --aw-amber:          #f59e0b;
+        --aw-amber-soft:     #fff8e1;
+        --aw-amber-text:     #854d0e;
+        --aw-info:           #0284c7;
+        --aw-info-soft:      #e0f2fe;
+        --aw-info-text:      #075985;
+        --aw-dark:           #0f172a;
+        --aw-text:           #0f172a;
+        --aw-text-soft:      #334155;
+        --aw-muted:          #64748b;
+        --aw-faint:          #94a3b8;
+        --aw-bdr:            #e2e8f0;
+        --aw-bg-soft:        #f8fafc;
+        --aw-shadow-card:    0 1px 2px rgba(15, 23, 42, .04);
+        --aw-shadow-hover:   0 6px 18px rgba(37, 99, 235, .12);
+        --aw-shadow-panel:   0 14px 44px rgba(15, 23, 42, .14), 0 0 0 1px rgba(15, 23, 42, .04);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
-    /* === Peldošā poga === */
+    /* === Floating toggle button === */
     #ai-assistant-toggle {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        z-index: 9999;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        border: none;
+        position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+        width: 60px; height: 60px;
+        border-radius: 50%; border: none;
         background: linear-gradient(135deg, var(--aw-primary), var(--aw-primary-dark));
-        color: #fff;
-        font-size: 26px;
-        box-shadow: 0 10px 28px rgba(37, 99, 235, 0.38);
+        color: #fff; font-size: 26px;
+        box-shadow: 0 12px 28px rgba(37, 99, 235, .42), inset 0 1px 0 rgba(255, 255, 255, .15);
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex; align-items: center; justify-content: center;
+        transition: transform .18s ease, box-shadow .18s ease;
     }
     #ai-assistant-toggle:hover {
         transform: translateY(-3px);
-        box-shadow: 0 14px 32px rgba(37, 99, 235, 0.5);
+        box-shadow: 0 16px 34px rgba(37, 99, 235, .5), inset 0 1px 0 rgba(255, 255, 255, .2);
     }
-    #ai-assistant-toggle.is-active {
-        transform: scale(0.92);
-    }
+    #ai-assistant-toggle:active { transform: scale(.94); }
 
-    /* === Čata panelis === */
+    /* === Panel container === */
     #ai-assistant-panel {
-        position: fixed;
-        bottom: 96px;
-        right: 24px;
-        z-index: 9999;
-        width: 380px;
-        height: 580px;
+        position: fixed; bottom: 96px; right: 24px; z-index: 9999;
+        width: 384px; height: 600px;
         max-height: calc(100vh - 120px);
         background: #fff;
-        border-radius: 20px;
-        box-shadow: var(--aw-shadow-lg);
+        border-radius: 16px;
+        box-shadow: var(--aw-shadow-panel);
         display: none;
         flex-direction: column;
         overflow: hidden;
         opacity: 0;
-        transform: translateY(12px);
-        transition: opacity 0.22s ease, transform 0.22s ease;
+        transform: translateY(8px) scale(.97);
+        transition: opacity .2s ease, transform .2s cubic-bezier(.34, 1.42, .64, 1);
         font-family: inherit;
     }
     #ai-assistant-panel.is-open {
         display: flex;
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 
-    /* === Paneļa galvene === */
+    /* === Header (dark, intentional) === */
     .ai-panel-header {
-        background: linear-gradient(135deg, var(--aw-dark), #1e293b);
+        position: relative;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #1e3a8a 140%);
         color: #fff;
         padding: 14px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-shrink: 0;
-        gap: 10px;
+        display: flex; align-items: center; justify-content: space-between;
+        flex-shrink: 0; gap: 10px;
     }
-    .ai-panel-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .ai-panel-header::after {
+        content: '';
+        position: absolute; left: 0; right: 0; bottom: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--aw-primary), transparent);
+    }
+    .ai-panel-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .ai-panel-icon {
         width: 36px; height: 36px;
         border-radius: 10px;
         background: linear-gradient(135deg, var(--aw-primary), var(--aw-primary-dark));
         display: inline-flex; align-items: center; justify-content: center;
         color: #fff; font-size: 16px;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+        box-shadow: 0 6px 14px rgba(37, 99, 235, .4), inset 0 1px 0 rgba(255, 255, 255, .2);
         flex-shrink: 0;
     }
-    .ai-panel-title-main { font-weight: 600; font-size: 14.5px; line-height: 1.2; }
-    .ai-panel-subtitle { font-size: 11.5px; color: rgba(255, 255, 255, 0.65); margin-top: 2px; }
+    .ai-panel-title-main { font-weight: 600; font-size: 14.5px; line-height: 1.2; letter-spacing: -.01em; }
+    .ai-panel-subtitle  { font-size: 11.5px; color: rgba(255, 255, 255, .65); margin-top: 3px; }
     #ai-assistant-close {
-        background: transparent;
-        border: none;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 16px;
-        cursor: pointer;
-        padding: 6px 10px;
-        border-radius: 8px;
+        background: transparent; border: none;
+        color: rgba(255, 255, 255, .7);
+        font-size: 16px; cursor: pointer;
+        padding: 6px 10px; border-radius: 8px;
         transition: background .15s, color .15s;
     }
-    #ai-assistant-close:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+    #ai-assistant-close:hover { color: #fff; background: rgba(255, 255, 255, .08); }
 
-    /* === Ziņojumu plūsma === */
+    /* === Message stream === */
     .ai-panel-stream {
         flex: 1;
         overflow-y: auto;
-        padding: 18px 16px;
+        padding: 20px 16px;
         background: var(--aw-bg-soft);
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+        display: flex; flex-direction: column; gap: 14px;
         scroll-behavior: smooth;
     }
     .ai-panel-stream::-webkit-scrollbar { width: 6px; }
     .ai-panel-stream::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
     .ai-panel-stream::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-    /* === Rinda ar avatāru (botiņš pa kreisi, lietotājs pa labi) === */
-    .ai-row {
-        display: flex;
-        align-items: flex-end;
-        gap: 8px;
-        max-width: 100%;
-    }
-    .ai-row-bot { align-self: flex-start; max-width: 88%; }
-    .ai-row-user { align-self: flex-end; max-width: 85%; flex-direction: row-reverse; }
-
+    /* === Rows (bot/user) + avatar === */
+    .ai-row { display: flex; align-items: flex-end; gap: 10px; max-width: 100%; }
+    .ai-row-bot  { align-self: flex-start; max-width: 88%; }
+    .ai-row-user { align-self: flex-end;   max-width: 86%; flex-direction: row-reverse; }
     .ai-avatar {
-        width: 30px; height: 30px;
+        width: 32px; height: 32px;
         border-radius: 50%;
         background: linear-gradient(135deg, var(--aw-primary), var(--aw-primary-dark));
         display: inline-flex; align-items: center; justify-content: center;
-        color: #fff; font-size: 13px;
+        color: #fff; font-size: 14px;
         flex-shrink: 0;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28);
+        box-shadow: 0 3px 10px rgba(37, 99, 235, .32), inset 0 1px 0 rgba(255, 255, 255, .2);
     }
 
-    /* === Ziņojuma burbuļi === */
+    /* === Bubbles === */
     .ai-msg {
-        padding: 10px 14px;
+        padding: 11px 15px;
         border-radius: 16px;
-        font-size: 14px;
-        line-height: 1.45;
+        font-size: 14.5px;
+        line-height: 1.55;
         word-wrap: break-word;
         max-width: 100%;
+        letter-spacing: -.005em;
     }
     .ai-msg-bot {
         background: #fff;
         color: var(--aw-text);
         border: 1px solid var(--aw-bdr);
         border-bottom-left-radius: 4px;
-        box-shadow: var(--aw-shadow-sm);
+        box-shadow: var(--aw-shadow-card);
     }
     .ai-msg-user {
         background: linear-gradient(135deg, var(--aw-primary), var(--aw-primary-dark));
         color: #fff;
         border-bottom-right-radius: 4px;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        box-shadow: 0 3px 10px rgba(37, 99, 235, .25);
     }
+
+    /* === Notice (appendNotice) — info callout in soft blue,
+           visually distinct from amber tip === */
     .ai-msg-notice {
         align-self: stretch;
         max-width: 100%;
-        background: #f1f5f9;
-        color: var(--aw-muted);
-        font-size: 12px;
-        border-radius: 8px;
-        padding: 8px 12px;
-        border: 1px dashed #cbd5e1;
+        background: var(--aw-info-soft);
+        color: var(--aw-info-text);
+        border-left: 3px solid var(--aw-info);
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: 0 10px 10px 0;
+        padding: 10px 14px;
+        font-weight: 500;
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    .ai-msg-notice-icon {
+        flex-shrink: 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--aw-info);
+        margin-top: 1px;
     }
 
-    /* === Rakstīšanas indikators (3 punktiņi) === */
+    /* === Typing indicator === */
     .ai-typing {
         background: #fff;
         border: 1px solid var(--aw-bdr);
         border-radius: 16px;
         border-bottom-left-radius: 4px;
-        padding: 12px 14px;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        box-shadow: var(--aw-shadow-sm);
+        padding: 14px 16px;
+        display: inline-flex; align-items: center; gap: 5px;
+        box-shadow: var(--aw-shadow-card);
     }
     .ai-typing span {
         width: 7px; height: 7px;
         border-radius: 50%;
-        background: var(--aw-faint);
+        background: var(--aw-primary);
         display: inline-block;
-        animation: aw-bounce 1.3s infinite ease-in-out;
+        opacity: .35;
+        animation: aw-bounce 1.4s infinite ease-in-out;
     }
-    .ai-typing span:nth-child(1) { animation-delay: 0s; }
-    .ai-typing span:nth-child(2) { animation-delay: 0.18s; }
-    .ai-typing span:nth-child(3) { animation-delay: 0.36s; }
+    .ai-typing span:nth-child(1) { animation-delay: 0s;   }
+    .ai-typing span:nth-child(2) { animation-delay: .2s;  }
+    .ai-typing span:nth-child(3) { animation-delay: .4s;  }
     @keyframes aw-bounce {
-        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-        30% { transform: translateY(-6px); opacity: 1; }
+        0%, 60%, 100% { transform: translateY(0);    opacity: .35; }
+        30%           { transform: translateY(-6px); opacity: 1;   }
     }
 
-    /* === Ātro ieteikumu pogas === */
+    /* === Quick replies (pill chips) === */
     .ai-quick {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
+        display: flex; flex-wrap: wrap; gap: 6px;
         align-self: flex-start;
         max-width: 100%;
-        margin-left: 38px; /* atstāj vietu avatāra slejai */
+        margin-left: 42px;
     }
     .ai-quick-btn {
         background: #fff;
         border: 1px solid var(--aw-bdr);
-        color: var(--aw-text);
+        color: var(--aw-text-soft);
         font-family: inherit;
-        font-size: 12px;
+        font-size: 12.5px;
         font-weight: 500;
-        padding: 6px 12px;
+        padding: 7px 14px;
         border-radius: 999px;
         cursor: pointer;
         transition: all .15s ease;
+        letter-spacing: -.005em;
     }
     .ai-quick-btn:hover {
-        background: var(--aw-primary-soft);
+        background: var(--aw-primary);
         border-color: var(--aw-primary);
-        color: var(--aw-primary);
+        color: #fff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, .24);
     }
 
-    /* === Sludinājuma kartiņa === */
+    /* === Listing card === */
     .ai-card {
         align-self: stretch;
         max-width: 100%;
@@ -295,28 +300,26 @@
         overflow: hidden;
         text-decoration: none;
         color: inherit;
-        display: flex;
-        gap: 12px;
-        padding: 10px;
-        transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        display: flex; gap: 12px;
+        padding: 12px;
+        transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
     .ai-card:hover {
         transform: translateY(-2px);
-        box-shadow: var(--aw-shadow-md);
-        border-color: #cbd5e1;
+        box-shadow: var(--aw-shadow-hover);
+        border-color: var(--aw-primary);
         color: inherit;
     }
     .ai-card-img {
-        width: 60px;
-        height: 60px;
+        width: 64px; height: 64px;
         flex-shrink: 0;
         background: var(--aw-bg-soft);
         border-radius: 10px;
         object-fit: cover;
     }
-    .ai-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+    .ai-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
     .ai-card-name {
-        font-size: 13px;
+        font-size: 13.5px;
         font-weight: 600;
         color: var(--aw-text);
         margin: 0;
@@ -324,21 +327,20 @@
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-        line-height: 1.3;
+        line-height: 1.35;
+        letter-spacing: -.005em;
     }
     .ai-card-price {
-        font-size: 14px;
-        font-weight: 700;
+        font-size: 15px;
+        font-weight: 800;
         color: var(--aw-primary);
         margin: 0;
-        letter-spacing: -.01em;
+        letter-spacing: -.015em;
     }
     .ai-card-meta {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px;
-        font-size: 11px;
+        display: flex; flex-wrap: wrap; align-items: center;
+        gap: 10px;
+        font-size: 11.5px;
         color: var(--aw-muted);
         margin: 0;
     }
@@ -348,69 +350,73 @@
         background: var(--aw-success-soft);
         color: var(--aw-success);
         font-weight: 600;
-        padding: 1px 7px;
+        padding: 2px 8px;
         border-radius: 999px;
         font-size: 10.5px;
+        letter-spacing: .005em;
     }
 
-    /* === AI paskaidrojums (zils citāts zem kartiņas) === */
+    /* === Reason quote (between cards) === */
     .ai-reason {
         align-self: stretch;
         max-width: 100%;
         background: var(--aw-primary-soft);
         border-left: 3px solid var(--aw-primary);
-        padding: 8px 12px;
+        padding: 9px 14px;
         font-size: 12.5px;
-        color: var(--aw-text);
-        line-height: 1.45;
+        color: var(--aw-text-soft);
+        line-height: 1.5;
         border-radius: 0 8px 8px 0;
-        margin-top: -4px; /* piesien pie iepriekšējās kartiņas */
+        margin-top: -4px;
     }
 
-    /* === Padoma bloks === */
+    /* === Tip (advice block) — readable amber callout === */
     .ai-tip {
         align-self: stretch;
         max-width: 100%;
         background: var(--aw-amber-soft);
         border-left: 4px solid var(--aw-amber);
-        padding: 10px 14px;
+        padding: 12px 14px;
         font-size: 13px;
-        font-style: italic;
         color: var(--aw-amber-text);
-        line-height: 1.5;
+        line-height: 1.55;
         border-radius: 0 10px 10px 0;
-        display: flex;
-        gap: 8px;
-        align-items: flex-start;
+        display: flex; gap: 10px; align-items: flex-start;
+        font-weight: 500;
     }
-    .ai-tip-icon { flex-shrink: 0; font-style: normal; font-size: 15px; line-height: 1.4; }
+    .ai-tip-icon {
+        flex-shrink: 0;
+        font-size: 16px;
+        line-height: 1.4;
+        font-weight: normal;
+    }
 
-    /* === Apakšējais ievades panelis === */
+    /* === Footer + input === */
     .ai-panel-footer {
-        display: flex;
-        gap: 8px;
+        display: flex; gap: 8px;
         padding: 12px;
         background: #fff;
         border-top: 1px solid var(--aw-bdr);
         flex-shrink: 0;
-        box-shadow: 0 -2px 8px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 -2px 8px rgba(15, 23, 42, .04);
     }
     #ai-input {
         flex: 1;
+        height: 44px;
         border: 1px solid var(--aw-bdr);
         border-radius: 12px;
-        padding: 10px 14px;
+        padding: 0 14px;
         font-family: inherit;
         font-size: 14px;
         color: var(--aw-text);
         outline: none;
-        transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+        transition: border-color .15s, box-shadow .15s, background .15s;
         background: var(--aw-bg-soft);
     }
     #ai-input::placeholder { color: var(--aw-faint); }
     #ai-input:focus {
         border-color: var(--aw-primary);
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        box-shadow: 0 0 0 3px var(--aw-primary-tint);
         background: #fff;
     }
     #ai-send {
@@ -418,21 +424,30 @@
         color: #fff;
         border: none;
         border-radius: 12px;
-        width: 44px;
+        width: 44px; height: 44px;
         flex-shrink: 0;
         font-size: 16px;
         cursor: pointer;
-        transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+        transition: transform .15s, box-shadow .15s, opacity .15s;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, .3), inset 0 1px 0 rgba(255, 255, 255, .15);
     }
     #ai-send:hover:not(:disabled) {
-        transform: translateY(-1px) scale(1.03);
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(37, 99, 235, .42), inset 0 1px 0 rgba(255, 255, 255, .2);
     }
-    #ai-send:active:not(:disabled) { transform: scale(0.96); }
-    #ai-send:disabled { opacity: 0.55; cursor: not-allowed; }
+    #ai-send:active:not(:disabled) { transform: scale(.95); }
+    #ai-send:disabled { opacity: .55; cursor: not-allowed; }
 
-    /* === Mobilā versija (fullscreen) === */
+    /* === Responsive === */
+    @media (max-width: 600px) {
+        #ai-assistant-panel {
+            width: calc(100vw - 32px);
+            height: calc(100vh - 110px);
+            right: 16px;
+            bottom: 88px;
+            border-radius: 14px;
+        }
+    }
     @media (max-width: 480px) {
         #ai-assistant-panel {
             top: 0; right: 0; bottom: 0; left: 0;
@@ -442,6 +457,33 @@
         }
         #ai-assistant-toggle { bottom: 16px; right: 16px; }
         .ai-row-bot, .ai-row-user { max-width: 92%; }
+    }
+
+    /* === Reduced motion — disable transforms, hover-lift, bounce, smooth scroll ===
+           Opacity transitions kept (no vestibular impact).               */
+    @media (prefers-reduced-motion: reduce) {
+        #ai-assistant-toggle,
+        #ai-assistant-toggle:hover,
+        #ai-assistant-toggle:active,
+        #ai-assistant-panel,
+        #ai-assistant-panel.is-open,
+        .ai-quick-btn,
+        .ai-quick-btn:hover,
+        .ai-card,
+        .ai-card:hover,
+        #ai-send,
+        #ai-send:hover:not(:disabled),
+        #ai-send:active:not(:disabled) {
+            transform: none !important;
+            transition: opacity .15s ease !important;
+        }
+        .ai-typing span {
+            animation: none !important;
+            opacity: .55;
+        }
+        .ai-panel-stream {
+            scroll-behavior: auto !important;
+        }
     }
 </style>
 
@@ -596,9 +638,17 @@
     }
 
     function appendNotice(text) {
+        // Soft-blue info callout. Icon node inserted purely for visual cue;
+        // text still routed through textContent for XSS safety.
         const el = document.createElement('div');
         el.className = 'ai-msg-notice';
-        el.textContent = text;
+        const icon = document.createElement('i');
+        icon.className = 'bi bi-info-circle-fill ai-msg-notice-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        const body = document.createElement('span');
+        body.textContent = text;
+        el.appendChild(icon);
+        el.appendChild(body);
         stream.appendChild(el);
         scrollToBottom();
     }
