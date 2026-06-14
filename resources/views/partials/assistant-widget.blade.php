@@ -300,8 +300,8 @@
         overflow: hidden;
         text-decoration: none;
         color: inherit;
-        display: flex; gap: 12px;
-        padding: 12px;
+        display: flex; gap: 14px;
+        padding: 14px;
         transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
     .ai-card:hover {
@@ -310,16 +310,26 @@
         border-color: var(--aw-primary);
         color: inherit;
     }
-    .ai-card-img {
-        width: 64px; height: 64px;
-        flex-shrink: 0;
-        background: var(--aw-bg-soft);
-        border-radius: 10px;
-        object-fit: cover;
+    /* When followed by a reason quote, drop the bottom radius so the two visually fuse. */
+    .ai-card:has(+ .ai-reason) {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: 0;
     }
-    .ai-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+    .ai-card-img {
+        width: 76px; height: 76px;
+        flex: 0 0 76px;             /* lock dimensions; prevent any flex collapse */
+        background: var(--aw-bg-soft);
+        border-radius: 12px;
+        object-fit: cover;
+        display: block;
+    }
+    .ai-card-body {
+        flex: 1; min-width: 0;
+        display: flex; flex-direction: column; justify-content: center; gap: 4px;
+    }
     .ai-card-name {
-        font-size: 13.5px;
+        font-size: 14px;
         font-weight: 600;
         color: var(--aw-text);
         margin: 0;
@@ -331,7 +341,7 @@
         letter-spacing: -.005em;
     }
     .ai-card-price {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 800;
         color: var(--aw-primary);
         margin: 0;
@@ -342,7 +352,7 @@
         gap: 10px;
         font-size: 11.5px;
         color: var(--aw-muted);
-        margin: 0;
+        margin: 2px 0 0;
     }
     .ai-card-loc { display: inline-flex; align-items: center; gap: 3px; }
     .ai-card-trust {
@@ -356,33 +366,48 @@
         letter-spacing: .005em;
     }
 
-    /* === Reason quote (between cards) === */
+    /* === Reason quote — subtle annotation glued to the card above it,
+           not a competing standalone block === */
     .ai-reason {
         align-self: stretch;
         max-width: 100%;
-        background: var(--aw-primary-soft);
-        border-left: 3px solid var(--aw-primary);
-        padding: 9px 14px;
+        background: #fff;
+        border: 1px solid var(--aw-bdr);
+        border-top: 1px dashed var(--aw-bdr);
+        border-bottom-left-radius: 14px;
+        border-bottom-right-radius: 14px;
+        padding: 9px 14px 11px;
         font-size: 12.5px;
-        color: var(--aw-text-soft);
+        color: var(--aw-muted);
         line-height: 1.5;
-        border-radius: 0 8px 8px 0;
-        margin-top: -4px;
+        margin-top: -14px;          /* glue against the card above */
+        font-style: italic;
+        display: flex; gap: 6px; align-items: flex-start;
+    }
+    .ai-reason::before {
+        content: '';                 /* simple brand-blue bullet, version-safe */
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--aw-primary);
+        flex-shrink: 0;
+        margin-top: 8px;
     }
 
-    /* === Tip (advice block) — readable amber callout === */
+    /* === Tip (advice block) — softer amber callout, less shouty === */
     .ai-tip {
         align-self: stretch;
         max-width: 100%;
         background: var(--aw-amber-soft);
-        border-left: 4px solid var(--aw-amber);
+        border: 1px solid #fde68a;
+        border-left: 3px solid var(--aw-amber);
         padding: 12px 14px;
         font-size: 13px;
-        color: var(--aw-amber-text);
+        color: #78350f;
         line-height: 1.55;
-        border-radius: 0 10px 10px 0;
+        border-radius: 10px;
         display: flex; gap: 10px; align-items: flex-start;
-        font-weight: 500;
+        font-weight: 400;
     }
     .ai-tip-icon {
         flex-shrink: 0;
